@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator;
+package com.cybussolutions.ticketvalidator.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;

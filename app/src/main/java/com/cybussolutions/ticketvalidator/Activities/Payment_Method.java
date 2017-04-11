@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator;
+package com.cybussolutions.ticketvalidator.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cybussolutions.ticketvalidator.R;
 
 public class Payment_Method extends AppCompatActivity {
 

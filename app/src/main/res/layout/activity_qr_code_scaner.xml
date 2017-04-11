@@ -6,5 +6,5 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context=".QrCodeScannerActivity" >
+    tools:context=".Activities.QrCodeScannerActivity" >
 </LinearLayout>
