@@ -50,7 +50,7 @@ public class Login_Activity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etpassword);
         loginButton = (Button) findViewById(R.id.loginBtn);
         rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMeCheckBox);
-        signUpButton = (Button) findViewById(R.id.btn_signup);
+        signUpButton = (Button) findViewById(R.id.btnSignUp);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean checkBoxSavedData = preferences.getBoolean("checkBoxRememberMe", false);
