@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cybussolutions.ticketvalidator">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -19,14 +19,16 @@
         <activity android:name=".Route_Detailed" />
         <activity android:name=".Payment_Method" />
         <activity android:name=".QrCodeScannerActivity" />
-        <activity android:name=".Login_Activity" />
-        <activity android:name=".Signup_activity">
+        <activity android:name=".Login_Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <activity android:name=".Signup_activity"></activity>
     </application>
 
 </manifest>
