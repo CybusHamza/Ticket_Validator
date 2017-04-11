@@ -110,6 +110,9 @@ public class Login_Activity extends AppCompatActivity {
                                         editor.putBoolean("checkBoxRememberMe", false);
                                         editor.apply();
                                     }
+                                    Intent intent = new Intent(Login_Activity.this,MainScreen.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
 
                             } catch (JSONException e) {
