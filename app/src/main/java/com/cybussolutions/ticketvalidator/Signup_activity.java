@@ -1,19 +1,41 @@
 package com.cybussolutions.ticketvalidator;
 
+import android.app.ProgressDialog;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
-public class Signup_activity extends AppCompatActivity {
+import com.android.volley.NetworkError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Signup_activity extends AppCompatActivity implements View.OnClickListener{
 
     Toolbar toolbar;
     private EditText inputFirstName,inputLastName, inputEmail, inputPassword,inputReenterPassword,inputPhoneNumber;
     private TextInputLayout inputLayoutFirstName,inputLayoutLastName, inputLayoutEmail, inputLayoutPassword,inputLayoutReenterPassword,inputLayoutPhoneNumber;
     private Button btnSignUp;
+
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
+
+    private ProgressDialog loading;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_activity);
@@ -36,7 +58,87 @@ public class Signup_activity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.input_password);
         inputReenterPassword = (EditText) findViewById(R.id.input_re_enter_password);
         inputPhoneNumber = (EditText) findViewById(R.id.input_phone_number);
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+
         btnSignUp = (Button) findViewById(R.id.btn_signup);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+            }
+        });
+
+    }
+    private void getData() {
+        String first_name = inputFirstName.getText().toString().trim();
+        String last_name = inputLastName.getText().toString().trim();
+        String email = inputEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+        String re_enter_password = inputReenterPassword.getText().toString().trim();
+        String phone_number = inputPhoneNumber.getText().toString().trim();
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+        // find the radiobutton by returned id
+        radioSexButton = (RadioButton) findViewById(selectedId);
+        //String password = editTextPass.getText().toString().trim();
+        if (inputFirstName.getText().toString().trim().equals("") || inputLastName.getText().toString().trim().equals("") ||  inputEmail.getText().toString().trim().equals("")|| inputPassword.getText().toString().trim().equals("")||  inputReenterPassword.getText().toString().trim().equals("") ||inputPhoneNumber.getText().toString().trim().equals("")) {
+           Toast.makeText(this, "Please Fill all the fields", Toast.LENGTH_LONG).show();
+            return;
+       }else {
+            if (!inputPassword.getText().toString().trim().equals(inputReenterPassword.getText().toString().trim())) {
+                Toast.makeText(this, "Password Mismatches", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (phone_number.length() < 10 || phone_number.length() > 14) {
+                Toast.makeText(this, "Plz enter valid Phone Number", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
+
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "http://epay.cybussolutions.com/Api_Service/signupUser",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        loading.dismiss();
+                        Toast.makeText(getApplicationContext(),Response, Toast.LENGTH_LONG).show();
+                       // showJSON(Response);
+
+                        // get response
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+                String message = null;
+                if (e instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                    Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                }
+
+                loading.dismiss();
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", inputFirstName.getText().toString().trim());
+                params.put("last_name", inputLastName.getText().toString().trim());
+                params.put("email", inputEmail.getText().toString().trim());
+                params.put("password", inputPassword.getText().toString().trim());
+                params.put("phone_number", inputLastName.getText().toString().trim());
+                params.put("gender",radioSexButton.getText().toString());
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(Signup_activity.this);
+        requestQueue.add(strreq);
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }
