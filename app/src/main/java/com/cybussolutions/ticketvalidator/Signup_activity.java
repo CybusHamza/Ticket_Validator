@@ -37,5 +37,6 @@ public class Signup_activity extends AppCompatActivity {
         inputReenterPassword = (EditText) findViewById(R.id.input_re_enter_password);
         inputPhoneNumber = (EditText) findViewById(R.id.input_phone_number);
         btnSignUp = (Button) findViewById(R.id.btn_signup);
+
     }
 }
