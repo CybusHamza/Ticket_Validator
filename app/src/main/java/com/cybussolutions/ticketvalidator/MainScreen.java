@@ -21,9 +21,6 @@ public class MainScreen extends AppCompatActivity {
     Toolbar toolbar;
     ListView Route;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,7 +6,6 @@
     tools:context="com.cybussolutions.ticketvalidator.MainScreen"
     android:background="#ffffff">
 
-
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar">

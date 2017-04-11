@@ -14,17 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainScreen">
+
+        </activity>
+        <activity android:name=".Route_Detailed" />
+        <activity android:name=".Payment_Method" />
+        <activity android:name=".QrCodeScannerActivity" />
+        <activity android:name=".Login_Activity" />
+        <activity android:name=".Signup_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Route_Detailed" />
-        <activity android:name=".Payment_Method" />
-        <activity android:name=".QrCodeScannerActivity" />
-        <activity android:name=".Login_Activity" />
-        <activity android:name=".Signup_activity"></activity>
     </application>
 
 </manifest>
