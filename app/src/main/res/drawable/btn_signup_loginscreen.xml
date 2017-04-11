@@ -5,7 +5,7 @@
             <corners android:radius="10dp"/>
             <solid android:color="#fff"/>
             <stroke android:color="@color/colorTextFloatingLabel"
-                android:width="5dp"/>
+                android:width="3dp"/>
 
         </shape>
     </item>

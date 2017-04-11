@@ -1,10 +1,14 @@
 package com.cybussolutions.ticketvalidator;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +32,10 @@ public class Login_Activity extends AppCompatActivity {
 TextInputLayout  inputEmail, inputPassword;
     EditText etEmail,etPassword;
     String userEmail,userPassword;
+    CheckBox rememberMeCheckBox;
     String LOGIN_URL = "http://epay.cybussolutions.com/Api_Service/loginUser";
     Button loginButton;
+    Boolean checkBoxValue;
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     @Override
@@ -41,6 +48,15 @@ TextInputLayout  inputEmail, inputPassword;
         etEmail = (EditText)findViewById(R.id.etemail);
         etPassword = (EditText) findViewById(R.id.etpassword);
         loginButton = (Button)findViewById(R.id.loginBtn);
+        rememberMeCheckBox= (CheckBox)findViewById(R.id.rememberMeCheckBox);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean checkBoxSavedData = preferences.getBoolean("checkBoxRememberMe",false);
+        if (checkBoxSavedData == true){
+            Intent intent = new Intent(Login_Activity.this,MainScreen.class);
+            finish();
+            startActivity(intent);
+        }
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +72,34 @@ TextInputLayout  inputEmail, inputPassword;
 
                         if (!(response.equals(""))) {
                             try {
-                                JSONObject jsonResponse = new JSONObject(response);
+                                JSONArray jsonResponse = new JSONArray(response);
+                                for (int i= 0; i<= jsonResponse.length();i++) {
+                                    JSONObject jsonObject = new JSONObject(jsonResponse.getString(i));
+                                    String f_name = jsonObject.get("first_name").toString();
+                                    String l_name = jsonObject.get("last_name").toString();
+                                    String id = jsonObject.get("id").toString();
 
-                                Toast.makeText(Login_Activity.this,response,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
+
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("UserEmail", userEmail);
+                                    // editor.putString("UserPassword",userPassword);
+                                    editor.putString("f_name", f_name);
+                                    editor.putString("l_nmae", l_name);
+                                    editor.putString("id", id);
+                                    editor.apply();
+                                    if (rememberMeCheckBox.isChecked()){
+                                        checkBoxValue= true;
+                                        editor.putBoolean("checkBoxRememberMe",checkBoxValue);
+                                       // editor.putString("checkBoxRememberMe",checkBoxValue.toString());
+                                        editor.apply();
+                                    }
+                                    else {
+                                        editor.putBoolean("checkBoxRememberMe",false);
+                                        editor.apply();
+                                    }
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
