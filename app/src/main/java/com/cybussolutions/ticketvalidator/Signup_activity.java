@@ -93,6 +93,10 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Plz enter valid Phone Number", Toast.LENGTH_LONG).show();
                 return;
             }
+            if(!inputEmail.getText().toString().matches("^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}$")){
+                Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
+                return;
+            }
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
 
