@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cybussolutions.ticketvalidator.Route_Detailed"
+    android:background="#ffffff">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Your Route"
+        android:textSize="30sp"
+        android:id="@+id/textView2"
+        android:layout_marginTop="66dp"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="abc to xyz"
+        android:id="@+id/route"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Estimated Time"
+        android:textSize="30sp"
+        android:id="@+id/textView4"
+        android:layout_marginBottom="60dp"
+        android:layout_above="@+id/time"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="30 mins"
+        android:id="@+id/time"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Fare : "
+        android:id="@+id/textView6"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:paddingTop="10dp"
+        android:background="#fff59d"
+        android:layout_marginBottom="60dp"
+        android:layout_above="@+id/pay"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="$ 25"
+        android:id="@+id/fair"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="90dp"
+        android:text="PAY"
+        android:background="@drawable/round_corner_button"
+        android:textSize="40sp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:id="@+id/pay"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp" />
+
+</RelativeLayout>

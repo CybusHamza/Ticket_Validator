@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="com.cybussolutions.ticketvalidator.Payment_Method">
+
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Fare : "
+        android:id="@+id/textView6"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:background="#fff59d"
+        android:layout_above="@+id/pay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="54dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="$ 25"
+        android:id="@+id/fair"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="Confirm Payment"
+        android:background="@drawable/round_corner_button"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:id="@+id/pay"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select Your Payment Method"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:weightSum="1"
+        android:id="@+id/radioGroup"
+        android:textStyle="bold"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By SMS Service"
+            android:id="@+id/radioButton"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:layout_weight="0.19" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By Wallet          "
+            android:textSize="20sp"
+            android:id="@+id/radioButton2"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:layout_marginTop="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scan By Qr Code"
+            android:id="@+id/radioButton3"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.19"
+            android:checked="false" />
+    </RadioGroup>
+</RelativeLayout>
