@@ -1,8 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cybussolutions.ticketvalidator.Login_Activity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-</RelativeLayout>
+    android:orientation="vertical"
+    tools:context="com.cybussolutions.ticketvalidator.Login_Activity">
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+
+    android:background="@drawable/logo_login_screen"
+
+    android:layout_margin="20dp"
+    android:padding="10dp"
+
+    android:text="WELCOME"
+    android:textStyle="bold"
+    android:textColor="#00BFFF"
+    android:gravity="center"
+    />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        android:textColorHint="@color/colorTextFloatingLabel"
+
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etemail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Email"
+            android:textColorHint="#00BFFF"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+
+       app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        android:textColorHint="@color/colorTextFloatingLabel"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp">
+
+        <EditText
+            android:id="@+id/etpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Password"
+
+           />
+    </android.support.design.widget.TextInputLayout>
+<CheckBox
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:text="Remember me"
+    android:textColor="#000"/>
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@drawable/bg_btn_login"
+    android:textColor="#fff"
+    android:text="Login"
+    android:textStyle="bold"
+    android:layout_marginTop="80dp"
+    android:padding="10dp"
+    android:layout_margin="10dp"
+    android:id="@+id/loginBtn"
+    android:textSize="30sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/btn_signup_loginscreen"
+        android:textColor="@color/colorTextFloatingLabel"
+        android:text="Sign UP"
+        android:textStyle="bold"
+        android:layout_marginTop="80dp"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:id="@+id/btnSignUp"
+        android:textSize="30sp"/>
+
+</LinearLayout>

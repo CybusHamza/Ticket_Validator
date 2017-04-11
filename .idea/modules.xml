@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TicketValidator.iml" filepath="$PROJECT_DIR$/TicketValidator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ticket_Validator.iml" filepath="$PROJECT_DIR$/Ticket_Validator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
