@@ -31,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="$ 25"
         android:id="@+id/fair"
         android:textStyle="bold"
         android:layout_alignBottom="@+id/textView6"
@@ -102,4 +101,15 @@
             android:layout_weight="0.19"
             android:checked="false" />
     </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="$"
+        android:id="@+id/textView10"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/fair"
+        android:layout_toEndOf="@+id/fair" />
 </RelativeLayout>

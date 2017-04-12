@@ -1,5 +1,6 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -38,6 +40,7 @@ public class Login_Activity extends AppCompatActivity {
     CheckBox rememberMeCheckBox;
     Button loginButton,signUpButton;
     Boolean checkBoxValue;
+    private ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean checkBoxSavedData = preferences.getBoolean("checkBoxRememberMe", false);
 
-        if (checkBoxSavedData == true) {
+        if (checkBoxSavedData) {
             Intent intent = new Intent(Login_Activity.this, MainScreen.class);
             finish();
             startActivity(intent);
@@ -65,7 +68,6 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login_Activity.this, Signup_activity.class);
-                finish();
                 startActivity(intent);
             }
         });
@@ -77,79 +79,97 @@ public class Login_Activity extends AppCompatActivity {
 
                 userEmail = etEmail.getText().toString();
                 userPassword = etPassword.getText().toString();
-                StringRequest request = new StringRequest(Request.Method.POST, End_Points.LOGIN, new Response.Listener<String>() {
 
-                    @Override
-                    public void onResponse(String response) {
+                Login();
 
-                        if (!(response.equals(""))) {
-                            try {
-                                JSONArray jsonResponse = new JSONArray(response);
-                                for (int i = 0; i <= jsonResponse.length(); i++) {
-                                    JSONObject jsonObject = new JSONObject(jsonResponse.getString(i));
-                                    String f_name = jsonObject.get("first_name").toString();
-                                    String l_name = jsonObject.get("last_name").toString();
-                                    String id = jsonObject.get("id").toString();
+    }
 
-                                    Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
+    public void Login()
+    {
 
-                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
-                                    SharedPreferences.Editor editor = preferences.edit();
-                                    editor.putString("UserEmail", userEmail);
-                                    // editor.putString("UserPassword",userPassword);
-                                    editor.putString("f_name", f_name);
-                                    editor.putString("l_nmae", l_name);
-                                    editor.putString("id", id);
-                                    editor.apply();
-                                    if (rememberMeCheckBox.isChecked()) {
-                                        checkBoxValue = true;
-                                        editor.putBoolean("checkBoxRememberMe", checkBoxValue);
-                                        // editor.putString("checkBoxRememberMe",checkBoxValue.toString());
-                                        editor.apply();
-                                    } else {
-                                        editor.putBoolean("checkBoxRememberMe", false);
-                                        editor.apply();
-                                    }
-                                    Intent intent = new Intent(Login_Activity.this,MainScreen.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
+        loading = ProgressDialog.show(Login_Activity.this, "Please wait...", "Checking Credentails ...", false, false);
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.LOGIN, new Response.Listener<String>() {
 
+        @Override
+        public void onResponse(String response) {
+
+            loading.dismiss();
+
+            if (!(response.equals("\t\r\n\r\n\tfalse"))) {
+                try {
+                    JSONArray jsonResponse = new JSONArray(response);
+                    for (int i = 0; i <= jsonResponse.length(); i++) {
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getString(i));
+                        String f_name = jsonObject.get("first_name").toString();
+                        String l_name = jsonObject.get("last_name").toString();
+                        String id = jsonObject.get("id").toString();
+
+                        Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
+
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("UserEmail", userEmail);
+                        // editor.putString("UserPassword",userPassword);
+                        editor.putString("f_name", f_name);
+                        editor.putString("l_nmae", l_name);
+                        editor.putString("id", id);
+                        editor.apply();
+                        if (rememberMeCheckBox.isChecked()) {
+                            checkBoxValue = true;
+                            editor.putBoolean("checkBoxRememberMe", checkBoxValue);
+                            // editor.putString("checkBoxRememberMe",checkBoxValue.toString());
+                            editor.apply();
                         } else {
-                            Toast.makeText(Login_Activity.this, "No respone", Toast.LENGTH_SHORT).show();
+                            editor.putBoolean("checkBoxRememberMe", false);
+                            editor.apply();
                         }
+                        Intent intent = new Intent(Login_Activity.this,MainScreen.class);
+                        startActivity(intent);
+                        finish();
                     }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                        , new Response.ErrorListener()
 
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Login_Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-
-
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put(KEY_USERNAME, userEmail);
-                        map.put(KEY_PASSWORD, userPassword);
-                        return map;
-                    }
-                };
-
-                RequestQueue requestQueue = Volley.newRequestQueue(Login_Activity.this);
-                requestQueue.add(request);
-
+            } else {
+                Toast.makeText(Login_Activity.this, "Incorrect User name or Password", Toast.LENGTH_SHORT).show();
             }
+        }
+
+    }
+            , new Response.ErrorListener()
+
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            loading.dismiss();
+            String message = null;
+            if (error instanceof NetworkError) {
+                message = "Cannot connect to Internet...Please check your connection!";
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }) {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put(KEY_USERNAME, userEmail);
+            map.put(KEY_PASSWORD, userPassword);
+            return map;
+        }
+    };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(Login_Activity.this);
+        requestQueue.add(request);
+
+    }
 
         });
+
     }
 }
 

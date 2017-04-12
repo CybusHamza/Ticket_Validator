@@ -97,10 +97,10 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Plz enter valid Phone Number", Toast.LENGTH_LONG).show();
                 return;
             }
-            if(!inputEmail.getText().toString().matches("^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}$")){
+           /* if(!inputEmail.getText().toString().matches("^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}$")){
                 Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
                 return;
-            }
+            }*/
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
 
@@ -129,13 +129,14 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onErrorResponse(VolleyError e) {
                 e.printStackTrace();
+                loading.dismiss();
                 String message = null;
                 if (e instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 }
 
-                loading.dismiss();
+
             }
         }) {
             @Override

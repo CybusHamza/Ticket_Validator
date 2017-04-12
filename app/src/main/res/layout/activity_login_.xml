@@ -89,7 +89,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="Forgot Password"
-            android:textColor="#000" />
+            android:textColor="@color/colorAccent" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,7 +98,7 @@
         android:orientation="vertical"
         android:gravity="center|bottom"
         android:layout_weight="1"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="30dp">
 
     <Button
         android:id="@+id/loginBtn"
@@ -130,5 +130,17 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=" Epay     Powered by Cybus Solutions Limited "
+        android:id="@+id/textView9"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
