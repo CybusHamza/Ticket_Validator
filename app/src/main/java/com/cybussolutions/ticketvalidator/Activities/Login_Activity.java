@@ -43,6 +43,7 @@ public class Login_Activity extends AppCompatActivity {
     private ProgressDialog loading;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
