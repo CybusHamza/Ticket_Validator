@@ -82,6 +82,7 @@
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/hint_password" />
 
             </android.support.design.widget.TextInputLayout>
@@ -97,6 +98,7 @@
                     android:id="@+id/input_re_enter_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/hint_re_enter_password" />
 
             </android.support.design.widget.TextInputLayout>

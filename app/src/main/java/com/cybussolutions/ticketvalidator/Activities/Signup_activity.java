@@ -5,6 +5,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,6 +73,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
     }
 
     private void getData() {
@@ -81,6 +84,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         String re_enter_password = inputReenterPassword.getText().toString().trim();
         String phone_number = inputPhoneNumber.getText().toString().trim();
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         // find the radiobutton by returned id
         radioSexButton = (RadioButton) findViewById(selectedId);
@@ -97,10 +101,11 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Plz enter valid Phone Number", Toast.LENGTH_LONG).show();
                 return;
             }
-           /* if(!inputEmail.getText().toString().matches("^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}$")){
+
+            if(!email.matches(emailPattern)){
                 Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
                 return;
-            }*/
+            }
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
 
@@ -129,14 +134,13 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onErrorResponse(VolleyError e) {
                 e.printStackTrace();
-                loading.dismiss();
                 String message = null;
                 if (e instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 }
 
-
+                loading.dismiss();
             }
         }) {
             @Override
@@ -160,4 +164,5 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
 
     }
+
 }
