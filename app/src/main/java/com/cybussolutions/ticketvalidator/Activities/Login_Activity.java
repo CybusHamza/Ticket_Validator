@@ -42,6 +42,7 @@ public class Login_Activity extends AppCompatActivity {
     Boolean checkBoxValue;
     private ProgressDialog loading;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
