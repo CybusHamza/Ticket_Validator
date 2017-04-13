@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -20,15 +22,22 @@ import com.cybussolutions.ticketvalidator.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
-public class Qr_Activity extends Activity implements OnClickListener {
+public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
     private String LOG_TAG = "GenerateQRCode";
     String Qrsting;
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Generate QR Code");
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
 
         Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
