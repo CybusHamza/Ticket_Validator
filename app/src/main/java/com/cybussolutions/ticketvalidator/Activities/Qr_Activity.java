@@ -44,6 +44,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
         Intent intent = getIntent();
 
+
         Qrsting = intent.getStringExtra("Qr_string");
 
     }
