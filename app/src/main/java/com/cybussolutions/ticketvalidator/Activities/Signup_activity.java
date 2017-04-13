@@ -111,6 +111,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             if(!email.matches(emailPattern)){
                 Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
                 return;
+
             }
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
