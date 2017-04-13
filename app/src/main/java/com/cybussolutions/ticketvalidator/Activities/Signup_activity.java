@@ -41,6 +41,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
     private ProgressDialog loading;
 
     private DBManager dbManager;
+    String test;
 
     @Override
 
@@ -73,6 +74,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // Toast.makeText(getApplicationContext(),test,Toast.LENGTH_LONG).show();
                 getData();
             }
         });
@@ -89,8 +91,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         final String phone_number = inputPhoneNumber.getText().toString().trim();
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        dbManager = new DBManager(this);
-        dbManager.open();
+
 
         // find the radiobutton by returned id
         radioSexButton = (RadioButton) findViewById(selectedId);
@@ -111,7 +112,6 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             if(!email.matches(emailPattern)){
                 Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
                 return;
-
             }
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
@@ -126,7 +126,15 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                         if(!(Response.equals("")))
                         {
                             Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-                            dbManager.insert(first_name, last_name, email, phone_number);
+                            dbManager = new DBManager(Signup_activity.this);
+                            dbManager.open();
+                            try{
+                                dbManager.insert(Response.toString(),first_name, last_name, email, phone_number);
+                            }catch (Exception e){
+                                Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
+                            }
+                              //  dbManager.insert(first_name, last_name, email, phone_number);
+                            //Cursor cursor=dbManager.fetch();
                         }
 
                         else {
