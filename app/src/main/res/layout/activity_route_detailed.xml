@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
 
     tools:context=".Activities.Route_Detailed"
-    android:background="#696969">
+    android:background="@drawable/a">
 
     <include
         android:id="@+id/app_bar"
@@ -13,11 +13,13 @@
 
     </include>
 
+
+
     <TextView
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="19sp"
         android:text="Thank You for using us as your service providers"
 
         android:id="@+id/textView2"
@@ -28,14 +30,14 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:textColor="#fff"/>
+        android:textColor="#89BCEB"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="ELAPSED TIME"
-        android:textColor="#fff"
+        android:textColor="#808080"
         android:id="@+id/route"
         android:textStyle="bold"
         android:layout_below="@+id/textView2"
@@ -51,18 +53,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvElapsedTime"
+        android:id="@+id/tvTime"
         android:text="25"
         android:textStyle="bold"
         android:textSize="25sp"
-        android:textColor="#fff"
+        android:textColor="#808080"
         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" min"
 android:textStyle="bold"
-            android:textColor="#fff"
+            android:textColor="#808080"
             android:textSize="25sp"/>
 
     </LinearLayout>
@@ -82,7 +84,7 @@ android:textStyle="bold"
     android:id="@+id/linearLayout2">
     <TextView
         android:gravity="center"
-        android:textColor="#40FED8"
+        android:textColor="#89BCEB"
         android:textStyle="bold"
         android:textSize="23sp"
         android:paddingBottom="10dp"
@@ -101,9 +103,9 @@ android:textStyle="bold"
             <TextView
              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:textColor="#808080"
                 android:textStyle="bold"
-                android:textSize="23sp"
+                android:textSize="20sp"
                 android:gravity="center"
             android:layout_weight="0.5"
 
@@ -111,8 +113,8 @@ android:textStyle="bold"
             <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                android:textSize="23sp"
-                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textColor="#808080"
                 android:gravity="center"
                 android:textStyle="bold"
             android:text="Tarrif"
@@ -132,9 +134,9 @@ android:layout_marginTop="3dp"
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:textColor="#808080"
             android:layout_weight="0.5"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:gravity="center"
             android:id="@+id/tvBalanceAmount"
             android:text="$:123"/>
@@ -145,9 +147,8 @@ android:layout_marginTop="3dp"
             android:id="@+id/tvTariffAmount"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:textSize="20sp"
-
-            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textColor="#808080"
             />
 
     </LinearLayout>
@@ -155,13 +156,13 @@ android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="2dp"
 
-        android:background="#fff"/>
+        android:background="#89BCEB"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="23sp"
-        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textColor="#808080"
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"
@@ -177,13 +178,13 @@ android:layout_marginTop="3dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="$ 25"
-        android:textSize="20sp"
-        android:id="@+id/fair"
+        android:textSize="18sp"
+        android:id="@+id/tvPrice"
 
         android:layout_marginTop="5dp"
 
-        android:textStyle="bold"
-        android:textColor="#ffff"
+
+        android:textColor="#808080"
         android:layout_gravity="center"
 
 
@@ -200,7 +201,7 @@ android:layout_marginTop="3dp"
         android:text="PAY"
         android:background="@drawable/bg_btn_route_detailed"
         android:textSize="20sp"
-        android:textColor="#fff"
+        android:textColor="@drawable/colors_for_btn_route_detailed"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"

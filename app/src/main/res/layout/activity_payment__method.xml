@@ -33,6 +33,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/fair"
         android:textStyle="bold"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+
         android:layout_alignBottom="@+id/textView6"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
@@ -112,7 +115,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="$"
-        android:id="@+id/textView10"
+        android:id="@+id/tvFareData"
         android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@+id/fair"

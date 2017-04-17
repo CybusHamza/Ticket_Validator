@@ -55,12 +55,12 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
 
-        inputLayoutFirstName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
-        inputLayoutLastName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
-        inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
-        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
-        inputLayoutReenterPassword = (TextInputLayout) findViewById(R.id.input_layout_re_enter_password);
-        inputLayoutPhoneNumber = (TextInputLayout) findViewById(R.id.input_layout_phone_number);
+//        inputLayoutFirstName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
+//        inputLayoutLastName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
+  //      inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
+    //    inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
+      //  inputLayoutReenterPassword = (TextInputLayout) findViewById(R.id.input_layout_re_enter_password);
+       // inputLayoutPhoneNumber = (TextInputLayout) findViewById(R.id.input_layout_phone_number);
 
         inputFirstName = (EditText) findViewById(R.id.input_first_name);
         inputLastName = (EditText) findViewById(R.id.input_last_name);

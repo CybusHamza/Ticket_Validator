@@ -15,42 +15,53 @@
     android:src="@drawable/logo_app"/>
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.github.florent37.materialtextfield.MaterialTextField
         android:id="@+id/input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        app:mtf_cardCollapsedHeight="4dp"
+        app:mtf_image="@drawable/user"
+        android:textAlignment="center"
+
+        app:mtf_labelColor="#000"
+        app:mtf_openKeyboardOnFocus="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        android:textColorHint="@color/colorTextFloatingLabel"
 
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+        >
 
         <EditText
             android:id="@+id/etemail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint=" Email "
 
+            android:textColor="#000"
+
+
+            android:textSize="15sp"
             android:singleLine="true"
-            android:textColorHint="#00BFFF" />
-    </android.support.design.widget.TextInputLayout>
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
 
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.github.florent37.materialtextfield.MaterialTextField
         android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        app:mtf_openKeyboardOnFocus="true"
         android:padding="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        app:mtf_image="@drawable/password"
         android:layout_below="@+id/input_email"
+        app:mtf_labelColor="#000"
         android:textColorHint="@color/colorTextFloatingLabel"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
@@ -63,7 +74,7 @@
             android:singleLine="true"
 
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
 
 

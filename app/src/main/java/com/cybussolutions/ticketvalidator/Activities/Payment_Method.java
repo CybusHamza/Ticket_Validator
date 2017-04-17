@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class Payment_Method extends AppCompatActivity {
 
-    TextView fareText;
+    TextView fareText,tvFareData;
     Toolbar toolbar;
     Button pay;
     RadioGroup radioGroup;
@@ -42,6 +42,7 @@ public class Payment_Method extends AppCompatActivity {
     private RadioButton sms, card, qr;
     private ProgressDialog loading;
     String fare = "";
+    String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +59,14 @@ public class Payment_Method extends AppCompatActivity {
 
         from = intent.getStringExtra("from");
         to = intent.getStringExtra("to");
+        price = intent.getStringExtra("price");
 
 
         getData();
+        tvFareData = (TextView)findViewById(R.id.tvFareData);
+
+        tvFareData.setText("$ "+price);
+
 
         fareText = (TextView) findViewById(R.id.fair);
         pay = (Button) findViewById(R.id.pay);
