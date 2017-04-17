@@ -11,4 +11,11 @@
         <item name="android:textColor">@color/colorTextFloatingLabel</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+
+    <style name="TextAppearence.App.TextInputLayoutSWIncreased" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorTextFloatingLabel</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
 </resources>

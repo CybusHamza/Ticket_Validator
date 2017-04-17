@@ -79,7 +79,7 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent  intent=new Intent(MainScreen.this,Payment_Method.class);
+                Intent  intent=new Intent(MainScreen.this,Route_Detailed.class);
                 intent.putExtra("from",from.getSelectedItem().toString());
                 intent.putExtra("to",to.getSelectedItem().toString());
                 startActivity(intent);

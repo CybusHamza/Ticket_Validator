@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -38,7 +39,8 @@ public class Login_Activity extends AppCompatActivity {
     EditText etEmail, etPassword;
     String userEmail, userPassword;
     CheckBox rememberMeCheckBox;
-    Button loginButton,signUpButton;
+    Button loginButton;
+    TextView tvSignUp;
     Boolean checkBoxValue;
     private ProgressDialog loading;
 
@@ -46,7 +48,7 @@ public class Login_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_);
+        setContentView(R.layout.login_2);
 
         inputEmail = (TextInputLayout) findViewById(R.id.input_email);
         inputPassword = (TextInputLayout) findViewById(R.id.input_password);
@@ -54,7 +56,7 @@ public class Login_Activity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etpassword);
         loginButton = (Button) findViewById(R.id.loginBtn);
         rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMeCheckBox);
-        signUpButton = (Button) findViewById(R.id.btnSignUp);
+        tvSignUp = (TextView) findViewById(R.id.btnSignUp);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean checkBoxSavedData = preferences.getBoolean("checkBoxRememberMe", false);
@@ -65,7 +67,7 @@ public class Login_Activity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login_Activity.this, Signup_activity.class);
@@ -80,9 +82,13 @@ public class Login_Activity extends AppCompatActivity {
 
                 userEmail = etEmail.getText().toString();
                 userPassword = etPassword.getText().toString();
+                if (userEmail.length() ==0 || userPassword.length()==0){
+                    Toast.makeText(getApplicationContext(),"Invalid Email or password",Toast.LENGTH_SHORT).show();
+                }
+                else {
 
-                Login();
-
+                    Login();
+                }
     }
 
     public void Login()

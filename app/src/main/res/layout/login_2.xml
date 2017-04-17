@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context=".Activities.Login_Activity">
+<ImageView
+    android:layout_width="75dp"
+    android:layout_height="75dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="40dp"
+    android:src="@drawable/logo_app"/>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:textColorHint="@color/colorTextFloatingLabel"
+
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+        <EditText
+            android:id="@+id/etemail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+
+            android:singleLine="true"
+            android:textColorHint="#00BFFF" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/input_email"
+        android:textColorHint="@color/colorTextFloatingLabel"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+        <EditText
+            android:id="@+id/etpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+
+            android:singleLine="true"
+
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+    <CheckBox
+        android:id="@+id/rememberMeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/input_password"
+        android:layout_marginTop="10dp"
+        android:text="Remember me"
+        />
+        <!--android:layout_toStartOf="@+id/input_password"-->
+
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignEnd="@+id/input_password"
+        android:gravity="right"
+        android:layout_toRightOf="@id/rememberMeCheckBox"
+        android:text="Forgot Password"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="#89BCEB"
+        android:layout_above="@+id/loginBtn"
+        android:layout_below="@+id/input_password"
+
+         />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:background="@drawable/bg_btn_login2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/rememberMeCheckBox"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="#fff"
+        android:layout_marginTop="20dp"
+        android:text="Login" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/loginBtn"
+    android:layout_marginTop="15dp"
+    android:gravity="center">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="Still no account? Go to "/>
+
+    <TextView
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#89BCEB"
+        android:text="Sign Up"/>
+
+
+
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=" Epay     Powered by Cybus Solutions Limited "
+        android:id="@+id/textView9"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal" />
+</RelativeLayout>

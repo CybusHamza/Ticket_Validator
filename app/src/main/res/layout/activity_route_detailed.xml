@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.Route_Detailed"
-    android:background="#ffffff">
+    android:background="#696969">
 
     <include
         android:id="@+id/app_bar"
@@ -13,82 +14,198 @@
     </include>
 
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Your Route"
+        android:text="Thank You for using us as your service providers"
+
         android:id="@+id/textView2"
         android:layout_below="@+id/app_bar"
+        android:padding="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" />
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="#fff"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="abc to xyz"
+        android:textSize="18sp"
+        android:text="ELAPSED TIME"
+        android:textColor="#fff"
         android:id="@+id/route"
         android:textStyle="bold"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:id="@+id/linearLayoutElapsedTime"
+        android:layout_below="@+id/route">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Estimated Time"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/route"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/time"
+        android:id="@+id/tvElapsedTime"
+        android:text="25"
         android:textStyle="bold"
-        android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:textSize="25sp"
+        android:textColor="#fff"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" min"
+android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_below="@+id/linearLayoutElapsedTime"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/bg_linearlayout_route_detailed_screen"
+    android:orientation="vertical"
+    android:padding="25dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="10dp"
+
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout2">
+    <TextView
+        android:gravity="center"
+        android:textColor="#40FED8"
+        android:textStyle="bold"
+        android:textSize="23sp"
+        android:paddingBottom="10dp"
+        android:id="@+id/tvRoute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Parking Discount"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:weightSum="1">
+
+
+            <TextView
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="23sp"
+                android:gravity="center"
+            android:layout_weight="0.5"
+
+            android:text="Balance"/>
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                android:textSize="23sp"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:textStyle="bold"
+            android:text="Tarrif"
+            android:layout_weight="0.5"
+
+                />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:weightSum="1">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:id="@+id/tvBalanceAmount"
+            android:text="$:123"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$:456"
+            android:id="@+id/tvTariffAmount"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:textSize="20sp"
+
+            android:textColor="#fff"
+            />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        android:background="#fff"/>
 
     <TextView
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Fare : "
-        android:id="@+id/textView6"
-        android:textAlignment="center"
-        android:paddingTop="10dp"
-        android:layout_marginTop="43dp"
-        android:layout_below="@+id/time"
-        android:layout_centerHorizontal="true"
-        android:background="#fff59d" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:text="Charge"
+
+
+        />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="$ 25"
+        android:textSize="20sp"
         android:id="@+id/fair"
+
+        android:layout_marginTop="5dp"
+
         android:textStyle="bold"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp" />
+        android:textColor="#ffff"
+        android:layout_gravity="center"
+
+
+        />
+
+</LinearLayout>
+
+
+
 
     <Button
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="PAY"
-        android:background="@drawable/round_corner_button"
+        android:background="@drawable/bg_btn_route_detailed"
         android:textSize="20sp"
         android:textColor="#fff"
         android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/pay"
-        android:layout_marginTop="43dp"
-        android:layout_below="@+id/textView6"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/linearLayout2"
+        />
 </RelativeLayout>

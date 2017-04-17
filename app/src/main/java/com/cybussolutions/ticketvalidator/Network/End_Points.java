@@ -11,4 +11,5 @@ public class End_Points {
     public  static String GETDATA =BASE_URL+ "getRoutes";
     public  static String GETROUTES =BASE_URL+ "getDefienedRoutes";
     public  static String GETROUTES_RATES =BASE_URL+ "getRates";
+
 }
