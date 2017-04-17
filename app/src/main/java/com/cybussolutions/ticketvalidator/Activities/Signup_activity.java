@@ -1,6 +1,7 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.ProgressDialog;
+import android.database.Cursor;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
     private ProgressDialog loading;
 
+    private DBManager dbManager;
+    String test;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
 
         inputLayoutFirstName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
         inputLayoutLastName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
@@ -69,6 +74,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // Toast.makeText(getApplicationContext(),test,Toast.LENGTH_LONG).show();
                 getData();
             }
         });
@@ -77,14 +83,15 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getData() {
-        String first_name = inputFirstName.getText().toString().trim();
-        String last_name = inputLastName.getText().toString().trim();
-        String email = inputEmail.getText().toString().trim();
+        final String first_name = inputFirstName.getText().toString().trim();
+        final String last_name = inputLastName.getText().toString().trim();
+        final String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
         String re_enter_password = inputReenterPassword.getText().toString().trim();
-        String phone_number = inputPhoneNumber.getText().toString().trim();
+        final String phone_number = inputPhoneNumber.getText().toString().trim();
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
 
         // find the radiobutton by returned id
         radioSexButton = (RadioButton) findViewById(selectedId);
@@ -119,8 +126,15 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                         if(!(Response.equals("")))
                         {
                             Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-
-
+                            dbManager = new DBManager(Signup_activity.this);
+                            dbManager.open();
+                            try{
+                                dbManager.insert(Response.toString(),first_name, last_name, email, phone_number);
+                            }catch (Exception e){
+                                Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
+                            }
+                              //  dbManager.insert(first_name, last_name, email, phone_number);
+                            //Cursor cursor=dbManager.fetch();
                         }
 
                         else {
