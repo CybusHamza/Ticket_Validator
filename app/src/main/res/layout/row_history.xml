@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+       android:background="@color/colorAccent"
+        android:ems="7"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:padding="10dp"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:layout_alignBottom="@+id/tvPersons" />
+
+    <TextView
+        android:id="@+id/tvroute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+
+        android:textSize="15sp"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/tvDate" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorAccent"
+        android:layout_alignBottom="@+id/tvroute"
+        android:layout_toEndOf="@id/tvDate"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvroute"
+        android:layout_alignStart="@+id/tvroute"
+        android:text="No. Of Persons"
+        android:paddingLeft="5dp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/textView12" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvroute"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="5dp"
+android:paddingRight="5dp"
+        android:layout_alignEnd="@+id/tvroute"
+        android:text="Charge"
+        android:id="@+id/textView14" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/textView12"
+        android:layout_alignStart="@+id/textView12"
+        android:layout_marginTop="14dp"
+        android:paddingLeft="15dp"
+        android:id="@+id/tvPersons" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6"
+        android:layout_marginRight="15dp"
+        android:id="@+id/tvCharge"
+        android:paddingRight="5dp"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:layout_alignBaseline="@+id/tvPersons"
+        android:layout_alignBottom="@+id/tvPersons"
+        android:layout_alignStart="@+id/textView14" />
+</RelativeLayout>

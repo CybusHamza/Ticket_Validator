@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainScreen extends AppCompatActivity {
@@ -193,7 +191,14 @@ public class MainScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.mybutton) {
+        if (id == R.id.list_btn) {
+            Intent intent = new Intent(this, History.class);
+            startActivity(intent);
+
+
+        }
+        if (id== R.id.logoutBtn){
+
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainScreen.this);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
@@ -202,7 +207,7 @@ public class MainScreen extends AppCompatActivity {
             Intent intent=new Intent(this,Login_Activity.class);
             startActivity(intent);
             finish();
-            // do something here
+
         }
         return super.onOptionsItemSelected(item);
     }

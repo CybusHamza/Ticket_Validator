@@ -22,14 +22,15 @@
         android:layout_marginTop="120dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+
         app:mtf_cardCollapsedHeight="4dp"
         app:mtf_image="@drawable/user"
         android:textAlignment="center"
-
         app:mtf_labelColor="#000"
         app:mtf_openKeyboardOnFocus="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+
         android:padding="10dp"
 
         >
@@ -39,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint=" Email "
-
+            android:background="#89BCEB"
             android:textColor="#000"
 
 
@@ -151,16 +152,5 @@
 
 </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=" Epay     Powered by Cybus Solutions Limited "
-        android:id="@+id/textView9"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#000"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
+
 </RelativeLayout>

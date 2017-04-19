@@ -42,12 +42,13 @@
         android:textStyle="bold"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
+        android:orientation="vertical"
         android:id="@+id/linearLayoutElapsedTime"
         android:layout_below="@+id/route">
     <TextView
@@ -59,14 +60,37 @@
         android:textSize="25sp"
         android:textColor="#808080"
         />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" min"
-android:textStyle="bold"
-            android:textColor="#808080"
-            android:textSize="25sp"/>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="18sp"
+                android:gravity="right"
+                android:text="No. of Persons:    " />
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_weight="0.25"
+                android:inputType="number"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:textColor="#808080" />
+        </LinearLayout>
     </LinearLayout>
 
 <LinearLayout
@@ -203,8 +227,8 @@ android:layout_marginTop="3dp"
         android:textSize="20sp"
         android:textColor="@drawable/colors_for_btn_route_detailed"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/pay"
         android:layout_centerInParent="true"
         android:layout_below="@+id/linearLayout2"

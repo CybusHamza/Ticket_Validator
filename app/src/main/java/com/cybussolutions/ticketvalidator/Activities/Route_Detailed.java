@@ -64,6 +64,9 @@ public class Route_Detailed extends AppCompatActivity {
         fiar = intent.getStringExtra("route_fiar");
         distance = intent.getStringExtra("route_distance");
 
+
+
+
       //  Troute = (TextView) findViewById(R.id.route);
 
 
@@ -105,7 +108,7 @@ public class Route_Detailed extends AppCompatActivity {
                         JSONObject obj = new JSONObject(array.getString(i));
                       //  String fareId=   obj.get("Fare_ID").toString();
                     //    Toast.makeText(getApplicationContext(), farePrice + time+ fareId,Toast.LENGTH_SHORT).show();
-                        tvTime.setText( obj.get("time").toString());
+                        tvTime.setText( obj.get("time").toString() + "  min");
                         tvPrice.setText("$ " +obj.get("Fare_price").toString());
 
                         price = obj.get("Fare_price").toString();
