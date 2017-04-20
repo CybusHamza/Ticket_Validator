@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +32,8 @@ import java.util.Map;
 
 public class History extends AppCompatActivity {
     ListView historyListView;
+    Toolbar toolbar;
+
     CustomHistoryListAdapter adapter;
     private List<HistoryData> HistoryList = new ArrayList<HistoryData>();
 
@@ -39,6 +42,12 @@ public class History extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         historyListView = (ListView) findViewById(R.id.history_list);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar_history);
+        toolbar.setTitle("History");
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
             @Override
@@ -59,7 +68,16 @@ public class History extends AppCompatActivity {
                         hd.setPersonTravelling(jsonObject.get("person_travling").toString());
                         hd.setRoute_destinition(jsonObject.get("rout_destination").toString());
                        // hd.setTime(jsonObject.get("time").toString());
-                        hd.setTime(String.valueOf(jsonObject.get("time")));
+
+                        String dateNtime = String.valueOf(jsonObject.get("route_added_date"));
+                        String date,time;
+
+                        String[] split = dateNtime.split(" ");
+                        date=split[0];
+                        time= split[1];
+                        hd.setTime(time);
+                        hd.setDate(date);
+                      //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
                         hd.setRouteStart(jsonObject.getString("rout_start").toString());
 
 //

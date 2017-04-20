@@ -7,6 +7,17 @@ package com.cybussolutions.ticketvalidator.pojo;
 public class HistoryData {
     public HistoryData(){}
 
+    String date;
+
+//    public String getRoute_added_date() {
+//        return route_added_date;
+//    }
+//
+//    public void setRoute_added_date(String route_added_date) {
+//        this.route_added_date = route_added_date;
+//    }
+
+    String route_added_date;
 
     String Fare_Price;
 

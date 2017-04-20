@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MainScreen"
-    android:background="#ffffff">
+    android:background="@drawable/a">
 
     <include
         android:id="@+id/app_bar"
@@ -63,17 +63,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
 
+
+
+
+
+
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Proceed to Payment"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Proceed"
+
         android:id="@+id/proceed"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:textSize="25sp"
-        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textColor="@drawable/colors_for_btn_route_detailed"
         android:textStyle="bold"
-        android:background="@drawable/round_corner_button"
+        android:background="@drawable/bg_btn_route_detailed"
         android:layout_above="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp" />

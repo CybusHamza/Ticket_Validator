@@ -54,19 +54,28 @@ public class CustomHistoryListAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (view == null)
-            view = inflater.inflate(R.layout.row_history, null);
+            view = inflater.inflate(R.layout.row_history_layout, null);
 
 
         TextView tvCharge = (TextView)view.findViewById(R.id.tvCharge);
-        TextView tvRouteName = (TextView)view.findViewById(R.id.tvroute);
-        TextView tvPersons = (TextView)view.findViewById(R.id.tvPersons);
+        TextView tvDestinition = (TextView)view.findViewById(R.id.tvDestinationPoint);
+        TextView tvStart = (TextView)view.findViewById(R.id.tvStartingPoint);
+        TextView tvPersons = (TextView)view.findViewById(R.id.tvNumberOfPersons);
         TextView tvDate = (TextView)view.findViewById(R.id.tvDate);
+        TextView tvTime = (TextView)view.findViewById(R.id.tvTime);
+        TextView tvCpp = (TextView)view.findViewById(R.id.tvCPPP);
 
         HistoryData historyData = historyDataList.get(i);
-        tvCharge.setText(historyData.getFare_Price());
-        tvRouteName.setText("From " +historyData.getRouteStart()+" to "+ historyData.getRoute_destinition());
+        int totalFare =Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf( historyData.getPersonTravelling());
+
+       tvCharge.setText("$"+String.valueOf(totalFare));
+        tvCpp.setText("$"+historyData.getFare_Price());
+        tvDestinition.setText( historyData.getRoute_destinition());
+         tvStart.setText(historyData.getRouteStart());
         tvPersons.setText(historyData.getPersonTravelling());
         tvDate.setText(historyData.getDate());
+        tvTime.setText(historyData.getTime());
+
 
 
         return view;
