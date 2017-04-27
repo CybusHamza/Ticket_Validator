@@ -93,11 +93,17 @@ public class Payment_Method extends AppCompatActivity {
                 } else if (selectedId == qr.getId()) {
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
-                    String qr_string = preferences.getString("id","")+","+fare;
+                    SharedPreferences.Editor prefEditor = preferences.edit();
+                    prefEditor.putString("payment_method_id","qr");
+                    String p = preferences.getString("id","")+","+fare;
+                    prefEditor.putString("qr_string",p);
+                    prefEditor.apply();
+                  //  String qr_string = preferences.getString("id","")+","+fare;
 
-                    Intent intent1 = new Intent(Payment_Method.this, Qr_Activity.class);
-                    intent1.putExtra("Qr_string",qr_string);
+                    Intent intent1 = new Intent(Payment_Method.this, MainScreen.class);
+                   // intent1.putExtra("Qr_string",qr_string);
                     startActivity(intent1);
+                    //hamza ka code
 
 
                 } else {

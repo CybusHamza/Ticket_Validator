@@ -2,9 +2,11 @@ package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,10 +44,11 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
 
-        Intent intent = getIntent();
-
-
-        Qrsting = intent.getStringExtra("Qr_string");
+       // Intent intent = getIntent();
+        //qr_string
+          SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
+        Qrsting=  preferences.getString("qr_string","");
+       // Qrsting = intent.getStringExtra("Qr_string");
 
     }
 

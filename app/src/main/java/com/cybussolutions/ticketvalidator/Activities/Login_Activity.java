@@ -122,6 +122,7 @@ public class Login_Activity extends AppCompatActivity {
                         editor.putString("l_nmae", l_name);
                         editor.putString("id", id);
                         editor.apply();
+
                         if (rememberMeCheckBox.isChecked()) {
                             checkBoxValue = true;
                             editor.putBoolean("checkBoxRememberMe", checkBoxValue);
@@ -131,7 +132,7 @@ public class Login_Activity extends AppCompatActivity {
                             editor.putBoolean("checkBoxRememberMe", false);
                             editor.apply();
                         }
-                        Intent intent = new Intent(Login_Activity.this,MainScreen.class);
+                        Intent intent = new Intent(Login_Activity.this,Payment_Method.class);
                         startActivity(intent);
                         finish();
                     }

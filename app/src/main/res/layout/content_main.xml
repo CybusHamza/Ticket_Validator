@@ -4,24 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/a"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.cybussolutions.ticketvalidator.Activities.Qr_Activity"
     tools:showIn="@layout/qr_activity">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="bottom"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar">
-
-        </include>
-
+       
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
@@ -29,44 +32,46 @@
             android:layout_gravity="center_horizontal"
             android:text="Press Button to Genrate QR"
             android:layout_margin="20dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
+            android:textSize="15sp"
+             />
+<LinearLayout
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_margin="5dp"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_rounded_qrimage"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_margin="20dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/qr" />
+            android:background="@drawable/qr_img" />
+
+</LinearLayout>
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Generate QR Code"
-            android:textColor="#fff"
+
             android:padding="20dp"
+            android:background="@drawable/bg_btn_route_detailed"
             android:textSize= "20sp"
             android:textStyle="bold"
-            android:background="@drawable/round_corner_button"
+            android:textColor="@drawable/colors_for_btn_route_detailed"
             android:layout_gravity="center_horizontal"
+
             android:layout_marginTop="20dp" />
 
 
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=" Epay     Powered by Cybus Solutions Limited "
-        android:id="@+id/textView11"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
+
 </RelativeLayout>
