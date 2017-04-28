@@ -53,8 +53,8 @@ public class History extends AppCompatActivity {
     Drawer result;
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
-    SecondaryDrawerItem requestCard = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Request Card");
+    SecondaryDrawerItem payment = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
             .withIdentifier(3).withName("Your Trips");
 
@@ -101,7 +101,7 @@ public class History extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, requestCard, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -123,8 +123,8 @@ public class History extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
-                        if (drawerItem== requestCard){
-                            Intent intent=new Intent(getApplicationContext(),RequestCard.class);
+                        if (drawerItem== payment){
+                            Intent intent=new Intent(getApplicationContext(),Payment_Method.class);
                             startActivity(intent);
                             finish();
 

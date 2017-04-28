@@ -3,7 +3,6 @@ package com.cybussolutions.ticketvalidator.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,8 +55,8 @@ public class Route_Detailed extends AppCompatActivity {
     Drawer result;
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
-    SecondaryDrawerItem requestCard = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Request Card");
+    SecondaryDrawerItem payment = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Your Trips");
 
@@ -100,7 +99,7 @@ public class Route_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, requestCard, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -122,8 +121,8 @@ public class Route_Detailed extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
-                        if (drawerItem== requestCard){
-                            Intent intent=new Intent(getApplicationContext(),RequestCard.class);
+                        if (drawerItem== payment){
+                            Intent intent=new Intent(getApplicationContext(),Payment_Method.class);
                             startActivity(intent);
                             finish();
 
