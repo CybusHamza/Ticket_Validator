@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
@@ -181,6 +182,8 @@ public class PaymentMethod_extended extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("payment_method_id","card");
                 editor.apply();
+                Toast.makeText(getApplicationContext(),"Your request for the card is forwarded to our admin. And you will get your card as soon as possible",Toast.LENGTH_LONG).show();
+
 
                 Intent intent = new Intent(getApplicationContext(),Payment_Method.class);
                 startActivity(intent);

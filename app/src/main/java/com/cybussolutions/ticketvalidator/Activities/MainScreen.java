@@ -278,37 +278,37 @@ public class MainScreen extends AppCompatActivity {
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mymenu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.mymenu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.list_btn) {
-            Intent intent = new Intent(this, History.class);
-            startActivity(intent);
-
-
-        }
-        if (id== R.id.logoutBtn){
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainScreen.this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-
-            Intent intent=new Intent(this,Login_Activity.class);
-            startActivity(intent);
-            finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    // handle button activities
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.list_btn) {
+//            Intent intent = new Intent(this, History.class);
+//            startActivity(intent);
+//
+//
+//        }
+//        if (id== R.id.logoutBtn){
+//
+//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainScreen.this);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.clear();
+//            editor.apply();
+//
+//            Intent intent=new Intent(this,Login_Activity.class);
+//            startActivity(intent);
+//            finish();
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public void getData() {
 

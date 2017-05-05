@@ -1,7 +1,10 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +121,8 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         }
         loading = ProgressDialog.show(Signup_activity.this, "Please wait...", "Signing Up...", false, false);
 
+
+
         StringRequest strreq = new StringRequest(Request.Method.POST,
                 End_Points.SIGNUP,
                 new Response.Listener<String>() {
@@ -125,11 +132,36 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
                         if(!(Response.equals("")))
                         {
-                            Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
                             dbManager = new DBManager(Signup_activity.this);
                             dbManager.open();
                             try{
-                                dbManager.insert(Response.toString(),first_name, last_name, email, phone_number);
+                                JSONObject jsonObject = new  JSONObject(Response);
+                                jsonObject.get("userId");
+                                String id = jsonObject.get("userId").toString();
+//
+//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                SharedPreferences.Editor editor = preferences.edit();
+//                             //   editor.putString();
+//                                editor.putString("UserEmail", email);
+//                                // editor.putString("UserPassword",userPassword);
+//                                editor.putString("f_name", first_name);
+//                                editor.putString("l_nmae", last_name);
+//                                editor.putString("id", id);
+//                                editor.putString("sign_in_status","1");
+//                                editor.apply();
+
+
+
+                                Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+                                dbManager.insert(id,first_name, last_name, email, phone_number);
+
+
+                                Intent intent = new Intent(Signup_activity.this,Payment_Method.class);
+                                startActivity(intent);
+                                finish();
+
+
                             }catch (Exception e){
                                 Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
                             }
@@ -138,6 +170,13 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                         }
 
                         else {
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            editor.putString("sign_in_status","0");
+                            editor.apply();
+
+
                             Toast.makeText(Signup_activity.this, "There was an error", Toast.LENGTH_SHORT).show();
                         }
                         // showJSON(Response);

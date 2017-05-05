@@ -158,6 +158,14 @@ public class History extends AppCompatActivity {
 
                 try {
                     JSONArray array = new JSONArray(response);
+                    String s = Integer.toString(array.length());
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("TotalTrips",s);
+                    editor.apply();
+
+
 
                     for (int i=0; i < array.length(); i++) {
 

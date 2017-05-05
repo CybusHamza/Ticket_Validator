@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,9 @@ import java.util.Map;
 public class Route_Detailed extends AppCompatActivity {
 
     Toolbar toolbar;
-    String route ,fiar ,distance;
+    int s;
+    String route ,fiar ,distance,numOfPersons;
+    EditText EtnumberOfPersons;
     TextView tvRoute,Tfiar,tvPrice,tvTime;
     String KEY_FROM= "from";
     String KEY_TO = "to";
@@ -78,6 +81,8 @@ public class Route_Detailed extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Proceed To Payment");
         setSupportActionBar(toolbar);
+        EtnumberOfPersons = (EditText)findViewById(R.id.etNumberOfPersons);
+        numOfPersons = EtnumberOfPersons.getText().toString();
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
@@ -170,21 +175,22 @@ public class Route_Detailed extends AppCompatActivity {
                 String t = null;
                 try{
                     JSONArray array = new JSONArray(response);
-                    for(int i = 0; i< array.length(); i++){
+                    for(int i = 0; i< array.length(); i++) {
 
                         JSONObject obj = new JSONObject(array.getString(i));
                         //  String fareId=   obj.get("Fare_ID").toString();
                         //    Toast.makeText(getApplicationContext(), farePrice + time+ fareId,Toast.LENGTH_SHORT).show();
-                       t = obj.get("time").toString() + "  min";
-
-
+                        t = obj.get("time").toString() + "  min";
 
 
                         price = obj.get("Fare_price").toString();
+//                   int j =     Integer.parseInt(price);
+//                        int f = Integer.parseInt(numOfPersons);
+//                   s  =  Integer.valueOf(price) * Integer.valueOf(numOfPersons);
+//                    }
                     }
-
                     tvTime.setText(t);
-                    tvPrice.setText("$ " + price);
+                    tvPrice.setText("$ " +price);
                 }
                 catch (JSONException e){}
 
@@ -210,8 +216,19 @@ public class Route_Detailed extends AppCompatActivity {
 
 
 
-
-
+//
+//EtnumberOfPersons.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//    @Override
+//    public void onFocusChange(View view, boolean b) {
+//        int f=Integer.parseInt( EtnumberOfPersons.getText().toString());
+//        int z =Integer.parseInt(price);
+//
+//        int m = f*z;
+//        tvPrice.setText(m);
+//
+//
+//    }
+//});
 
 
         proceed = (Button) findViewById(R.id.pay);
@@ -231,6 +248,21 @@ public class Route_Detailed extends AppCompatActivity {
                     startActivity(intent);
                     finish();
 
+                }
+                if (PaymentMethod.matches("")){
+
+
+                    Toast.makeText(getApplicationContext(),"No Payment Method Selected",Toast.LENGTH_LONG).show();
+
+//                    Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
+//                    //intent.putExtra("fair", fiar);
+//                    //  intent.putExtra("price",price);
+//                    startActivity(intent);
+//                    finish();
+
+                }
+                if (PaymentMethod.matches("card")){
+                    Toast.makeText(getApplicationContext(),"Select QR code as payment method to proceed ",Toast.LENGTH_LONG).show();
 
 
                 }

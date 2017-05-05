@@ -54,12 +54,19 @@ public class Profile extends AppCompatActivity {
      //   AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
 
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        preferences.getString();
+
+
         toolbar = (Toolbar) findViewById(R.id.app_bar_profile);
         toolbar.setTitle("Edit Profile");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+
+
+
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)

@@ -6,13 +6,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
 import com.cybussolutions.ticketvalidator.Activities.MainScreen;
 import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
 import com.cybussolutions.ticketvalidator.Activities.Qr_Activity;
+import com.cybussolutions.ticketvalidator.Activities.Signup_activity;
 
 public class Splash extends AppCompatActivity {
-    String Qrsting;
+    String Qrsting,SignInStatus;
         ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class Splash extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Splash.this);
         Qrsting=  preferences.getString("qr_string","");
+       SignInStatus =preferences.getString("sign_in_status","");
 
             Thread CustomThread = new Thread() {
 
@@ -34,14 +38,55 @@ public class Splash extends AppCompatActivity {
                         w.printStackTrace();
 
                     } finally {
-                        if (Qrsting.isEmpty()) {
+//                        if (Qrsting.isEmpty()) {
+//
+//                            Intent intent = new Intent(Splash.this, Payment_Method.class);
+//                            startActivity(intent);
+//                        }
+//                         else {
+//                            Intent intent = new Intent(Splash.this, MainScreen.class);
+//                            startActivity(intent);
+//                        }
+
+                        if (Qrsting.isEmpty()|| SignInStatus == "0") {
+
+                            Intent intent = new Intent(Splash.this, Login_Activity.class);
+                            startActivity(intent);
+                        }
+                        if (!(Qrsting.isEmpty())|| SignInStatus=="1"){
+
                             Intent intent = new Intent(Splash.this, Payment_Method.class);
                             startActivity(intent);
                         }
-                        else {
-                            Intent intent = new Intent(Splash.this, MainScreen.class);
-                            startActivity(intent);
-                        }
+
+
+//
+//                        if ( SignInStatus=="1" && Qrsting.isEmpty()) {
+//
+//                            Intent intent = new Intent(Splash.this, Payment_Method.class);
+//                            startActivity(intent);
+//                        }
+//                        else if (SignInStatus=="0")
+//                         {
+//                            Intent intent = new Intent(Splash.this, Signup_activity.class);
+//                            startActivity(intent);
+//                        }
+//                        else if (!(Qrsting.isEmpty())){
+//                            Intent intent = new Intent(Splash.this, MainScreen.class);
+//                            startActivity(intent);
+//
+//
+//                        }
+//                        else {
+//
+//
+//                            Toast.makeText(getApplicationContext(),"deadlock",Toast.LENGTH_LONG).show();
+//
+//                            Intent intent = new Intent(Splash.this, MainScreen.class);
+//                            startActivity(intent);
+//
+//
+//                        }
                     }
                 }
 

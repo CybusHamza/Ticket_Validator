@@ -3,6 +3,7 @@ package com.cybussolutions.ticketvalidator.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -168,6 +169,18 @@ public class Payment_Method extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
         String p =preferences.getString("payment_method_id","");
         if (p.equals("qr")) {
+
+
+
+            String f = p+","+fare;
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
+            SharedPreferences.Editor prefEditor = pref.edit();
+
+            prefEditor.putString("qr_string",p);
+
+                prefEditor.apply();
+
+
                 hiddeniv.setImageDrawable(getDrawable(R.drawable.icon_qr));
             hiddenTv.setText("QR Code");
             hidden.setAlpha(1);
@@ -177,7 +190,9 @@ public class Payment_Method extends AppCompatActivity {
 
         }
         if (p.equals("card")){
-            hiddeniv.setImageDrawable(getDrawable(R.drawable.qr_card_icon));
+          //  hiddeniv.setImageBitmap(getDrawable(R.drawable.qr_card_icon));
+            Drawable d = getDrawable(R.drawable.qr_card_icon);
+            hiddeniv.setImageDrawable(d);
             hiddenTv.setText("QR Card");
             hidden.setAlpha(1);
 
@@ -206,7 +221,7 @@ public class Payment_Method extends AppCompatActivity {
 //        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
       //  sms = (LinearLayout) findViewById(R.id.radioButton);
       //  card = (LinearLayout) findViewById(R.id.radioButton2);
-        qr = (LinearLayout) findViewById(R.id.radioButton3);
+       // qr = (LinearLayout) findViewById(R.id.radioButton3);
         tvSelectPaymentMethod = (TextView)findViewById(R.id.tvSelectPaymentMethod);
 
 
