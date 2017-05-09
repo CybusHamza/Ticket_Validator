@@ -50,6 +50,8 @@ import java.util.Map;
 public class MainScreen extends AppCompatActivity {
 
 
+    private DBManager dbManager;
+
     Toolbar toolbar;
     ArrayList<String> from_routes = new ArrayList<>();
     ArrayList<String> to_routes ;
@@ -74,13 +76,26 @@ public class MainScreen extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
-
+    ArrayList<String> stringArrayList,stringArrayList1;
+    String route_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        stringArrayList=new ArrayList<String>();
+        stringArrayList1=new ArrayList<String>();
+
+        dbManager = new DBManager(MainScreen.this);
+        dbManager.open();
+
+        stringArrayList=dbManager.fetch_route_start();
+
+
+
+//        for (int i=2;i<stringArrayList.size()/3;i=i+2)
+//        to_routes.add(stringArrayList.get(i));
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -165,17 +180,29 @@ public class MainScreen extends AppCompatActivity {
         to = (Spinner) findViewById(R.id.to_spinner);
         procedd = (Button) findViewById(R.id.proceed);
 
-        getData();
+       // getData();
+
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList);
+
+        dataAdapter.setDropDownViewResource
+                (android.R.layout.simple_spinner_dropdown_item);
+
+        from.setAdapter(dataAdapter);
 
 
         from.setOnItemSelectedListener(new CustomOnItemSelectedListener_from());
 
 
+
         procedd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                route_id=dbManager.fetch_route_id(from.getSelectedItem().toString(),to.getSelectedItem().toString());
                 Intent  intent=new Intent(MainScreen.this,Route_Detailed.class);
+                intent.putExtra("route_id",route_id.toString());
                 intent.putExtra("from",from.getSelectedItem().toString());
                 intent.putExtra("to",to.getSelectedItem().toString());
                 startActivity(intent);
@@ -192,9 +219,18 @@ public class MainScreen extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent, View view, final int pos,
                                    long id) {
 
-            fromLocation = from_routes.get(pos);
+            fromLocation = stringArrayList.get(pos);
+            stringArrayList1=dbManager.fetch_route_table(fromLocation);
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>
+                    (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList1);
 
-            getRoutes();
+            dataAdapter1.setDropDownViewResource
+                    (android.R.layout.simple_spinner_dropdown_item);
+
+            to.setAdapter(dataAdapter1);
+
+
+          //  getRoutes();
 
 
         }
@@ -229,18 +265,18 @@ public class MainScreen extends AppCompatActivity {
 
                         if(!(to_routes.contains(object.getString("rout_destination"))))
                         {
-                            to_routes.add(object.getString("rout_destination"));
+//                            to_routes.add(object.getString("rout_destination"));
 
                         }
                     }
 
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                    /*ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
                             (MainScreen.this, android.R.layout.simple_spinner_item,to_routes);
 
                     dataAdapter.setDropDownViewResource
                             (android.R.layout.simple_spinner_dropdown_item);
 
-                    to.setAdapter(dataAdapter);
+                    to.setAdapter(dataAdapter);*/
 
 
                 } catch (JSONException e) {
@@ -329,20 +365,20 @@ public class MainScreen extends AppCompatActivity {
 
                         if(!(from_routes.contains(object.getString("rout_start"))))
                         {
-                            from_routes.add(object.getString("rout_start"));
+                           // from_routes.add(object.getString("rout_start"));
 
                         }
 
                     }
 
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                   /* ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
                             (MainScreen.this, android.R.layout.simple_spinner_item,from_routes);
 
                     dataAdapter.setDropDownViewResource
                             (android.R.layout.simple_spinner_dropdown_item);
 
                     from.setAdapter(dataAdapter);
-
+*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();

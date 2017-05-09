@@ -108,9 +108,9 @@ public class Login_Activity extends AppCompatActivity {
                     JSONArray jsonResponse = new JSONArray(response);
                     for (int i = 0; i <= jsonResponse.length(); i++) {
                         JSONObject jsonObject = new JSONObject(jsonResponse.getString(i));
-                        String f_name = jsonObject.get("first_name").toString();
-                        String l_name = jsonObject.get("last_name").toString();
-                        String id = jsonObject.get("id").toString();
+                        String f_name = jsonObject.get("fname").toString();
+                        String l_name = jsonObject.get("lname").toString();
+                        String id = jsonObject.get("customer_id").toString();
 
                         Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
 
@@ -132,7 +132,7 @@ public class Login_Activity extends AppCompatActivity {
                             editor.putBoolean("checkBoxRememberMe", false);
                             editor.apply();
                         }
-                        Intent intent = new Intent(Login_Activity.this,Payment_Method.class);
+                        Intent intent = new Intent(Login_Activity.this,Dashboard.class);
                         startActivity(intent);
                         finish();
                     }

@@ -123,7 +123,7 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/icons_user_editprofiles" />
+                    android:src="@drawable/bg_email_editprofile" />
 
                 <TextView
                     android:id="@+id/nameTV"
@@ -148,7 +148,7 @@
                     android:id="@+id/ivContactItem1"
                     android:layout_width="40dp"
                     android:layout_height="30dp"  android:layout_centerVertical="true"
-                    android:src="@drawable/bg_call_editprofile" />
+                    android:src="@drawable/bg_email_editprofile" />
 
                 <TextView
                     android:id="@+id/numbertv"
@@ -211,7 +211,7 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/address_edit_profile" />
+                    android:src="@drawable/bg_email_editprofile" />
 
                 <TextView
                     android:id="@+id/adresstv"

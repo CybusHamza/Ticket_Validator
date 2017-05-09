@@ -168,7 +168,7 @@ android:layout_marginTop="3dp"
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$456"
+            android:text="$0"
             android:id="@+id/tvTariffAmount"
             android:layout_weight="0.5"
             android:gravity="center"

@@ -79,8 +79,6 @@ public class History extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
 
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
 

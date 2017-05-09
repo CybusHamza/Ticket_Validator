@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,10 +40,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Route_Detailed extends AppCompatActivity {
+
+    String rates;
 
     Toolbar toolbar;
     int s;
@@ -50,7 +55,7 @@ public class Route_Detailed extends AppCompatActivity {
     TextView tvRoute,Tfiar,tvPrice,tvTime;
     String KEY_FROM= "from";
     String KEY_TO = "to";
-    String to,from , price;
+    String to,from , price,route_id;
    // TextView Tdistance;
     Button proceed;
     ProgressBar progressBar;
@@ -69,7 +74,10 @@ public class Route_Detailed extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
-
+    private DBManager dbManager;
+     String customer_id,customer_total_balance;
+    TextView tvTarrif;
+    TextView tvBalance;
 
 
     @Override
@@ -77,11 +85,44 @@ public class Route_Detailed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_detailed);
        // setContentView(R.layout.activity_route_detailed);
+        dbManager = new DBManager(Route_Detailed.this);
+        dbManager.open();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
+
+        customer_id=preferences.getString("id",null);
+        customer_total_balance=dbManager.fetch_customer_balance(customer_id);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Proceed To Payment");
         setSupportActionBar(toolbar);
         EtnumberOfPersons = (EditText)findViewById(R.id.etNumberOfPersons);
+        EtnumberOfPersons.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(rates!=null) {
+                    numOfPersons = EtnumberOfPersons.getText().toString();
+                    if(charSequence.length()<1)
+                        numOfPersons="1";
+                    int result = Integer.valueOf(numOfPersons) * Integer.valueOf(rates);
+                    tvTarrif.setText(String.valueOf(result));
+                }else {
+                    tvPrice.setText("No rates defined");
+                    Toast.makeText(getApplicationContext(),"No rates defined for this route",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+            }
+        });
         numOfPersons = EtnumberOfPersons.getText().toString();
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -155,8 +196,12 @@ public class Route_Detailed extends AppCompatActivity {
         tvRoute = (TextView)findViewById(R.id.tvRoute);
         tvPrice = (TextView)findViewById(R.id.tvPrice);
         tvTime = (TextView)findViewById(R.id.tvTime);
+        tvTarrif=(TextView) findViewById(R.id.tvTariffAmount);
+        tvBalance= (TextView) findViewById(R.id.tvBalanceAmount);
+        tvBalance.setText(customer_total_balance);
      //   getData();
         Intent intent= getIntent();
+        route_id=intent.getStringExtra("route_id");
         to = intent.getStringExtra("to");
         from = intent.getStringExtra("from");
         tvRoute.setText("From " +from + " To " + to );
@@ -164,7 +209,17 @@ public class Route_Detailed extends AppCompatActivity {
         fiar = intent.getStringExtra("route_fiar");
         distance = intent.getStringExtra("route_distance");
 
-        final ProgressDialog progressDialog = ProgressDialog.show(Route_Detailed.this, "Please wait...", "Checking Credentails ...", false, false);
+        rates=dbManager.fetch_fare(route_id);
+        if(rates==null){
+            tvPrice.setText("no rates defined");
+            Toast.makeText(getApplicationContext(),"no rates defined",Toast.LENGTH_LONG).show();
+        }else {
+            tvPrice.setText(rates.toString());
+            tvTarrif.setText(rates.toString());
+        }
+
+
+        /*final ProgressDialog progressDialog = ProgressDialog.show(Route_Detailed.this, "Please wait...", "Checking Credentails ...", false, false);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, End_Points.GETROUTES_RATES, new Response.Listener<String>() {
 
@@ -212,7 +267,7 @@ public class Route_Detailed extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
-
+*/
 
 
 
@@ -239,15 +294,24 @@ public class Route_Detailed extends AppCompatActivity {
             public void onClick(View view) {
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
-                String PaymentMethod =preferences.getString("payment_method_id","");
+                String PaymentMethod =preferences.getString("payment_method_id","qr");
                 if (PaymentMethod.matches("qr")){
-
-                    Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
-                    //intent.putExtra("fair", fiar);
-                  //  intent.putExtra("price",price);
-                    startActivity(intent);
-                    finish();
-
+                    String test=tvTarrif.getText().toString();
+                    int fare=Integer.valueOf(test);
+                    //String balancecheck=customer_total_balance;
+                    int balancecheck=Integer.valueOf(customer_total_balance);
+                    int remainingbalance=balancecheck-fare;
+                    if (fare<=balancecheck) {
+                        Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
+                        intent.putExtra("route_id", route_id);
+                        intent.putExtra("user_id",customer_id);
+                        intent.putExtra("person_traveling",EtnumberOfPersons.getText().toString());
+                        intent.putExtra("remaining_balance",String.valueOf(remainingbalance));
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"your balance is not enough to proceed",Toast.LENGTH_LONG).show();
+                    }
                 }
                 if (PaymentMethod.matches("")){
 
