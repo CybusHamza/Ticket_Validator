@@ -31,13 +31,9 @@ public class Splash extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Splash.this);
         Qrsting=  preferences.getString("qr_string","");
-       SignInStatus =preferences.getString("sign_in_status","");
-
-
-
+        SignInStatus =preferences.getString("sign_in_status","");
 
             Thread CustomThread = new Thread() {
-
 
                 public void run() {
 
