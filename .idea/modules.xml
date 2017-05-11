@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Ticket_Validator.iml" filepath="$PROJECT_DIR$/Ticket_Validator.iml" />
       <module fileurl="file://$PROJECT_DIR$/Ticket_Validator_Github.iml" filepath="$PROJECT_DIR$/Ticket_Validator_Github.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ticket_Validator_git.iml" filepath="$PROJECT_DIR$/Ticket_Validator_git.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

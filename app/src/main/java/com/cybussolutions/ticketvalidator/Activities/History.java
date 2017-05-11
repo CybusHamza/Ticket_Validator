@@ -133,7 +133,7 @@ public class History extends AppCompatActivity {
                             finish();
                         }
                         if (drawerItem==home){
-                            Intent intent=new Intent(getApplicationContext(),MainScreen.class);
+                            Intent intent=new Intent(getApplicationContext(),Dashboard.class);
                             startActivity(intent);
                             finish();
 

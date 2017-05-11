@@ -179,7 +179,7 @@ public class Route_Detailed extends AppCompatActivity {
                             finish();
                         }
                         if (drawerItem==home){
-                            Intent intent=new Intent(getApplicationContext(),MainScreen.class);
+                            Intent intent=new Intent(getApplicationContext(),Dashboard.class);
                             startActivity(intent);
                             finish();
 
@@ -302,6 +302,19 @@ public class Route_Detailed extends AppCompatActivity {
                     int balancecheck=Integer.valueOf(customer_total_balance);
                     int remainingbalance=balancecheck-fare;
                     if (fare<=balancecheck) {
+
+
+
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
+                        SharedPreferences.Editor prefEditor = pref.edit();
+                        String id = pref.getString("id","");
+                        String f = id+","+fare;
+
+                        prefEditor.putString("qr_string",f);
+
+                        prefEditor.apply();
+
+
                         Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
                         intent.putExtra("route_id", route_id);
                         intent.putExtra("user_id",customer_id);

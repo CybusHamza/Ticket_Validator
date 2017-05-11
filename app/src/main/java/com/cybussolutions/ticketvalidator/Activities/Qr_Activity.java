@@ -55,7 +55,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
        // Intent intent = getIntent();
         //qr_string
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
-        Qrsting=  preferences.getString("qr_string","");
+          Qrsting=  preferences.getString("qr_string","");
        // Qrsting = intent.getStringExtra("Qr_string");
 
     }
