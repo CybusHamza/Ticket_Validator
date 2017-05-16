@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,9 @@ public class Login_Activity extends AppCompatActivity {
     TextView tvSignUp;
     Boolean checkBoxValue;
     private ProgressDialog loading;
+    private DBManager dbManager;
+
+    ArrayList<String> stringArrayLogin=new ArrayList<String>();
 
 
     @Override
@@ -155,8 +159,18 @@ public class Login_Activity extends AppCompatActivity {
             loading.dismiss();
             String message = null;
             if (error instanceof NetworkError) {
+                dbManager = new DBManager(Login_Activity.this);
+                dbManager.open();
                 message = "Cannot connect to Internet...Please check your connection!";
+                String id=dbManager.login(userEmail,userPassword);
+                if(!id.equals("0")){
+                    Intent intent = new Intent(Login_Activity.this,Dashboard.class);
+                    startActivity(intent);
+                    finish();
+                }
+//              dbManager.insert("3","rizwan", "jillani","demo456","03134969548","1","rizwan@gmail.com","1");
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
             }
         }
 

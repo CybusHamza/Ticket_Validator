@@ -42,6 +42,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
+    String gender;
 
     private ProgressDialog loading;
 
@@ -91,15 +92,21 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         final String first_name = inputFirstName.getText().toString().trim();
         final String last_name = inputLastName.getText().toString().trim();
         final String email = inputEmail.getText().toString().trim();
-        String password = inputPassword.getText().toString().trim();
+        final String password = inputPassword.getText().toString().trim();
         String re_enter_password = inputReenterPassword.getText().toString().trim();
         final String phone_number = inputPhoneNumber.getText().toString().trim();
+
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
 
         // find the radiobutton by returned id
         radioSexButton = (RadioButton) findViewById(selectedId);
+        if(radioSexButton.getText().toString().equals("Male")){
+            gender="1";
+        }else {
+            gender="0";
+        }
         //String password = editTextPass.getText().toString().trim();
         if (inputFirstName.getText().toString().trim().equals("") || inputLastName.getText().toString().trim().equals("") || inputEmail.getText().toString().trim().equals("") || inputPassword.getText().toString().trim().equals("") || inputReenterPassword.getText().toString().trim().equals("") || inputPhoneNumber.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Please Fill all the fields", Toast.LENGTH_LONG).show();
@@ -154,7 +161,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
 
                                 Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
-                                dbManager.insert(id,first_name, last_name, email, phone_number);
+                                dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
 
 
                                 Intent intent = new Intent(Signup_activity.this,Payment_Method.class);
@@ -203,8 +210,9 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 params.put("last_name", inputLastName.getText().toString().trim());
                 params.put("email", inputEmail.getText().toString().trim());
                 params.put("password", inputPassword.getText().toString().trim());
-                params.put("phone_number", inputLastName.getText().toString().trim());
-                params.put("gender", radioSexButton.getText().toString());
+                params.put("phone_number", inputPhoneNumber.getText().toString().trim());
+                params.put("gender",gender);
+                params.put("cardtype","1");
                 return params;
             }
         };

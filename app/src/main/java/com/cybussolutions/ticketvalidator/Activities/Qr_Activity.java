@@ -120,7 +120,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                         }
                         dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
-                       // dbManager.insert_into_history_travel("",route_id,user_id,number_of_persons,s,"0000-00-00");
+                        dbManager.insert_into_history_travel(route_id,user_id,number_of_persons,s,"0000-00-00");
                         dbManager.update_customer_balance(user_id,remaining_balance);
                     }
                 });

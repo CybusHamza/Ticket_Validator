@@ -17,11 +17,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String HISTORY_TRAVEL = "HISTORY_TRAVEL";
 
     // Table columns SIGNUP.
-    public static final String _ID = "_id";
+    public static final String _ID = "customer_id";
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
     public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
     public static final String PHONE_NUMBER = "phone_number";
+    public static final String GENDER = "gender";
+    public static final String CARDTYPE = "cardtype";
 
     // TABLE COLUMNS ROUTES//
     public static final String ID = "id";
@@ -65,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Creating table query
     private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
-            + " INTEGER PRIMARY KEY, " + FIRST_NAME + " TEXT, " + LAST_NAME + " TEXT," + EMAIL + " TEXT," + PHONE_NUMBER + " TEXT);";
+            + " INTEGER PRIMARY KEY, " + FIRST_NAME + " TEXT, " + LAST_NAME + " TEXT," + PASSWORD + " TEXT," + PHONE_NUMBER + " TEXT," +GENDER + " TEXT,"+ EMAIL + " TEXT,"+ CARDTYPE + " TEXT);";
 
     private static final String CREATE_TABLE_ROUTES = "create table " + ROUTES + "(" + ID
             + " INTEGER PRIMARY KEY, " + ROUTE_CODE + " TEXT, " + ROUTE_NAME + " TEXT," + ROUTE_START + " TEXT," + ROUTE_DESTINATION + " TEXT,"+ ROUTE_ADDED_DATE + " TEXT," + TIME + " TEXT," + ROUTE_ADDED_BY + " TEXT," + ROUTE_UPDATED_DATE + " TEXT," + ROUTE_UPDATED_BY + " TEXT);";
@@ -79,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_TABLE_HISTORY_TRAVEL = "create table " + HISTORY_TRAVEL + "(" + H_ID
-            + " INTEGER PRIMARY KEY, " + H_ROUTE_ID + " TEXT, " + H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_ROUTE_ID + " TEXT, " + H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
 
 
     public DatabaseHelper(Context context) {

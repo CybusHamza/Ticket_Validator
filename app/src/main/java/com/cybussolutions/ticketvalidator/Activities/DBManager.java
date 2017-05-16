@@ -33,13 +33,16 @@ public class DBManager {
         dbHelper.close();
     }
 
-    public void insert(String id,String first_name, String last_name,String email,String phone_number) {
+    public void insert(String id,String first_name, String last_name,String password,String phone_number,String gender,String email,String cardType) {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper._ID,id);
         contentValue.put(DatabaseHelper.FIRST_NAME, first_name);
         contentValue.put(DatabaseHelper.LAST_NAME, last_name);
-        contentValue.put(DatabaseHelper.EMAIL, email);
+        contentValue.put(DatabaseHelper.PASSWORD,password);
         contentValue.put(DatabaseHelper.PHONE_NUMBER, phone_number);
+        contentValue.put(DatabaseHelper.GENDER,gender);
+        contentValue.put(DatabaseHelper.EMAIL, email);
+        contentValue.put(DatabaseHelper.CARDTYPE,cardType);
         long result = database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
 
     }
@@ -82,10 +85,10 @@ public class DBManager {
         contentValue.put(DatabaseHelper.C_CUSTOMER_BALANCE, c_customer_balance);
         long result = database.insert(DatabaseHelper.CUSTOMER_ACCOUNTS, null, contentValue);
     }
-    public void insert_into_history_travel(String h_id,String h_route_id,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
+    public void insert_into_history_travel(String h_route_id,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
         ContentValues contentValue = new ContentValues();
 
-        contentValue.put(DatabaseHelper.H_ID, h_id);
+       // contentValue.put(DatabaseHelper.H_ID, h_id);
         contentValue.put(DatabaseHelper.H_ROUTE_ID, h_route_id);
         contentValue.put(DatabaseHelper.H_USER_ID, h_user_id);
         contentValue.put(DatabaseHelper.H_PERSON_TRAVELING, h_person_traveling);
@@ -106,6 +109,27 @@ public class DBManager {
             daata[0]=cursor.getString(0);
         }
         return daata;
+    }
+    public String login(String userEmail,String userPassword) {
+
+        String[] args={userEmail,userPassword};
+       // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
+        Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = ? and password = ?", args);
+       // String[] daata = new String[cursor.getCount()];
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        String id=null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                id=cursor.getString(0);
+//                stringArrayList.add(cursor.getString(0));
+//                stringArrayList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        if(id==null)
+            return "0";
+        else
+        return id;
     }
 
     public ArrayList<String> fetch_route_table(String route_start) {
