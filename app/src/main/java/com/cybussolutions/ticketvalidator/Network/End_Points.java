@@ -14,5 +14,6 @@ public class End_Points {
     public static String GETTRAVEL_HISTORY = BASE_URL + "getTravelHistory";
     public static String GET_FARE_TABLE_DATA = BASE_URL + "getFareTable";
     public static String GET_LIVE_DATA=BASE_URL+"syncLocalDataBase";
+    public static String POST_IMAGE = BASE_URL+ "upload_image_mobile";
 
     }

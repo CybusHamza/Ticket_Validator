@@ -103,7 +103,7 @@ BALANCE"
             android:gravity="center|bottom"
             android:orientation="vertical" >
             <Button
-                android:layout_width="180dp"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/recharge_button"
                 android:textSize="20sp"
@@ -114,7 +114,7 @@ BALANCE"
                 android:id="@+id/pay"
                 />
             <Button
-                android:layout_width="180dp"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/start_trip"
                 android:textSize="20sp"
