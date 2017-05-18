@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/a"
+    android:background="#fff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.cybussolutions.ticketvalidator.Activities.Qr_Activity"
     tools:showIn="@layout/qr_activity">
@@ -29,6 +29,7 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/accent"
             android:layout_gravity="center_horizontal"
             android:text="Press Button to Genrate QR"
             android:layout_margin="20dp"
@@ -64,7 +65,7 @@
             android:background="@drawable/bg_btn_route_detailed"
             android:textSize= "20sp"
             android:textStyle="bold"
-            android:textColor="@drawable/colors_for_btn_route_detailed"
+            android:textColor="#fff"
             android:layout_gravity="center_horizontal"
 
             android:layout_marginTop="20dp" />

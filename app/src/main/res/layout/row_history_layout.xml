@@ -2,44 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="145dp"
+
     >
     <LinearLayout
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="137dp"
-        android:background="@color/colorAccent"
-        android:gravity="bottom"
+        android:background="@drawable/bg_histroy_row_left"
+
+android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:paddingBottom="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:text="Total:"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textColor="#fff"/>
+        <!--<TextView-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="wrap_content"-->
+
+            <!--android:text="Total:"-->
+            <!--android:textSize="12sp"-->
+            <!--android:gravity="left"-->
+            <!--android:textColor="#fff"/>-->
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+
             android:text="$350"
             android:textSize="25sp"
-            android:gravity="center"
+            android:gravity="left"
             android:textStyle="bold"
-            android:layout_marginBottom="40dp"
-
+android:layout_marginTop="10dp"
             android:id="@+id/tvCharge"
             android:textColor="#fff"/>
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+
             android:text="Date"
             android:textSize="12sp"
-            android:gravity="center"
+            android:gravity="left"
 
             android:id="@+id/tvTime"
             android:textColor="#fff"/>
@@ -47,10 +49,10 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+
             android:text="Date"
             android:textSize="12sp"
-            android:gravity="center"
+            android:gravity="left"
             android:id="@+id/tvDate"
             android:textColor="#fff"/>
 
@@ -58,19 +60,21 @@
 
 
     </LinearLayout>
-   <ImageView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/bg_list_history"
-       android:paddingTop="15dp"
-       android:paddingLeft="5dp"
+   <!--<ImageView-->
+       <!--android:layout_width="wrap_content"-->
+       <!--android:layout_height="wrap_content"-->
+       <!--android:src="@drawable/bg_list_history"-->
+       <!--android:paddingTop="15dp"-->
+       <!--android:paddingLeft="5dp"-->
 
-       android:paddingRight="5dp"
-       />
+       <!--android:paddingRight="5dp"-->
+       <!--/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1"
+        android:layout_gravity="center_vertical"
+       android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -83,15 +87,15 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
 android:layout_marginTop="7dp"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold" />
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="#C0C0C0"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"/>
+<!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#C0C0C0"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_marginRight="5dp"/>-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +105,7 @@ android:layout_marginTop="7dp"
             android:layout_marginRight="10dp"
             android:id="@+id/tvDestinationPoint"
             android:text="cheeechaaa watniii"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold" />
 

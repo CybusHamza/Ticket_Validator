@@ -185,7 +185,7 @@ public class PaymentMethod_extended extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Your request for the card is forwarded to our admin. And you will get your card as soon as possible",Toast.LENGTH_LONG).show();
 
 
-                Intent intent = new Intent(getApplicationContext(),Payment_Method.class);
+                Intent intent = new Intent(getApplicationContext(),Dashboard.class);
                 startActivity(intent);
                 finish();
 

@@ -107,7 +107,8 @@ public class MainScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
+
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
@@ -185,12 +186,18 @@ public class MainScreen extends AppCompatActivity {
 
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-                (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList);
+                (MainScreen.this, R.layout.spinner_item,stringArrayList);
+
+
+
+
+        //               (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList);
 
         dataAdapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
 
         from.setAdapter(dataAdapter);
+
 
 
         from.setOnItemSelectedListener(new CustomOnItemSelectedListener_from());
@@ -222,7 +229,7 @@ public class MainScreen extends AppCompatActivity {
             fromLocation = stringArrayList.get(pos);
             stringArrayList1=dbManager.fetch_route_table(fromLocation);
             ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>
-                    (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList1);
+                    (MainScreen.this, R.layout.spinner_item,stringArrayList1);
 
             dataAdapter1.setDropDownViewResource
                     (android.R.layout.simple_spinner_dropdown_item);

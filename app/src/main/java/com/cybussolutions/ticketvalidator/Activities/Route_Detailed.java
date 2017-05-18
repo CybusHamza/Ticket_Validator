@@ -193,7 +193,7 @@ public class Route_Detailed extends AppCompatActivity {
 
 
 
-        tvRoute = (TextView)findViewById(R.id.tvRoute);
+        //tvRoute = (TextView)findViewById(R.id.tvRoute);
         tvPrice = (TextView)findViewById(R.id.tvPrice);
         tvTime = (TextView)findViewById(R.id.tvTime);
         tvTarrif=(TextView) findViewById(R.id.tvTariffAmount);
@@ -204,7 +204,7 @@ public class Route_Detailed extends AppCompatActivity {
         route_id=intent.getStringExtra("route_id");
         to = intent.getStringExtra("to");
         from = intent.getStringExtra("from");
-        tvRoute.setText("From " +from + " To " + to );
+      //  tvRoute.setText("From " +from + " To " + to );
 
         fiar = intent.getStringExtra("route_fiar");
         distance = intent.getStringExtra("route_distance");

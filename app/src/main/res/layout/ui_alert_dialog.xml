@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="400dp"
+    android:layout_margin="10dp"
+    android:layout_gravity="center"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textColor="#006"
+        android:text="Choose picture from"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+
+<Button
+    android:layout_width="wrap_content"
+    android:padding="10dp"
+
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/gallery_btn"
+    android:background="@drawable/icon_gallery"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/camera_btn"
+
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/camera_icon"/>
+
+</LinearLayout>
+
+</LinearLayout>
