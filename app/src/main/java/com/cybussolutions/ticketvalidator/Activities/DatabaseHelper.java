@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ROUTE_UPDATED_DATE = "route_updated_date";
     public static final String ROUTE_UPDATED_BY = "route_updated_by";
 
-    // TABLE COLUMNS ROUTES//
+    // TABLE COLUMNS //
     public static final String FARE_ID = "Fare_ID";
     public static final String FARE_ROUTE = "Fare_route";
     public static final String FARE_PRICE = "Fare_price";
@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATE_ADDED = "date_added";
     public static final String DATE_UPDATED = "date_updated";
 
-    // TABLE COLUMNS ROUTES//
+    // TABLE COLUMNS //
     public static final String C_ID = "id";
     public static final String C_CUSTOMER_ID = "customer_id";
     public static final String C_CUSTOMER_BALANCE = "customer_balance";

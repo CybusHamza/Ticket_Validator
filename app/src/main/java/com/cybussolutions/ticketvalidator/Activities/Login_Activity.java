@@ -87,7 +87,7 @@ public class Login_Activity extends AppCompatActivity {
                 userEmail = etEmail.getText().toString();
                 userPassword = etPassword.getText().toString();
                 if (userEmail.length() ==0 || userPassword.length()==0){
-                    Toast.makeText(getApplicationContext(),"Invalid Email or password",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Plz enter email and password",Toast.LENGTH_SHORT).show();
                 }
                 else {
 
@@ -163,13 +163,29 @@ public class Login_Activity extends AppCompatActivity {
                 dbManager.open();
                 message = "Cannot connect to Internet...Please check your connection!";
                 String id=dbManager.login(userEmail,userPassword);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("UserEmail", userEmail);
+                editor.putString("id", id);
+                editor.apply();
+                if (rememberMeCheckBox.isChecked()) {
+                    checkBoxValue = true;
+                    editor.putBoolean("checkBoxRememberMe", checkBoxValue);
+                    // editor.putString("checkBoxRememberMe",checkBoxValue.toString());
+                    editor.apply();
+                } else {
+                    editor.putBoolean("checkBoxRememberMe", false);
+                    editor.apply();
+                }
                 if(!id.equals("0")){
                     Intent intent = new Intent(Login_Activity.this,Dashboard.class);
                     startActivity(intent);
                     finish();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                 }
-//              dbManager.insert("3","rizwan", "jillani","demo456","03134969548","1","rizwan@gmail.com","1");
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+               // dbManager.insert("3","rizwan", "jillani","demo456","03134969548","1","rizwan@gmail.com","1");
+                //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
             }
         }

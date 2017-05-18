@@ -207,12 +207,16 @@ public class MainScreen extends AppCompatActivity {
         procedd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                route_id=dbManager.fetch_route_id(from.getSelectedItem().toString(),to.getSelectedItem().toString());
-                Intent  intent=new Intent(MainScreen.this,Route_Detailed.class);
-                intent.putExtra("route_id",route_id.toString());
-                intent.putExtra("from",from.getSelectedItem().toString());
-                intent.putExtra("to",to.getSelectedItem().toString());
-                startActivity(intent);
+                if(!from.getSelectedItem().toString().equals("")|| !to.getSelectedItem().toString().equals("")) {
+                    route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
+                    Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
+                    intent.putExtra("route_id", route_id.toString());
+                    intent.putExtra("from", from.getSelectedItem().toString());
+                    intent.putExtra("to", to.getSelectedItem().toString());
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(),"Plz select your destination to proceed",Toast.LENGTH_LONG).show();
+                }
 
             }
         });

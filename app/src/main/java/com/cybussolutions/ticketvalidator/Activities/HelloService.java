@@ -52,6 +52,10 @@ public class HelloService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Let it continue running until it is stopped.
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(HelloService.this);
+
+        customer_id=preferences.getString("id",null);
+
         getLiveData();
         /*getData();
         getFareTableData();*/
@@ -68,9 +72,7 @@ public class HelloService extends Service {
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
     }
     public void getLiveData() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(HelloService.this);
 
-        customer_id=preferences.getString("id",null);
         dbManager = new DBManager(HelloService.this);
         dbManager.open();
 

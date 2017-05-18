@@ -163,8 +163,13 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                                 Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
                                 dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
 
-
-                                Intent intent = new Intent(Signup_activity.this,Payment_Method.class);
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
+                                SharedPreferences.Editor editor = preferences.edit();
+                               // editor.putString("UserEmail", userEmail);
+                                editor.putString("id", id);
+                                editor.commit();
+                                startService(new Intent(Signup_activity.this, HelloService.class));
+                                Intent intent = new Intent(Signup_activity.this,Login_Activity.class);
                                 startActivity(intent);
                                 finish();
 

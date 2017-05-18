@@ -63,7 +63,7 @@ public class Dashboard extends AppCompatActivity {
         if(isNetworkAvailable()) {
             startService(new Intent(this, HelloService.class));
         }else {
-            Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

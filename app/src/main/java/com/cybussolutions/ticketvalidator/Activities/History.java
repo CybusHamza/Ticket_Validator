@@ -64,9 +64,12 @@ public class History extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(5).withName("Logout");
-
-
-
+    private DBManager dbManager;
+    ArrayList<String> stringArrayList=new ArrayList<String>();
+    ArrayList<String> stringArrayList1=new ArrayList<String>();
+    ArrayList<String> stringArrayList2=new ArrayList<String>();
+    ArrayList<String> stringArrayList3=new ArrayList<String>();
+    ArrayList<String> stringArrayList4=new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +148,10 @@ public class History extends AppCompatActivity {
 
                 }).build();
 
-
+        final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
-            ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
+
             @Override
             public void onResponse(String response) {
             loading.dismiss();
@@ -212,31 +215,55 @@ public class History extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //  loading.dismiss();
+                        dbManager = new DBManager(History.this);
+                        dbManager.open();
+                        loading.dismiss();
                         String message = null;
                         if (error instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please check your connection!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                            HistoryData hd = new HistoryData();
+
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
+                            String userid = preferences.getString("id","");
+                            stringArrayList=dbManager.fetch_history_table(userid);
+                            stringArrayList1=dbManager.fetch_history_table_date(userid);
+                            stringArrayList2=dbManager.h_fetch_route_table_start(userid);
+                            stringArrayList3=dbManager.h_fetch_route_table_dest(userid);
+                            stringArrayList4=dbManager.h_fetch_route_fare_price(userid);
+                            for (int i=0;i<stringArrayList4.size();i++){
+                                hd.setPersonTravelling(stringArrayList.get(i));
+                                hd.setDate(stringArrayList1.get(i));
+                                hd.setFare_Price(stringArrayList4.get(i));
+                                hd.setRoute_destinition(stringArrayList3.get(i));
+                                // hd.setTime(jsonObject.get("time").toString());
+
+                               /* String dateNtime = String.valueOf("");
+                                String date,time;
+
+                                String[] split = dateNtime.split(" ");
+                                date=split[0];
+                                time= split[1];*/
+                                hd.setTime("");
+                                //hd.setDate("");
+                                //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
+                                hd.setRouteStart(stringArrayList2.get(i));
+                            }
+                           HistoryList.add(hd);
+                            adapter = new CustomHistoryListAdapter(History.this,HistoryList);
+                            historyListView.setAdapter(adapter);
                         }
                     }
-
                 }
-
-
         ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
-               String userid = preferences.getString("id","");
+                String userid = preferences.getString("id","");
                 map.put("userid",userid);
                 return map;
-
-
             }
-
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);

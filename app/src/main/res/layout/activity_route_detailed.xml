@@ -97,8 +97,6 @@
                 android:gravity="right"
                 android:textColor="#006"
                 android:text="No. of Persons:    " />
-
-
             <EditText
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
@@ -108,7 +106,8 @@
                 android:inputType="number"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:textColor="#006" />
+                android:textColor="#006"
+                android:digits="123456789"/>
         <!--</LinearLayout>-->
     <!--</LinearLayout>-->
 </LinearLayout>

@@ -131,10 +131,67 @@ public class DBManager {
         else
         return id;
     }
+    public String login_first_name(String userEmail,String userPassword) {
+
+        String[] args={userEmail,userPassword};
+        // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
+        Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = ? and password = ?", args);
+        // String[] daata = new String[cursor.getCount()];
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        String id=null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                id=cursor.getString(0);
+//                stringArrayList.add(cursor.getString(0));
+//                stringArrayList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        if(id==null)
+            return "0";
+        else
+            return id;
+    }
 
     public ArrayList<String> fetch_route_table(String route_start) {
         String[] args={route_start};
         Cursor cursor=database.rawQuery("SELECT route_destination FROM ROUTES WHERE route_start = ?", args);
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do
+            {
+                stringArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return stringArrayList;
+    }
+    public ArrayList<String> h_fetch_route_table_start(String id) {
+        String[] args={id};
+        Cursor cursor=database.rawQuery("SELECT route_start FROM ROUTES WHERE route_added_by = ?", args);
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do
+            {
+                stringArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return stringArrayList;
+    }
+    public ArrayList<String> h_fetch_route_table_dest(String id) {
+        String[] args={id};
+        Cursor cursor=database.rawQuery("SELECT route_destination FROM ROUTES WHERE route_added_by = ?", args);
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do
+            {
+                stringArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return stringArrayList;
+    }
+    public ArrayList<String> h_fetch_route_fare_price(String id) {
+        String[] args={id};
+        Cursor cursor=database.rawQuery("SELECT Fare_price FROM FARE WHERE added_by = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
         if(cursor.moveToFirst()){
             do
@@ -196,6 +253,31 @@ public class DBManager {
             } while (cursor.moveToNext());
         }
         return price;
+    }
+
+    public ArrayList<String> fetch_history_table(String user_id) {
+        String[] args={user_id};
+        Cursor cursor=database.rawQuery("SELECT person_travling FROM HISTORY_TRAVEL WHERE user_id = ?", args);
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do
+            {
+                stringArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return stringArrayList;
+    }
+    public ArrayList<String> fetch_history_table_date(String user_id) {
+        String[] args={user_id};
+        Cursor cursor=database.rawQuery("SELECT date_added FROM HISTORY_TRAVEL WHERE user_id = ?", args);
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(cursor.moveToFirst()){
+            do
+            {
+                stringArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return stringArrayList;
     }
     public int update(long _id, String first_name, String last_name,String email,String phone_number) {
         ContentValues contentValues = new ContentValues();

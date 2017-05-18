@@ -295,41 +295,48 @@ public class Route_Detailed extends AppCompatActivity {
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
                 String PaymentMethod =preferences.getString("payment_method_id","qr");
-                if (PaymentMethod.matches("qr")){
-                    String test=tvTarrif.getText().toString();
-                    int fare=Integer.valueOf(test);
-                    //String balancecheck=customer_total_balance;
-                    int balancecheck=Integer.valueOf(customer_total_balance);
-                    int remainingbalance=balancecheck-fare;
-                    if (fare<=balancecheck) {
+                if (PaymentMethod.matches("qr")) {
+                    if (!tvPrice.getText().equals("no rates defined")) {
+                        String test = tvTarrif.getText().toString();
+                        int fare = Integer.valueOf(test);
+                        //String balancecheck=customer_total_balance;
+                        int balancecheck = Integer.valueOf(customer_total_balance);
+                        int remainingbalance = balancecheck - fare;
+                        if (fare <= balancecheck) {
 
 
+                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
+                            SharedPreferences.Editor prefEditor = pref.edit();
+                            String id = pref.getString("id", "");
+                            String f = id + "," + fare;
 
-                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
-                        SharedPreferences.Editor prefEditor = pref.edit();
-                        String id = pref.getString("id","");
-                        String f = id+","+fare;
+                            prefEditor.putString("qr_string", f);
 
-                        prefEditor.putString("qr_string",f);
+                            prefEditor.apply();
 
-                        prefEditor.apply();
+                            if(!EtnumberOfPersons.getText().equals("")) {
 
-
-                        Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
-                        intent.putExtra("route_id", route_id);
-                        intent.putExtra("user_id",customer_id);
-                        intent.putExtra("person_traveling",EtnumberOfPersons.getText().toString());
-                        intent.putExtra("remaining_balance",String.valueOf(remainingbalance));
-                        startActivity(intent);
-                        finish();
+                                Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
+                                intent.putExtra("route_id", route_id);
+                                intent.putExtra("user_id", customer_id);
+                                intent.putExtra("person_traveling", EtnumberOfPersons.getText().toString());
+                                intent.putExtra("remaining_balance", String.valueOf(remainingbalance));
+                                startActivity(intent);
+                                finish();
+                            }else {
+                                Toast.makeText(getApplicationContext(),"Plz enter no. of persons to proceed",Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "your balance is not enough to proceed", Toast.LENGTH_LONG).show();
+                        }
                     }else {
-                        Toast.makeText(getApplicationContext(),"your balance is not enough to proceed",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Rates are not defined for this route", Toast.LENGTH_LONG).show();
                     }
-                }
-                if (PaymentMethod.matches("")){
+                    }
+                    if (PaymentMethod.matches("")) {
 
 
-                    Toast.makeText(getApplicationContext(),"No Payment Method Selected",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "No Payment Method Selected", Toast.LENGTH_LONG).show();
 
 //                    Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
 //                    //intent.putExtra("fair", fiar);
@@ -337,12 +344,12 @@ public class Route_Detailed extends AppCompatActivity {
 //                    startActivity(intent);
 //                    finish();
 
-                }
-                if (PaymentMethod.matches("card")){
-                    Toast.makeText(getApplicationContext(),"Select QR code as payment method to proceed ",Toast.LENGTH_LONG).show();
+                    }
+                    if (PaymentMethod.matches("card")) {
+                        Toast.makeText(getApplicationContext(), "Select QR code as payment method to proceed ", Toast.LENGTH_LONG).show();
 
 
-                }
+                    }
 //                editor.clear();
 //                editor.apply();
 
