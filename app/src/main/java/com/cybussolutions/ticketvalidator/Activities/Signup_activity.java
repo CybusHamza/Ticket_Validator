@@ -172,27 +172,20 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                                 Intent intent = new Intent(Signup_activity.this,Login_Activity.class);
                                 startActivity(intent);
                                 finish();
-
-
                             }catch (Exception e){
                                 Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
                             }
                               //  dbManager.insert(first_name, last_name, email, phone_number);
                             //Cursor cursor=dbManager.fetch();
                         }
-
                         else {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             SharedPreferences.Editor editor = preferences.edit();
-
                             editor.putString("sign_in_status","0");
                             editor.apply();
-
-
                             Toast.makeText(Signup_activity.this, "There was an error", Toast.LENGTH_SHORT).show();
                         }
                         // showJSON(Response);
-
                         // get response
                     }
                 }, new Response.ErrorListener() {
@@ -204,7 +197,6 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                     message = "Cannot connect to Internet...Please check your connection!";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 }
-
                 loading.dismiss();
             }
         }) {
