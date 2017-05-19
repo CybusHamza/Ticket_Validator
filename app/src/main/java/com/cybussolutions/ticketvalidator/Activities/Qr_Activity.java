@@ -39,6 +39,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
     String route_id,user_id,number_of_persons,remaining_balance;
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
