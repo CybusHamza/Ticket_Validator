@@ -115,12 +115,23 @@ public class Login_Activity extends AppCompatActivity {
                         String f_name = jsonObject.get("fname").toString();
                         String l_name = jsonObject.get("lname").toString();
                         String id = jsonObject.get("customer_id").toString();
+                        String num = jsonObject.get("phone").toString();
+                        String email = jsonObject.get("email").toString();
+                        String pro_pic = jsonObject.get("profile_pic").toString();
+
 
                         Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
 
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("UserEmail", userEmail);
+                        editor.putString("number",num);
+                        //editor.putString("email",email);
+                        editor.putString("name",f_name + "  "+ l_name);
+
+                        editor.putString("pro_pic",pro_pic);
+
+
                         // editor.putString("UserPassword",userPassword);
                         editor.putString("f_name", f_name);
                         editor.putString("l_nmae", l_name);

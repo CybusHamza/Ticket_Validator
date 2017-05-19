@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
@@ -70,6 +71,9 @@ public class Route_Detailed extends AppCompatActivity {
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Edit Profile");
+
+    SecondaryDrawerItem feedback = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Feedback");
 
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
@@ -184,6 +188,13 @@ public class Route_Detailed extends AppCompatActivity {
                             finish();
 
                         }
+                        if (drawerItem==feedback){
+
+                            Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
 
                         return true;
 

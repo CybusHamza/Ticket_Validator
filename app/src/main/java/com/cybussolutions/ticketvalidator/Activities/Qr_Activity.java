@@ -77,7 +77,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
                 Qr_Activity.this);
         myAlertDialog.setTitle("Are You sure?");
-        myAlertDialog.setMessage("Your ammount will be detected after Generated Qr code");
+        myAlertDialog.setMessage("Your amount will be deducted after Generating Qr code");
 
         myAlertDialog.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {

@@ -1,9 +1,7 @@
 package com.cybussolutions.ticketvalidator;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,55 +10,57 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cybussolutions.ticketvalidator.Activities.History;
-import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
-import com.cybussolutions.ticketvalidator.Activities.MainScreen;
-import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.cybussolutions.ticketvalidator.Network.End_Points;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
-
-import static android.media.ExifInterface.ORIENTATION_ROTATE_180;
-import static android.media.ExifInterface.ORIENTATION_ROTATE_270;
-import static android.media.ExifInterface.ORIENTATION_ROTATE_90;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
+import java.util.Map;
 
 public class Profile extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     Toolbar toolbar;
+
+
+    EditText etEmail, etName, etNum;
+
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+
 
     private static final int CAMERA_REQUEST = 1888;
     private static int RESULT_LOAD_IMG = 1;
@@ -87,11 +87,25 @@ public class Profile extends AppCompatActivity {
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final int MEDIA_TYPE_IMAGE = 1;
     private Uri fileUri;
+    String email,name,number,id,fname,lname;
     //StringEntity se;
     String entityContents="";
 //
 
+
+
+    public static Phonenumber.PhoneNumber phonenumberProto;
+    PhoneNumberUtil phoneNumberUtil;
+    Boolean isValid;
+
+
+
+
+    String dateAndTime;
     AlertDialog myalertdialog;
+    Calendar calender;
+    int seconds;
+    Button btnUpdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,10 +113,185 @@ public class Profile extends AppCompatActivity {
         // collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
         //   AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
+        etEmail = (EditText) findViewById(R.id.userEmail);
+        etName = (EditText) findViewById(R.id.userName);
+        etNum = (EditText) findViewById(R.id.userNumber);
+        btnUpdate = (Button)findViewById(R.id.update);
+
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            email = preferences.getString("UserEmail","");
+        number = preferences.getString("number","");
+      name =  preferences.getString("name","");
+            id = preferences.getString("id","");
+
+
+
+        etEmail.setText(email);
+        etNum.setText(number);
+        etName.setText(name);
+
+
+        phoneNumberUtil = PhoneNumberUtil.getInstance();
+        phonenumberProto = new Phonenumber.PhoneNumber();
+
+
+
+
         context = getApplicationContext();
+calender = Calendar.getInstance();
+        dateAndTime=String.valueOf(calender.get(Calendar.DATE)) +String.valueOf(calender.get(Calendar.MONTH))+ String.valueOf(calender.get(Calendar.YEAR))+ String.valueOf(calender.get(Calendar.HOUR)) + String.valueOf(calender.get(Calendar.MINUTE)) + String.valueOf(calender.get(Calendar.SECOND));
 
-
+//Toast.makeText(getApplicationContext(),dateAndTime,Toast.LENGTH_LONG).show();
         userImg = (ImageView) findViewById(R.id.imageBtn);
+
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    number = etNum.getText().toString();
+                    email = etEmail.getText().toString();
+
+
+                    name = etName.getText().toString();
+
+
+                    String[] names = name.split(" ");
+                    fname = names[0];
+                    lname = names[2];
+
+
+                    if (number.length() > 0) {
+
+                        try {
+
+
+                            phonenumberProto = phoneNumberUtil.parse(number, "NG");
+                            // Toast.makeText(getApplicationContext(),"number is entered",Toast.LENGTH_SHORT).show();
+                            isValid = phoneNumberUtil
+                                    .isValidNumber(phonenumberProto);
+                        } catch (NumberParseException e) {
+
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+                        //catch (Exception e) {
+                        //  e.printStackTrace();
+                        //}
+
+                        if (!(isValid)) {
+                            // String internationalFormat = phoneNumberUtil.format(phonenumberProto,PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Phone number is INVALID: " + number,
+                                    Toast.LENGTH_SHORT).show();
+
+
+                        }
+                        if (isValid && email.matches(EMAIL_PATTERN)) {
+
+                            Toast.makeText(getApplicationContext(), "is Valid", Toast.LENGTH_LONG).show();
+
+
+
+
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            final String img = preferences.getString("img","");
+
+
+
+
+                            //        if(number.matches()){}
+
+
+                            StringRequest request = new StringRequest(Request.Method.POST,End_Points.EDIT_profile, new Response.Listener<String>() {
+
+                                @Override
+                                public void onResponse(String response) {
+
+                                    // loading.dismiss();
+
+                                    if (!(response.equals(""))) {
+                                        Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                SharedPreferences.Editor editor = preferences.edit();
+//                                editor.putString("img",response);
+//                                editor.apply();
+
+
+
+
+
+                                    } else {
+                                        Toast.makeText(Profile.this, "data not updated", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }
+                                    , new Response.ErrorListener()
+
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    //   loading.dismiss();
+                                    String message = null;
+                                    if (error instanceof NetworkError) {
+                                        message = "Cannot connect to Internet...Please check your connection!";
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+
+                            }) {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> map = new HashMap<String, String>();
+                                    map.put("cust_id", id);
+                                    map.put("cust_fname", fname);
+                                    map.put("cust_lname",lname);
+                                    map.put("cust_phoneNum",number);
+                                    map.put("cust_propic",img);
+                                    map.put("cust_email",email);
+                                    return map;
+                                }
+                            };
+
+                            RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
+                            requestQueue.add(request);
+
+
+
+                            if (b64 != null){
+                                LoadImage();
+
+                            }
+
+                        }
+
+
+
+
+
+                        if (isValid && !(email.matches(EMAIL_PATTERN))) {
+
+                            Toast.makeText(getApplicationContext(), "Invalid Pattern", Toast.LENGTH_LONG).show();
+
+
+                        } else if (number.length() == 0) {
+                            Toast.makeText(getApplicationContext(), "Mobile Number is required", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+
+
+                };
+                                         });
+
+
         userImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +331,7 @@ public class Profile extends AppCompatActivity {
                     myalertdialog.dismiss();
 
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, 188);
+                    startActivityForResult(intent, 1);
 
 
                 }
@@ -193,8 +382,15 @@ public class Profile extends AppCompatActivity {
                     byte[] b = baos.toByteArray();
                     b64 = Base64.encodeToString(b, Base64.DEFAULT);
 
+                 //   Login(b64,dateAndTime);
 
-                }
+
+
+             //   LoadImage();
+
+
+
+            }
 
 
                 else {
@@ -202,9 +398,9 @@ public class Profile extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
             }
-            if (requestCode == 188 && resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
 
-                Toast.makeText(getApplicationContext(),"ASDFGH",Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),"ASDFGH",Toast.LENGTH_LONG).show();
 
 
 
@@ -216,8 +412,7 @@ public class Profile extends AppCompatActivity {
 
 
                 b64 = encodeImage(bitmap);
-
-
+               // LoadImage();
             }
 
 
@@ -227,12 +422,78 @@ public class Profile extends AppCompatActivity {
         catch(Exception e){
             e.printStackTrace();
             Log.e(e.getLocalizedMessage(), "this was the behan yakki");
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
+//            Toast.makeText(this, "", Toast.LENGTH_LONG)
+//                    .show();
+        }
+
         }
 
 
+public void LoadImage(){
+
+
+    StringRequest request = new StringRequest(Request.Method.POST,"http://epay.cybussolutions.com/upload_image_mobile.php", new Response.Listener<String>() {
+
+        @Override
+        public void onResponse(String response) {
+
+            // loading.dismiss();
+
+            if (!(response.equals(""))) {
+                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("img",response);
+                editor.apply();
+
+
+
+
+
+            } else {
+                Toast.makeText(Profile.this, "Picture not uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
+            , new Response.ErrorListener()
+
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            //   loading.dismiss();
+            String message = null;
+            if (error instanceof NetworkError) {
+                message = "Cannot connect to Internet...Please check your connection!";
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }) {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("image", b64);
+            map.put("name", dateAndTime);
+            return map;
+        }
+    };
+
+    RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
+    requestQueue.add(request);
+
+
+
+
+
+
+
+
+
+}
+
+
 
 
 
@@ -303,6 +564,67 @@ public class Profile extends AppCompatActivity {
         return encImage;
     }
 
+
+
+
+
+
+
+    public void Login()
+    {
+
+     //   loading = ProgressDialog.show(Login_Activity.this, "Please wait...", "Checking Credentails ...", false, false);
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.POST_IMAGE, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+
+               // loading.dismiss();
+
+                if (!(response.equals(""))) {
+
+                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+
+
+
+
+
+                } else {
+                    Toast.makeText(Profile.this, "Incorrect User name or Password", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+                , new Response.ErrorListener()
+
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+             //   loading.dismiss();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("image",imgDecodableString);
+                map.put("name", dateAndTime);
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
+        requestQueue.add(request);
+
+    }
 
 
 

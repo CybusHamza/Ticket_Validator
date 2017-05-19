@@ -1,22 +1,19 @@
-package com.cybussolutions.ticketvalidator.Activities;
+package com.cybussolutions.ticketvalidator;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cybussolutions.ticketvalidator.Feedback;
-import com.cybussolutions.ticketvalidator.Profile;
-import com.cybussolutions.ticketvalidator.R;
+import com.cybussolutions.ticketvalidator.Activities.Dashboard;
+import com.cybussolutions.ticketvalidator.Activities.History;
+import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
+import com.cybussolutions.ticketvalidator.Activities.MainScreen;
+import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
+import com.cybussolutions.ticketvalidator.Activities.Profile_Detailed;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -27,15 +24,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-public class Dashboard extends AppCompatActivity {
-
-    Toolbar toolbar;
-    Button btnStartTrip;
-    TextView tvTotalTrips;
-    String totalTrips;
-
-    SharedPreferences prefs = null;
-    SharedPreferences.Editor editor;
+public class Feedback extends AppCompatActivity {
 
 
     Drawer result;
@@ -49,43 +38,31 @@ public class Dashboard extends AppCompatActivity {
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Edit Profile");
 
+    SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withName("Feedback");
+
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
-    SecondaryDrawerItem feedback = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Feedback");
+
+Toolbar toolbar;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-        toolbar = (Toolbar)findViewById(R.id.app_bar_dashboard);
-        toolbar.setTitle("Dashboard");
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        setContentView(R.layout.activity_feedback);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Feedback");
+
+
         setSupportActionBar(toolbar);
-        if(isNetworkAvailable()) {
-            startService(new Intent(this, HelloService.class));
-        }else {
-           // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
-        }
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        totalTrips = preferences.getString("TotalTrips","");
-
-
-        tvTotalTrips = (TextView)findViewById(R.id.tvTotalTrips);
-        tvTotalTrips.setText(totalTrips);
-        btnStartTrip = (Button)findViewById(R.id.btnStartTrip);
-        btnStartTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Dashboard.this,MainScreen.class);
-                startActivity(intent);
-                finish();
-
-            }
-        });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
@@ -111,13 +88,16 @@ public class Dashboard extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
+
+
+
                         if (drawerItem== your_trips){
-                            Intent intent = new Intent(Dashboard.this, History.class);
+                            Intent intent = new Intent(getApplicationContext(), History.class);
                             startActivity(intent);
                         }
                         if(drawerItem== logout){
 
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Feedback.this);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
                             editor.apply();
@@ -143,13 +123,13 @@ public class Dashboard extends AppCompatActivity {
                             finish();
 
                         }
+
                         if (drawerItem==feedback){
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
                             startActivity(intent);
                             finish();
                         }
-
                         return true;
 
                     }
@@ -157,11 +137,11 @@ public class Dashboard extends AppCompatActivity {
                 }).build();
 
 
-    }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+
+
+
+
+
     }
 }

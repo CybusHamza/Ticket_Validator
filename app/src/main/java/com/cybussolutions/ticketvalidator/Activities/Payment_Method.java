@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
@@ -76,7 +77,7 @@ public class Payment_Method extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
 
 
-
+SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +108,21 @@ public class Payment_Method extends AppCompatActivity {
                         }
                 ).build();
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+                        if (drawerItem==feedback){
+
+                            Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+
 
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(Payment_Method.this, History.class);
@@ -142,7 +152,7 @@ public class Payment_Method extends AppCompatActivity {
 
                         }
                         if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile.class);
+                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }

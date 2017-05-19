@@ -114,7 +114,7 @@ public class PaymentMethod_extended extends AppCompatActivity {
 
                         }
                         if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile.class);
+                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }

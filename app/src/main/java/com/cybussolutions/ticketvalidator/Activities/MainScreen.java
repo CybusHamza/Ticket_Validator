@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
@@ -72,6 +73,8 @@ public class MainScreen extends AppCompatActivity {
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Edit Profile");
+
+SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withName("Feedback");
 
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
@@ -127,12 +130,15 @@ public class MainScreen extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+
+
 
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(MainScreen.this, History.class);
@@ -156,7 +162,7 @@ public class MainScreen extends AppCompatActivity {
 
                         }
                         if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile.class);
+                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }
@@ -167,6 +173,12 @@ public class MainScreen extends AppCompatActivity {
 
                         }
 
+                        if (drawerItem==feedback){
+
+                            Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
                         return true;
 
                     }
