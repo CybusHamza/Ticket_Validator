@@ -6,14 +6,28 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.StringBuilderPrinter;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Activities.Dashboard;
 import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
 import com.cybussolutions.ticketvalidator.Activities.MainScreen;
 import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
 import com.cybussolutions.ticketvalidator.Activities.Profile_Detailed;
+import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -24,8 +38,17 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Feedback extends AppCompatActivity {
 
+
+
+    EditText etEmail,etFeedback;
+    RatingBar rb;
+
+    Button sendFeedback;
 
     Drawer result;
 
@@ -45,10 +68,10 @@ public class Feedback extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
 
 Toolbar toolbar;
+String email,feedBackt;
 
 
-
-
+String serviceString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +79,9 @@ Toolbar toolbar;
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Feedback");
-
-
+rb = (RatingBar)findViewById(R.id.rating);
+            etEmail = (EditText)findViewById(R.id.email);
+        etFeedback = (EditText)findViewById(R.id.feedback);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -137,11 +161,122 @@ Toolbar toolbar;
                 }).build();
 
 
+sendFeedback = (Button)findViewById(R.id.buttonFeedback);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        email=  preferences.getString("UserEmail","");
+        etEmail.setText(email);
 
 
 
 
+        sendFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int numOvStars = rb.getNumStars();
+                float rating = rb.getRating();
+               String r = String.valueOf(rating);
+               // int r = Integer.valueOf(rating);
+           //  int ab = Integer.parseInt(rb.getRating());
+
+
+                email = etEmail.getText().toString();
+               // feedBackt = etFeedback.getText().toString();
+
+
+                switch (r)
+                {
+                    case "0.0":
+
+                        Toast.makeText(getApplicationContext(),"You cant proceed without Rating our app",Toast.LENGTH_SHORT).show();
+
+                       // serviceString = "Rating was poor";
+                        break;
+                    case "1.0":
+                        serviceString = "Rating was poor";
+                        feedBackt = etFeedback.getText().toString() + "\n" +serviceString;
+                        sendEmail();
+                        break;
+                    case "2.0":
+                        serviceString = "Rating was fair";
+                        feedBackt = etFeedback.getText().toString() + "\n" +serviceString;
+                        sendEmail();
+                        break;
+                    case "3.0":
+                        serviceString = "Rating was normal";
+                        feedBackt = etFeedback.getText().toString() + "\n" +serviceString;
+                        sendEmail();
+                        break;
+                    case "4.0":
+                        serviceString = "Rating was good";
+                        feedBackt = etFeedback.getText().toString() + "\n" +serviceString;
+                        sendEmail();
+                        break;
+                    case "5.0":
+                        serviceString = "Rating was excellent";
+                        feedBackt = etFeedback.getText().toString() + "\n" +serviceString;
+                        sendEmail();
+                        break;
+
+
+
+                }
+
+
+
+            }
+        });
 
 
     }
+
+    public void sendEmail(){
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.SENDFEEDBACK, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                // loading.dismiss();
+
+                if ((response.equals(""))) {
+                    Toast.makeText(getApplicationContext(),"Email Sent",Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email Not Sent", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+                , new Response.ErrorListener()
+
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //   loading.dismiss();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("cust_email", email);
+                map.put("feedback_body",feedBackt);
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
+
+    }
+
+
+
 }

@@ -56,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String H_ID = "id";
     public static final String H_ROUTE_ID = "route_id";
     public static final String H_USER_ID = "user_id";
+    public static final String H_TRANS_ID = "trans_id";
     public static final String H_PERSON_TRAVELING = "person_travling";
     public static final String H_DATE_ADDED = "date_added";
     public static final String H_DATE_MODIFIED = "date_modified";
@@ -82,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_TABLE_HISTORY_TRAVEL = "create table " + HISTORY_TRAVEL + "(" + H_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_ROUTE_ID + " TEXT, " + H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_ROUTE_ID + " TEXT, "  + H_TRANS_ID + " TEXT, "+ H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
 
 
     public DatabaseHelper(Context context) {

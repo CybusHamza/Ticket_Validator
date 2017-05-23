@@ -39,7 +39,7 @@ public class HelloService extends Service {
     String id,route_code,route_name,route_start,route_destination,route_added_date,time,route_added_by,route_updated_date,route_updated_by;
     String fare_id,fare_route,fare_price,fare_type,added_by,update_by,date_added,date_updated;
     String c_id,c_customer_id,c_customer_balance;
-    String h_id,h_route_id,h_user_id,h_person_travling,h_date_added,h_date_modified;
+    String h_id,h_route_id,h_user_id,h_person_travling,h_date_added,h_date_modified,h_trans_data;
 
     String customer_id;
     @Nullable
@@ -136,7 +136,8 @@ public class HelloService extends Service {
                         h_person_travling=object.getString("person_travling");
                         h_date_added=object.getString("date_added");
                         h_date_modified=object.getString("date_modified");
-                        dbManager.insert_into_history_travel(h_route_id,h_user_id,h_person_travling,h_date_added,h_date_modified);
+                        h_trans_data = object.getString("trans_id");
+                        dbManager.insert_into_history_travel(h_route_id,h_user_id,h_person_travling,h_date_added,h_date_modified,h_trans_data);
                     }
 
                 } catch (JSONException e) {

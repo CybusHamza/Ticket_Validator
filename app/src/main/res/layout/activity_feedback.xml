@@ -62,23 +62,23 @@
     android:layout_width="wrap_content"
     android:layout_gravity="center|bottom"
     android:layout_height="wrap_content"
-    android:numStars="4"
+    android:numStars="5"
     android:id="@+id/rating"
     android:stepSize="1.0"
-    android:rating="2.0"
+
     android:layout_marginBottom="26dp"
-    android:layout_above="@+id/button"
+    android:layout_above="@+id/buttonFeedback"
     android:layout_centerHorizontal="true" />
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonFeedback"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_gravity="center|bottom"
         android:background="@drawable/bg_btn_route_detailed"
-
         android:text="Upload"
+
         android:textColor="#fff"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"

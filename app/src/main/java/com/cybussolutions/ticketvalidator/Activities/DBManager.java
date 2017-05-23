@@ -85,7 +85,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.C_CUSTOMER_BALANCE, c_customer_balance);
         long result = database.insert(DatabaseHelper.CUSTOMER_ACCOUNTS, null, contentValue);
     }
-    public void insert_into_history_travel(String h_route_id,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
+    public void insert_into_history_travel(String h_route_id,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified,String h_trans_data) {
         ContentValues contentValue = new ContentValues();
 
        // contentValue.put(DatabaseHelper.H_ID, h_id);
@@ -94,6 +94,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.H_PERSON_TRAVELING, h_person_traveling);
         contentValue.put(DatabaseHelper.H_DATE_ADDED, h_date_added);
         contentValue.put(DatabaseHelper.H_DATE_MODIFIED, h_date_modified);
+        contentValue.put(DatabaseHelper.H_TRANS_ID,h_trans_data);
         long result = database.insert(DatabaseHelper.HISTORY_TRAVEL, null, contentValue);
     }
 
@@ -279,6 +280,24 @@ public class DBManager {
         }
         return stringArrayList;
     }
+
+    public ArrayList<String> fetch_history_trans_id(String user_id){
+        String[] args = {user_id};
+        Cursor cursor = database.rawQuery("SELECT trans_id FROM HISTORY_TRAVEL WHERE user_id = ?",args);
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                stringArrayList.add(cursor.getString(0));
+
+            }
+            while (cursor.moveToNext());
+        }
+        return  stringArrayList;
+
+
+    }
+
+
     public int update(long _id, String first_name, String last_name,String email,String phone_number) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.FIRST_NAME, first_name);
@@ -294,11 +313,12 @@ public class DBManager {
         int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS, contentValues, DatabaseHelper.C_CUSTOMER_ID + " = " + customer_id, null);
         return i;
     }
-    public int update_history_travel(String route_id, String user_id,String person_traveling) {
+    public int update_history_travel(String route_id, String user_id,String person_traveling,String trans_id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.H_ROUTE_ID, route_id);
         contentValues.put(DatabaseHelper.H_PERSON_TRAVELING, person_traveling);
-        int i = database.update(DatabaseHelper.TABLE_NAME, contentValues, DatabaseHelper.H_USER_ID + " = " + user_id, null);
+        contentValues.put(DatabaseHelper.H_TRANS_ID,trans_id);
+        int i = database.update(DatabaseHelper.HISTORY_TRAVEL, contentValues, DatabaseHelper.H_USER_ID + " = " + user_id, null);
         return i;
     }
 

@@ -220,6 +220,15 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
             @Override
             public void onClick(View view) {
                 if(!from.getSelectedItem().toString().equals("")|| !to.getSelectedItem().toString().equals("")) {
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("FROM",from.getSelectedItem().toString());
+                    editor.putString("TO",to.getSelectedItem().toString());
+                    editor.apply();
+
+
+
                     route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
                     Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
                     intent.putExtra("route_id", route_id.toString());

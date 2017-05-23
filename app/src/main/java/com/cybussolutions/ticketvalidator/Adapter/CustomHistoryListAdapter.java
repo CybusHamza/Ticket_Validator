@@ -64,6 +64,7 @@ public class CustomHistoryListAdapter extends BaseAdapter {
         TextView tvDate = (TextView)view.findViewById(R.id.tvDate);
         TextView tvTime = (TextView)view.findViewById(R.id.tvTime);
         TextView tvCpp = (TextView)view.findViewById(R.id.tvCPPP);
+        TextView tvTransId = (TextView)view.findViewById(R.id.tvTransId);
 
         HistoryData historyData = historyDataList.get(i);
         int totalFare =Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf( historyData.getPersonTravelling());
@@ -75,7 +76,7 @@ public class CustomHistoryListAdapter extends BaseAdapter {
         tvPersons.setText(historyData.getPersonTravelling());
         tvDate.setText(historyData.getDate());
         tvTime.setText(historyData.getTime());
-
+tvTransId.setText(historyData.getTrans_id());
 
 
         return view;

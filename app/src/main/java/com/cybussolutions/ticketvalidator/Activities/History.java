@@ -70,6 +70,7 @@ public class History extends AppCompatActivity {
     ArrayList<String> stringArrayList2=new ArrayList<String>();
     ArrayList<String> stringArrayList3=new ArrayList<String>();
     ArrayList<String> stringArrayList4=new ArrayList<String>();
+    ArrayList<String> stringArrayList5 = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +178,7 @@ public class History extends AppCompatActivity {
                         hd.setFare_Price(jsonObject.get("Fare_price").toString());
                         hd.setPersonTravelling(jsonObject.get("person_travling").toString());
                         hd.setRoute_destinition(jsonObject.get("rout_destination").toString());
+                        hd.setTrans_id(jsonObject.get("trans_id").toString());
                        // hd.setTime(jsonObject.get("time").toString());
 
                         String dateNtime = String.valueOf(jsonObject.get("route_added_date"));
@@ -231,11 +233,13 @@ public class History extends AppCompatActivity {
                             stringArrayList2=dbManager.h_fetch_route_table_start(userid);
                             stringArrayList3=dbManager.h_fetch_route_table_dest(userid);
                             stringArrayList4=dbManager.h_fetch_route_fare_price(userid);
+                            stringArrayList5= dbManager.fetch_history_trans_id(userid);
                             for (int i=0;i<stringArrayList4.size();i++){
                                 hd.setPersonTravelling(stringArrayList.get(i));
                                 hd.setDate(stringArrayList1.get(i));
                                 hd.setFare_Price(stringArrayList4.get(i));
                                 hd.setRoute_destinition(stringArrayList3.get(i));
+                                hd.setTrans_id(stringArrayList5.get(i));
                                 // hd.setTime(jsonObject.get("time").toString());
 
                                /* String dateNtime = String.valueOf("");

@@ -14,14 +14,15 @@ android:layout_gravity="center_vertical"
         android:paddingBottom="5dp"
         android:orientation="vertical">
 
-        <!--<TextView-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="wrap_content"-->
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
 
-            <!--android:text="Total:"-->
-            <!--android:textSize="12sp"-->
-            <!--android:gravity="left"-->
-            <!--android:textColor="#fff"/>-->
+            android:text="random num"
+            android:id="@+id/tvTransId"
+            android:textSize="12sp"
+            android:gravity="left"
+            android:textColor="#fff"/>
 
         <TextView
             android:layout_width="100dp"

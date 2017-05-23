@@ -21,6 +21,16 @@ public class HistoryData {
 
     String Fare_Price;
 
+    public String getTrans_id() {
+        return Trans_id;
+    }
+
+    public void setTrans_id(String trans_id) {
+        Trans_id = trans_id;
+    }
+
+    String Trans_id;
+
     public String getDate() {
         return Date;
     }

@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="ASDFGHJK"
+        android:text="Your Details are as follow"
         android:gravity="center"
         android:padding="5dp"
         android:textStyle="bold"
@@ -32,7 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
+
+
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+
+
+
         android:orientation="vertical"
         android:background="@drawable/bg_linearlayout_route_detailed_screen"
         android:layout_weight="0.49">
@@ -42,108 +49,76 @@
             android:layout_height="wrap_content"
 
             android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+
+                android:textColor="#006"
+                android:layout_margin="5dp"
+
+                android:text="Starting Point"/>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="#006"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
+                android:id="@+id/tvFrom"
                 android:text="From"/>
+
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+
+                android:textColor="#006"
+                android:layout_margin="5dp"
+                android:text="Destination"
+                />
+
+
+
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/tvTo"
+                android:layout_weight="1"
+                android:gravity="right"
                 android:textStyle="bold"
+                android:textColor="#006"
                 android:layout_margin="5dp"
                 android:text="To"
-                android:paddingLeft="40sp"/>
-
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:text="Numberb of Persons"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:text="2"
-                android:paddingLeft="40sp"/>
-
-
+                android:paddingLeft="10sp"/>
 
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:text="Total Charge"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:text="2"
-                android:paddingLeft="40sp"/>
-
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:text="Total Charge"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:text="2"
-                android:paddingLeft="40sp"/>
-
-
-
-
-        </LinearLayout>
-
 
 
         <LinearLayout
@@ -156,16 +131,120 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:textColor="#006"
                 android:layout_margin="5dp"
+
+                android:text="Number of Persons"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="Total Charge"/>
+                android:textColor="#006"
+                android:layout_weight="1"
+                android:gravity="right"
+
+                android:id="@+id/tvNumberOfPersons"
+                android:layout_margin="5dp"
+
+                android:text="2"
+                android:paddingLeft="40sp"/>
+
+
+
+
+        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="20sp"-->
+                <!--android:layout_margin="5dp"-->
+
+                <!--android:textColor="#006"-->
+                <!--android:text="Total Charge"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="20sp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="right"-->
+
+                <!--android:textColor="#006"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="2"-->
+                <!--android:textStyle="bold"-->
+                <!--android:paddingLeft="40sp"/>-->
+
+
+
+
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_margin="5dp"
+                android:textColor="#006"
+                android:text=" Balance"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/tvBalance"
+                android:textColor="#006"
+                android:layout_margin="5dp"
+                android:text="2"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:gravity="right"
+
+                android:paddingLeft="40sp"/>
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_margin="5dp"
+                android:textColor="#006"
+                android:text="Total Fare"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:textStyle="bold"
+                android:textColor="#006"
                 android:text="2"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textStyle="bold"
+
+                android:id="@+id/tvTotalCharge"
                 android:paddingLeft="40sp"/>
 
 
@@ -176,6 +255,20 @@
 
 
     </LinearLayout>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Check Out"
+        android:layout_gravity="center"
+        android:id="@+id/btnConfirm"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:layout_margin="30dp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:background="@drawable/bg_btn_route_detailed"
+       android:layout_marginBottom="10dp" />
 
 
 

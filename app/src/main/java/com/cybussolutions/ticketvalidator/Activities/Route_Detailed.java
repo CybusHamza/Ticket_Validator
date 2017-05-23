@@ -327,6 +327,19 @@ public class Route_Detailed extends AppCompatActivity {
 
                             if(!EtnumberOfPersons.getText().equals("")) {
 
+                                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = preferences1.edit();
+                                editor.putString("NOP",EtnumberOfPersons.getText().toString());
+                                editor.putString("balance",String.valueOf(remainingbalance));
+
+                                editor.putString("fare",String.valueOf(fare));
+
+
+                                editor.apply();
+
+
+
+
                                 Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
                                 intent.putExtra("route_id", route_id);
                                 intent.putExtra("user_id", customer_id);
