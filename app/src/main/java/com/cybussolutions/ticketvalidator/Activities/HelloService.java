@@ -137,7 +137,7 @@ public class HelloService extends Service {
                         h_date_added=object.getString("date_added");
                         h_date_modified=object.getString("date_modified");
                         h_trans_data = object.getString("trans_id");
-                        dbManager.insert_into_history_travel(h_route_id,h_user_id,h_person_travling,h_date_added,h_date_modified,h_trans_data);
+                        dbManager.insert_into_history_travel(h_route_id,h_trans_data,h_user_id,h_person_travling,h_date_added,h_date_modified);
                     }
 
                 } catch (JSONException e) {

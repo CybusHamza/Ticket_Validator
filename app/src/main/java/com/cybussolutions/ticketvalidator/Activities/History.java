@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 
 public class History extends AppCompatActivity {
+    String routeId;
+
     ListView historyListView;
     Toolbar toolbar;
 
@@ -224,23 +226,30 @@ public class History extends AppCompatActivity {
                         if (error instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please check your connection!";
                           //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                            HistoryData hd = new HistoryData();
+
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
                             String userid = preferences.getString("id","");
-                            stringArrayList=dbManager.fetch_history_table(userid);
-                            stringArrayList1=dbManager.fetch_history_table_date(userid);
-                            stringArrayList2=dbManager.h_fetch_route_table_start(userid);
-                            stringArrayList3=dbManager.h_fetch_route_table_dest(userid);
-                            stringArrayList4=dbManager.h_fetch_route_fare_price(userid);
+
                             stringArrayList5= dbManager.fetch_history_trans_id(userid);
-                            for (int i=0;i<stringArrayList4.size();i++){
-                                hd.setPersonTravelling(stringArrayList.get(i));
-                                hd.setDate(stringArrayList1.get(i));
-                                hd.setFare_Price(stringArrayList4.get(i));
-                                hd.setRoute_destinition(stringArrayList3.get(i));
-                                hd.setTrans_id(stringArrayList5.get(i));
-                                // hd.setTime(jsonObject.get("time").toString());
+
+
+                            if (stringArrayList5.size()>0) {
+                                for (int i = 0; i < stringArrayList5.size(); i++) {
+                                    HistoryData hd = new HistoryData();
+                                    String stringArrayList=dbManager.fetch_history_table(userid,stringArrayList5.get(i));
+                                    String stringArrayList1=dbManager.fetch_history_table_date(userid);
+                                    routeId=dbManager.fetch_route_id_for_history(userid);
+                                    String stringArrayList2=dbManager.h_fetch_route_table_start(routeId);
+                                    String stringArrayList3=dbManager.h_fetch_route_table_dest(routeId);
+                                    String stringArrayList4=dbManager.h_fetch_route_fare_price(routeId);
+
+                                    hd.setDate(stringArrayList1);
+                                    hd.setFare_Price(stringArrayList4);
+                                    hd.setPersonTravelling(stringArrayList);
+                                    hd.setRoute_destinition(stringArrayList3);
+                                    hd.setTrans_id(stringArrayList5.get(i));
+                                    // hd.setTime(jsonObject.get("time").toString());
 
                                /* String dateNtime = String.valueOf("");
                                 String date,time;
@@ -248,12 +257,14 @@ public class History extends AppCompatActivity {
                                 String[] split = dateNtime.split(" ");
                                 date=split[0];
                                 time= split[1];*/
-                                hd.setTime("");
-                                //hd.setDate("");
-                                //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
-                                hd.setRouteStart(stringArrayList2.get(i));
+                                    hd.setTime("");
+                                    //hd.setDate("");
+                                    //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
+                                    hd.setRouteStart(stringArrayList2);
+                                    HistoryList.add(hd);
+                                }
                             }
-                           HistoryList.add(hd);
+
                             adapter = new CustomHistoryListAdapter(History.this,HistoryList);
                             historyListView.setAdapter(adapter);
                         }

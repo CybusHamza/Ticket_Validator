@@ -121,10 +121,10 @@ public class Profile extends AppCompatActivity {
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            email = preferences.getString("UserEmail","");
+        email = preferences.getString("UserEmail","");
         number = preferences.getString("number","");
-      name =  preferences.getString("name","");
-            id = preferences.getString("id","");
+        name =  preferences.getString("name","");
+        id = preferences.getString("id","");
 
 
 

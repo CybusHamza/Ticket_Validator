@@ -167,27 +167,10 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
                         Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
 
-
-
-
                         dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
-                        dbManager.insert_into_history_travel(route_id,user_id,number_of_persons,s,"0000-00-00",confirmNum);
-//                        dbManager.update_history_travel(route_id,user_id,number_of_persons,confirmNum);
+                        dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,s,"0000-00-00");
                         dbManager.update_customer_balance(user_id,remaining_balance);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                         StringRequest strreq = new StringRequest(Request.Method.POST,

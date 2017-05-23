@@ -85,16 +85,16 @@ public class DBManager {
         contentValue.put(DatabaseHelper.C_CUSTOMER_BALANCE, c_customer_balance);
         long result = database.insert(DatabaseHelper.CUSTOMER_ACCOUNTS, null, contentValue);
     }
-    public void insert_into_history_travel(String h_route_id,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified,String h_trans_data) {
+    public void insert_into_history_travel(String h_route_id,String h_trans_data,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
         ContentValues contentValue = new ContentValues();
 
        // contentValue.put(DatabaseHelper.H_ID, h_id);
         contentValue.put(DatabaseHelper.H_ROUTE_ID, h_route_id);
+        contentValue.put(DatabaseHelper.H_TRANS_ID,h_trans_data);
         contentValue.put(DatabaseHelper.H_USER_ID, h_user_id);
         contentValue.put(DatabaseHelper.H_PERSON_TRAVELING, h_person_traveling);
         contentValue.put(DatabaseHelper.H_DATE_ADDED, h_date_added);
         contentValue.put(DatabaseHelper.H_DATE_MODIFIED, h_date_modified);
-        contentValue.put(DatabaseHelper.H_TRANS_ID,h_trans_data);
         long result = database.insert(DatabaseHelper.HISTORY_TRAVEL, null, contentValue);
     }
 
@@ -166,41 +166,50 @@ public class DBManager {
         }
         return stringArrayList;
     }
-    public ArrayList<String> h_fetch_route_table_start(String id) {
+    public String h_fetch_route_table_start(String id) {
         String[] args={id};
-        Cursor cursor=database.rawQuery("SELECT route_start FROM ROUTES WHERE route_added_by = ?", args);
+        Cursor cursor=database.rawQuery("SELECT route_start FROM ROUTES WHERE id = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        String route_start=null;
         if(cursor.moveToFirst()){
             do
             {
-                stringArrayList.add(cursor.getString(0));
+                route_start=cursor.getString(0);
+             //   stringArrayList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return stringArrayList;
+        return route_start;
+        //return stringArrayList;
     }
-    public ArrayList<String> h_fetch_route_table_dest(String id) {
+    public String h_fetch_route_table_dest(String id) {
         String[] args={id};
-        Cursor cursor=database.rawQuery("SELECT route_destination FROM ROUTES WHERE route_added_by = ?", args);
+        Cursor cursor=database.rawQuery("SELECT route_destination FROM ROUTES WHERE id = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        String route_dest=null;
         if(cursor.moveToFirst()){
             do
             {
-                stringArrayList.add(cursor.getString(0));
+                route_dest=cursor.getString(0);
+                //stringArrayList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return stringArrayList;
+        return route_dest;
+        //return stringArrayList;
     }
-    public ArrayList<String> h_fetch_route_fare_price(String id) {
+    public String h_fetch_route_fare_price(String id) {
         String[] args={id};
-        Cursor cursor=database.rawQuery("SELECT Fare_price FROM FARE WHERE added_by = ?", args);
+        Cursor cursor=database.rawQuery("SELECT Fare_price FROM FARE WHERE Fare_route = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        String fare_price=null;
         if(cursor.moveToFirst()){
             do
             {
-                stringArrayList.add(cursor.getString(0));
+                fare_price=cursor.getString(0);
+                //stringArrayList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return stringArrayList;
+        return fare_price;
+        //return stringArrayList;
     }
 
     public ArrayList<String> fetch_route_start() {
@@ -216,6 +225,18 @@ public class DBManager {
             } while (cursor.moveToNext());
         }
         return stringArrayList;
+    }
+    public String fetch_route_id_for_history(String userid) {
+        String[] args={userid};
+        Cursor cursor=database.rawQuery("SELECT route_id FROM HISTORY_TRAVEL WHERE user_id = ? ", args);
+        String id = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                id=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return id;
     }
     public String fetch_route_id(String route_start,String route_destination) {
         String[] args={route_start,route_destination};
@@ -256,29 +277,35 @@ public class DBManager {
         return price;
     }
 
-    public ArrayList<String> fetch_history_table(String user_id) {
-        String[] args={user_id};
-        Cursor cursor=database.rawQuery("SELECT person_travling FROM HISTORY_TRAVEL WHERE user_id = ?", args);
+    public String fetch_history_table(String user_id,String trans_id) {
+        String[] args={user_id,trans_id};
+        Cursor cursor=database.rawQuery("SELECT person_travling FROM HISTORY_TRAVEL WHERE user_id = ? and trans_id = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        String personTraveling=null;
         if(cursor.moveToFirst()){
             do
             {
-                stringArrayList.add(cursor.getString(0));
+                personTraveling=cursor.getString(0);
+               // stringArrayList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return stringArrayList;
+        return personTraveling;
+        //return stringArrayList;
     }
-    public ArrayList<String> fetch_history_table_date(String user_id) {
+    public String fetch_history_table_date(String user_id) {
         String[] args={user_id};
         Cursor cursor=database.rawQuery("SELECT date_added FROM HISTORY_TRAVEL WHERE user_id = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        String date=null;
         if(cursor.moveToFirst()){
             do
             {
-                stringArrayList.add(cursor.getString(0));
+                date=cursor.getString(0);
+                //stringArrayList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return stringArrayList;
+        return date;
+        //return stringArrayList;
     }
 
     public ArrayList<String> fetch_history_trans_id(String user_id){
@@ -288,7 +315,6 @@ public class DBManager {
         if (cursor.moveToFirst()){
             do {
                 stringArrayList.add(cursor.getString(0));
-
             }
             while (cursor.moveToNext());
         }
