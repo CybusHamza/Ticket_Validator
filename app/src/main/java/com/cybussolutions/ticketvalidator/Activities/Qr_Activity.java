@@ -148,7 +148,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                         user_id=i.getStringExtra("user_id");
                         number_of_persons=i.getStringExtra("person_traveling");
                         remaining_balance=i.getStringExtra("remaining_balance");
-                        if (number_of_persons==null){
+                        if (number_of_persons==null || number_of_persons.equals("") || number_of_persons==""){
                             number_of_persons="1";
                         }
                         Random num = new Random();

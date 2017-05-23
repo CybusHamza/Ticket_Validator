@@ -239,7 +239,7 @@ public class History extends AppCompatActivity {
                                     HistoryData hd = new HistoryData();
                                     String stringArrayList=dbManager.fetch_history_table(userid,stringArrayList5.get(i));
                                     String stringArrayList1=dbManager.fetch_history_table_date(userid);
-                                    routeId=dbManager.fetch_route_id_for_history(userid);
+                                    routeId=dbManager.fetch_route_id_for_history(userid,stringArrayList5.get(i));
                                     String stringArrayList2=dbManager.h_fetch_route_table_start(routeId);
                                     String stringArrayList3=dbManager.h_fetch_route_table_dest(routeId);
                                     String stringArrayList4=dbManager.h_fetch_route_fare_price(routeId);
@@ -263,6 +263,8 @@ public class History extends AppCompatActivity {
                                     hd.setRouteStart(stringArrayList2);
                                     HistoryList.add(hd);
                                 }
+                            }else {
+                                Toast.makeText(getApplicationContext(),"No previous history found",Toast.LENGTH_LONG).show();
                             }
 
                             adapter = new CustomHistoryListAdapter(History.this,HistoryList);

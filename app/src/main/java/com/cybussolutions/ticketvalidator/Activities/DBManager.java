@@ -226,9 +226,9 @@ public class DBManager {
         }
         return stringArrayList;
     }
-    public String fetch_route_id_for_history(String userid) {
-        String[] args={userid};
-        Cursor cursor=database.rawQuery("SELECT route_id FROM HISTORY_TRAVEL WHERE user_id = ? ", args);
+    public String fetch_route_id_for_history(String userid,String trans_id) {
+        String[] args={userid,trans_id};
+        Cursor cursor=database.rawQuery("SELECT route_id FROM HISTORY_TRAVEL WHERE user_id = ? and trans_id = ?", args);
         String id = null;
         if(cursor.moveToFirst()){
             do
