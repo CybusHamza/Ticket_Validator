@@ -6,8 +6,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,6 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.editable;
+
 public class History extends AppCompatActivity {
     String routeId;
 
@@ -73,20 +84,31 @@ public class History extends AppCompatActivity {
     ArrayList<String> stringArrayList3=new ArrayList<String>();
     ArrayList<String> stringArrayList4=new ArrayList<String>();
     ArrayList<String> stringArrayList5 = new ArrayList<>();
+    EditText searchET;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         historyListView = (ListView) findViewById(R.id.history_list);
 
+        searchET = (EditText)findViewById(R.id.searchData);
+
+
+
+
+
         toolbar = (Toolbar) findViewById(R.id.app_bar_history);
         toolbar.setTitle("Your Trips");
+
+
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
+
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
@@ -284,5 +306,95 @@ public class History extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
-    }
+
+
+
+
+
+        searchET.addTextChangedListener(new TextWatcher() {
+                                            @Override
+                                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                            }
+
+                                            @Override
+                                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                                                String nameToSearch = searchET.getText().toString();
+                                                ArrayList<HistoryData> filteredLeaves = new ArrayList<HistoryData>();
+
+                                                for (HistoryData data : HistoryList) {
+                                                    if (data.getRouteStart().toLowerCase().contains(nameToSearch.toLowerCase()) || data.getDate().toLowerCase().equalsIgnoreCase(nameToSearch.toLowerCase())) {
+                                                        filteredLeaves.add(data);
+                                                    }
+
+
+                                                }
+                /*leaveDatas.clear();
+                leaveDatas.addAll(filteredLeaves);
+                leaves_adapter.notifyDataSetChanged();*/
+                                                adapter = new CustomHistoryListAdapter(History.this, filteredLeaves);
+                                                historyListView.setAdapter(adapter);
+
+                                            }                //     listView.setAdapter(leaves_adapter);
+
+
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu){
+//
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.mymenu,menu);
+//        MenuItem item = menu.findItem(R.id.custom_search_bar);
+//
+//        SearchView sv = (SearchView)item.getActionView();
+//        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//
+//
+//
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//
+//
+//
+//                return true;
+//            }
+//        });
+//
+//
+//
+//
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
 }

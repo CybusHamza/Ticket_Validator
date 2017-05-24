@@ -14,12 +14,42 @@
 
     </include>
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height= "wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="15dp"
+        android:weightSum="1">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/search"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        android:backgroundTint="#fff"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:id="@+id/searchData"
+        android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
+
     <ListView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/history_list"
     android:divider="#fff"
-    android:dividerHeight="5dp"
+    android:dividerHeight="0dp"
     >
 
 </ListView>

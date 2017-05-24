@@ -6,29 +6,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by AQSA SHaaPARR on 4/18/2017.
  */
 
+
+import android.widget.Filter;
+import android.widget.Filterable;
+
 public class CustomHistoryListAdapter extends BaseAdapter {
 
     List<HistoryData> historyDataList;
+    List<HistoryData> filteredHistoryData;
     Activity activity;
+    HistoryData mContacts;
+    Context mContext;
     private LayoutInflater inflater;
-
 
     public CustomHistoryListAdapter(Activity activity, List<HistoryData> historyDataListItems) {
         this.activity = activity;
         this.historyDataList = historyDataListItems;
     }
-
 
 
     @Override
@@ -49,36 +59,49 @@ public class CustomHistoryListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        if (inflater== null)
-        inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (inflater == null)
+            inflater = (LayoutInflater) activity
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (view == null)
             view = inflater.inflate(R.layout.row_history_layout, null);
 
 
-        TextView tvCharge = (TextView)view.findViewById(R.id.tvCharge);
-        TextView tvDestinition = (TextView)view.findViewById(R.id.tvDestinationPoint);
-        TextView tvStart = (TextView)view.findViewById(R.id.tvStartingPoint);
-        TextView tvPersons = (TextView)view.findViewById(R.id.tvNumberOfPersons);
-        TextView tvDate = (TextView)view.findViewById(R.id.tvDate);
-        TextView tvTime = (TextView)view.findViewById(R.id.tvTime);
-        TextView tvCpp = (TextView)view.findViewById(R.id.tvCPPP);
-        TextView tvTransId = (TextView)view.findViewById(R.id.tvTransId);
+        TextView tvCharge = (TextView) view.findViewById(R.id.tvCharge);
+        TextView tvDestinition = (TextView) view.findViewById(R.id.tvDestinationPoint);
+        TextView tvStart = (TextView) view.findViewById(R.id.tvStartingPoint);
+        TextView tvPersons = (TextView) view.findViewById(R.id.tvNumberOfPersons);
+        TextView tvDate = (TextView) view.findViewById(R.id.tvDate);
+        TextView tvTime = (TextView) view.findViewById(R.id.tvTime);
+        TextView tvCpp = (TextView) view.findViewById(R.id.tvCPPP);
+        TextView tvTransId = (TextView) view.findViewById(R.id.tvTransId);
 
         HistoryData historyData = historyDataList.get(i);
-        int totalFare =Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf( historyData.getPersonTravelling());
+        int totalFare = Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf(historyData.getPersonTravelling());
 
-       tvCharge.setText("$"+String.valueOf(totalFare));
-        tvCpp.setText("$"+historyData.getFare_Price());
-        tvDestinition.setText( historyData.getRoute_destinition());
-         tvStart.setText(historyData.getRouteStart());
+        tvCharge.setText("$" + String.valueOf(totalFare));
+        tvCpp.setText("$" + historyData.getFare_Price());
+        tvDestinition.setText(historyData.getRoute_destinition());
+        tvStart.setText(historyData.getRouteStart());
         tvPersons.setText(historyData.getPersonTravelling());
         tvDate.setText(historyData.getDate());
         tvTime.setText(historyData.getTime());
-tvTransId.setText(historyData.getTrans_id());
+        tvTransId.setText(historyData.getTrans_id());
 
 
         return view;
     }
-}
+
+    //    @Override
+//    public Filter getFilter() {
+//        return null;
+//    }
+
+
+
+
+
+
+    }
+
+
