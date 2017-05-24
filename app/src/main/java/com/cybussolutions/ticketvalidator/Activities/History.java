@@ -251,7 +251,7 @@ public class History extends AppCompatActivity {
                                     hd.setTrans_id(stringArrayList5.get(i));
                                     // hd.setTime(jsonObject.get("time").toString());
 
-                               /* String dateNtime = String.valueOf("");
+                                /* String dateNtime = String.valueOf("");
                                 String date,time;
 
                                 String[] split = dateNtime.split(" ");
