@@ -1,8 +1,11 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,13 +81,18 @@ public class History extends AppCompatActivity {
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(5).withName("Logout");
     private DBManager dbManager;
-    ArrayList<String> stringArrayList=new ArrayList<String>();
-    ArrayList<String> stringArrayList1=new ArrayList<String>();
-    ArrayList<String> stringArrayList2=new ArrayList<String>();
-    ArrayList<String> stringArrayList3=new ArrayList<String>();
-    ArrayList<String> stringArrayList4=new ArrayList<String>();
+    ArrayList<String> routeIds=new ArrayList<String>();
+    ArrayList<String> userIds=new ArrayList<String>();
+    ArrayList<String> personTraveling=new ArrayList<String>();
+    ArrayList<String> transactionIds=new ArrayList<String>();
+    ArrayList<String> dateAdded=new ArrayList<String>();
+    ArrayList<String> dateModified=new ArrayList<String>();
     ArrayList<String> stringArrayList5 = new ArrayList<>();
     EditText searchET;
+
+    String routeIdLive,transactionIdLive,personTravelingLive,dateAddedLive,dateModifiedLive;
+    String userEmail,userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +102,9 @@ public class History extends AppCompatActivity {
         searchET = (EditText)findViewById(R.id.searchData);
 
 
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userEmail=preferences.getString("UserEmail",null);
+        userName=preferences.getString("name",null);
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_history);
@@ -112,7 +122,7 @@ public class History extends AppCompatActivity {
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -172,142 +182,27 @@ public class History extends AppCompatActivity {
                     }
 
                 }).build();
-
-        final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
-
-        StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-            loading.dismiss();
-          //  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
-
-                try {
-                    JSONArray array = new JSONArray(response);
-                    String s = Integer.toString(array.length());
-
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("TotalTrips",s);
-                    editor.apply();
-
-
-
-                    for (int i=0; i < array.length(); i++) {
-
-                        JSONObject jsonObject = new JSONObject(array.getString(i));
-
-                        HistoryData hd = new HistoryData();
-                        hd.setDate(jsonObject.get("route_updated_date").toString());
-                        hd.setFare_Price(jsonObject.get("Fare_price").toString());
-                        hd.setPersonTravelling(jsonObject.get("person_travling").toString());
-                        hd.setRoute_destinition(jsonObject.get("rout_destination").toString());
-                        hd.setTrans_id(jsonObject.get("trans_id").toString());
-                       // hd.setTime(jsonObject.get("time").toString());
-
-                        String dateNtime = String.valueOf(jsonObject.get("route_added_date"));
-                        String date,time;
-
-                        String[] split = dateNtime.split(" ");
-                        date=split[0];
-                        time= split[1];
-                        hd.setTime(time);
-                        hd.setDate(date);
-                      //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
-                        hd.setRouteStart(jsonObject.getString("rout_start").toString());
-
-//
-//                        b.setBrandName(jsonObject.getString("brand_name"));
-//                        b.setId(jsonObject.getString("email"));
-//                        b.setUrl(jsonObject.getString("brand_logo"));
-
-
-                        HistoryList.add(hd);
-                        // movieList.add(b);
-
-
-                    }
-                }
-
-                // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                adapter = new CustomHistoryListAdapter(History.this,HistoryList);
-                historyListView.setAdapter(adapter);
+        if(isNetworkAvailable()) {
+            dbManager = new DBManager(History.this);
+            dbManager.open();
+            transactionIds=dbManager.fetch_history_trans_id_for_live();
+            for(int i=0;i<transactionIds.size();i++) {
+                transactionIdLive=transactionIds.get(i);
+                routeIdLive = dbManager.fetch_route_id_for_live(transactionIds.get(i));
+                personTravelingLive=dbManager.fetch_person_traveling_for_live(transactionIdLive);
+                dateAddedLive=dbManager.fetch_date_added_for_live(transactionIdLive);
+                insertIntoTravelHistory();
+             //  Toast.makeText(getApplicationContext(),transactionIds.get(i).toString(),Toast.LENGTH_LONG).show();
             }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        dbManager = new DBManager(History.this);
-                        dbManager.open();
-                        loading.dismiss();
-                        String message = null;
-                        if (error instanceof NetworkError) {
-                            message = "Cannot connect to Internet...Please check your connection!";
-                          //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            getHistory();
+
+        }else {
+            getHistory();
+            // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
 
 
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
-                            String userid = preferences.getString("id","");
 
-                            stringArrayList5= dbManager.fetch_history_trans_id(userid);
-
-
-                            if (stringArrayList5.size()>0) {
-                                for (int i = 0; i < stringArrayList5.size(); i++) {
-                                    HistoryData hd = new HistoryData();
-                                    String stringArrayList=dbManager.fetch_history_table(userid,stringArrayList5.get(i));
-                                    String stringArrayList1=dbManager.fetch_history_table_date(userid);
-                                    routeId=dbManager.fetch_route_id_for_history(userid,stringArrayList5.get(i));
-                                    String stringArrayList2=dbManager.h_fetch_route_table_start(routeId);
-                                    String stringArrayList3=dbManager.h_fetch_route_table_dest(routeId);
-                                    String stringArrayList4=dbManager.h_fetch_route_fare_price(routeId);
-
-                                    hd.setDate(stringArrayList1);
-                                    hd.setFare_Price(stringArrayList4);
-                                    hd.setPersonTravelling(stringArrayList);
-                                    hd.setRoute_destinition(stringArrayList3);
-                                    hd.setTrans_id(stringArrayList5.get(i));
-                                    // hd.setTime(jsonObject.get("time").toString());
-
-                                /* String dateNtime = String.valueOf("");
-                                String date,time;
-
-                                String[] split = dateNtime.split(" ");
-                                date=split[0];
-                                time= split[1];*/
-                                    hd.setTime("");
-                                    //hd.setDate("");
-                                    //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
-                                    hd.setRouteStart(stringArrayList2);
-                                    HistoryList.add(hd);
-                                }
-                            }else {
-                                Toast.makeText(getApplicationContext(),"No previous history found",Toast.LENGTH_LONG).show();
-                            }
-
-                            adapter = new CustomHistoryListAdapter(History.this,HistoryList);
-                            historyListView.setAdapter(adapter);
-                        }
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
-                String userid = preferences.getString("id","");
-                map.put("userid",userid);
-                return map;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(request);
-
-
+        }
 
 
 
@@ -397,4 +292,198 @@ public class History extends AppCompatActivity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void getHistory(){
+        final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                loading.dismiss();
+                //  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+
+                try {
+                    JSONArray array = new JSONArray(response);
+                    String s = Integer.toString(array.length());
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("TotalTrips", s);
+                    editor.apply();
+
+                    for (int i = 0; i < array.length(); i++) {
+
+                        JSONObject jsonObject = new JSONObject(array.getString(i));
+
+                        HistoryData hd = new HistoryData();
+                        hd.setDate(jsonObject.get("route_updated_date").toString());
+                        hd.setFare_Price(jsonObject.get("Fare_price").toString());
+                        hd.setPersonTravelling(jsonObject.get("person_travling").toString());
+                        hd.setRoute_destinition(jsonObject.get("rout_destination").toString());
+                        hd.setTrans_id(jsonObject.get("trans_id").toString());
+                        // hd.setTime(jsonObject.get("time").toString());
+
+                        String dateNtime = String.valueOf(jsonObject.get("route_added_date"));
+                        String date, time;
+
+                        String[] split = dateNtime.split(" ");
+                        date = split[0];
+                        time = split[1];
+                        hd.setTime(time);
+                        hd.setDate(date);
+                        //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
+                        hd.setRouteStart(jsonObject.getString("rout_start").toString());
+
+//
+//                        b.setBrandName(jsonObject.getString("brand_name"));
+//                        b.setId(jsonObject.getString("email"));
+//                        b.setUrl(jsonObject.getString("brand_logo"));
+
+
+                        HistoryList.add(hd);
+                        // movieList.add(b);
+
+
+                    }
+                }
+
+                // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter = new CustomHistoryListAdapter(History.this, HistoryList);
+                historyListView.setAdapter(adapter);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dbManager = new DBManager(History.this);
+                        dbManager.open();
+                        loading.dismiss();
+                        String message = null;
+                        if (error instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
+                            String userid = preferences.getString("id", "");
+
+                            stringArrayList5 = dbManager.fetch_history_trans_id(userid);
+                            String s = Integer.toString(stringArrayList5.size());
+
+                            SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences.Editor editor = preferences1.edit();
+                            editor.putString("TotalTrips", s);
+                            editor.apply();
+
+
+                            if (stringArrayList5.size() > 0) {
+                                for (int i = 0; i < stringArrayList5.size(); i++) {
+                                    HistoryData hd = new HistoryData();
+                                    String stringArrayList = dbManager.fetch_history_table(userid, stringArrayList5.get(i));
+                                    String stringArrayList1 = dbManager.fetch_history_table_date(userid);
+                                    routeId = dbManager.fetch_route_id_for_history(userid, stringArrayList5.get(i));
+                                    String stringArrayList2 = dbManager.h_fetch_route_table_start(routeId);
+                                    String stringArrayList3 = dbManager.h_fetch_route_table_dest(routeId);
+                                    String stringArrayList4 = dbManager.h_fetch_route_fare_price(routeId);
+                                    hd.setDate(stringArrayList1);
+                                    hd.setFare_Price(stringArrayList4);
+                                    hd.setPersonTravelling(stringArrayList);
+                                    hd.setRoute_destinition(stringArrayList3);
+                                    hd.setTrans_id(stringArrayList5.get(i));
+                                    // hd.setTime(jsonObject.get("time").toString());
+
+                                        /* String dateNtime = String.valueOf("");
+                                        String date,time;
+
+                                        String[] split = dateNtime.split(" ");
+                                        date=split[0];
+                                     time= split[1];*/
+                                    hd.setTime("");
+                                    //hd.setDate("");
+                                    //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
+                                    hd.setRouteStart(stringArrayList2);
+                                    HistoryList.add(hd);
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No previous history found", Toast.LENGTH_LONG).show();
+                            }
+
+                            adapter = new CustomHistoryListAdapter(History.this, HistoryList);
+                            historyListView.setAdapter(adapter);
+                        }
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
+                String userid = preferences.getString("id", "");
+                map.put("userid", userid);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
+    }
+    private void insertIntoTravelHistory(){
+        final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.INSERT_TRAVEL_HISTORY, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                loading.dismiss();
+                dbManager = new DBManager(History.this);
+                dbManager.open();
+                dbManager.delete_history_data_local(transactionIdLive);
+                dbManager.delete_history_data_live(transactionIdLive);
+
+               // dbManager.delete_both_history_tables();
+                //getHistory();
+                  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dbManager = new DBManager(History.this);
+                        dbManager.open();
+                        loading.dismiss();
+                        String message = null;
+                        if (error instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
+                String userid = preferences.getString("id", "");
+                map.put("user_id", userid);
+                map.put("route_id",routeIdLive);
+                map.put("trans_id",transactionIdLive);
+                map.put("person_travling",personTravelingLive);
+                map.put("date_added",dateAddedLive);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
 }

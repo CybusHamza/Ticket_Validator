@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ import java.util.Map;
 
 public class MainScreen extends AppCompatActivity {
 
-
+    boolean doubleBackToExitPressedOnce = false;
     private DBManager dbManager;
 
     Toolbar toolbar;
@@ -80,7 +81,10 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
     ArrayList<String> stringArrayList,stringArrayList1;
-    String route_id;
+    String route_id,route_time;
+
+    String userEmail,userName;
+
 
 
     @Override
@@ -94,7 +98,6 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         dbManager.open();
 
         stringArrayList=dbManager.fetch_route_start();
-
 
 
 //        for (int i=2;i<stringArrayList.size()/3;i=i+2)
@@ -111,11 +114,13 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userEmail=preferences.getString("UserEmail",null);
+        userName=preferences.getString("name",null);
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -230,20 +235,19 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
 
 
                     route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
+                    route_time=dbManager.fetch_route_elapsed_time(from.getSelectedItem().toString(), to.getSelectedItem().toString());
                     Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
                     intent.putExtra("route_id", route_id.toString());
                     intent.putExtra("from", from.getSelectedItem().toString());
                     intent.putExtra("to", to.getSelectedItem().toString());
+                    intent.putExtra("time",route_time);
                     startActivity(intent);
                 }else {
                     Toast.makeText(getApplicationContext(),"Plz select your destination to proceed",Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-
         // Defined Array values to show in ListView
-
     }
 
     public class CustomOnItemSelectedListener_from implements AdapterView.OnItemSelectedListener {
@@ -441,6 +445,24 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         RequestQueue requestQueue = Volley.newRequestQueue(MainScreen.this);
         requestQueue.add(request);
 
+    }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 }

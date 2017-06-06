@@ -57,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:mtf_labelColor="#000"
+                app:mtf_image="@drawable/user"
                 app:mtf_openKeyboardOnFocus="true"
                 android:layout_marginTop="10dp">
 
@@ -73,6 +74,8 @@
                 android:layout_width="match_parent"
                 app:mtf_openKeyboardOnFocus="true"
                 android:layout_height="wrap_content"
+                app:mtf_image="@drawable/ic_email_black"
+
                 android:layout_below="@id/input_layout_first_name"
                 app:mtf_labelColor="#000"
                 android:layout_marginTop="10dp">
@@ -89,6 +92,7 @@
             <com.github.florent37.materialtextfield.MaterialTextField
                 android:id="@+id/input_layout_password"
                 app:mtf_labelColor="#000"
+                app:mtf_image="@drawable/password"
                 app:mtf_openKeyboardOnFocus="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,6 +113,7 @@
                 android:layout_width="match_parent"
                 app:mtf_openKeyboardOnFocus="true"
                 android:layout_height="wrap_content"
+                app:mtf_image="@drawable/password"
                 app:mtf_labelColor="#000"
                 android:layout_below="@id/input_layout_first_name"
                 android:layout_marginTop="10dp">
@@ -125,6 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:mtf_labelColor="#000"
+                app:mtf_image="@drawable/ic_phone_black"
                 android:layout_below="@id/input_layout_first_name"
                 android:layout_marginTop="10dp">
 

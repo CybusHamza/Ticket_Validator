@@ -117,12 +117,16 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 return;
             }
             if (phone_number.length() < 10 || phone_number.length() > 14) {
-                Toast.makeText(this, "Plz enter valid Phone Number", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please enter valid Phone Number", Toast.LENGTH_LONG).show();
                 return;
             }
 
             if(!email.matches(emailPattern)){
-                Toast.makeText(this, "Plz enter a valid Email", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please enter a valid Email", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(inputPassword.getText().toString().length()<8){
+                Toast.makeText(this, "Minimum password length should be 8 characters", Toast.LENGTH_LONG).show();
                 return;
             }
         }
@@ -136,15 +140,17 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onResponse(String Response) {
                         loading.dismiss();
+                        if (Response.trim().toString().equals("User already Registered with an this Email Adress")) {
+                            Toast.makeText(Signup_activity.this,"User already Registered with this Email Address",Toast.LENGTH_LONG).show();
+                        }
 
-                        if(!(Response.equals("")))
+                        else if(!(Response.equals("")))
                         {
                           //  Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
                             dbManager = new DBManager(Signup_activity.this);
                             dbManager.open();
                             try{
                                 JSONObject jsonObject = new  JSONObject(Response);
-                                jsonObject.get("userId");
                                 String id = jsonObject.get("userId").toString();
 //
 //                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -173,7 +179,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                                 startActivity(intent);
                                 finish();
                             }catch (Exception e){
-                                Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"There was an error",Toast.LENGTH_LONG).show();
                             }
                               //  dbManager.insert(first_name, last_name, email, phone_number);
                             //Cursor cursor=dbManager.fetch();

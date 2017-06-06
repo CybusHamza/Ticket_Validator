@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ public class Payment_Method extends AppCompatActivity {
     private ProgressDialog loading;
     String fare = "";
     String price;
+    boolean doubleBackToExitPressedOnce = false;
 
     Drawer result;
 
@@ -77,13 +79,17 @@ public class Payment_Method extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
 
 
+
 SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
+     String userEmail,userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment__method);
-
+        SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userEmail=pref1.getString("UserEmail",null);
+        userName=pref1.getString("name",null);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Proceed To Payment");
@@ -97,7 +103,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -191,7 +197,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
                 prefEditor.apply();
 
 
-                hiddeniv.setImageDrawable(getDrawable(R.drawable.icon_qr));
+            hiddeniv.setImageDrawable(getDrawable(R.drawable.icon_qr));
             hiddenTv.setText("QR Code");
             hidden.setAlpha(1);
 
@@ -408,4 +414,22 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
 //        requestQueue.add(request);
 //
 //    }
+@Override
+public void onBackPressed() {
+    if (doubleBackToExitPressedOnce) {
+        super.onBackPressed();
+        return;
+    }
+
+    this.doubleBackToExitPressedOnce = true;
+    Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+    new Handler().postDelayed(new Runnable() {
+
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce=false;
+        }
+    }, 2000);
+}
 }

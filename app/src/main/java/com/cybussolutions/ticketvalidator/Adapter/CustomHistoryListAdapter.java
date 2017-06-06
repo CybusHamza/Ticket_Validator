@@ -88,7 +88,6 @@ public class CustomHistoryListAdapter extends BaseAdapter {
         tvTime.setText(historyData.getTime());
         tvTransId.setText(historyData.getTrans_id());
 
-
         return view;
     }
 

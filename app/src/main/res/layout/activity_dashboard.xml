@@ -12,7 +12,7 @@
     </include>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:background="@drawable/background"
         android:layout_height="match_parent">
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:text="5"
+                android:text="0"
                 android:id="@+id/tvTotalTrips"
                 android:textColor="#fff"
                 android:layout_marginRight="20dp"
@@ -66,6 +66,7 @@ BALANCE"
                 android:textSize="30sp"
                 />
             <TextView
+                android:id="@+id/tvMWBalance"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:text="$30"
@@ -93,7 +94,7 @@ BALANCE"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:id="@+id/pay"
+                android:id="@+id/btnRecharge"
                 />
             <Button
                 android:layout_width="wrap_content"
