@@ -75,13 +75,20 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
 
-        Button button =(Button)findViewById(R.id.btnCnfrm);
-        button.setOnClickListener(this);
+      //  Button button =(Button)findViewById(R.id.btnCnfrm);
+       // button.setOnClickListener(this);
 
-       // Intent intent = getIntent();
+        //Intent intent = getIntent();
+        Intent i=getIntent();
+        route_id=i.getStringExtra("route_id");
+        user_id=i.getStringExtra("user_id");
+        number_of_persons=i.getStringExtra("person_traveling");
+        remaining_balance=i.getStringExtra("remaining_balance");
         //qr_string
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
           Qrsting=  preferences.getString("qr_string","");
+
+
        // Qrsting = intent.getStringExtra("Qr_string");
 
     }
@@ -96,12 +103,12 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                 break;
 
 
-            case R.id.btnCnfrm:
+           /* case R.id.btnCnfrm:
 
                 Intent intent = new Intent(Qr_Activity.this,Confirmation.class);
                 startActivity(intent);
                 finish();
-                break;
+                break;*/
             // More buttons go here (if any) ...
 
         }
@@ -124,7 +131,21 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                         int height = point.y;
                         int smallerDimension = width < height ? width : height;
                         smallerDimension = smallerDimension * 3/4;
-
+                        Random num = new Random();
+                        int rnum = num.nextInt(999);
+                        if (rnum<0){
+                            rnum = rnum*-1;
+                        }
+                        Calendar cal = Calendar.getInstance();
+                        String tym =String.valueOf( cal.getTimeInMillis());
+                        final String confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        String from= preferences.getString("FROM","");
+                        String to =preferences.getString("TO","");
+                        String name=preferences.getString("name","");
+                        String number=preferences.getString("number","");
+                        ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
+                        Qrsting=Qrsting+","+route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number;
                         //Encode with a QR Code image
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(Qrsting,
                                 null,
@@ -143,33 +164,18 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                         dateFormatter.setLenient(false);
                         Date today = new Date();
                         String s = dateFormatter.format(today);
-                        Intent i=getIntent();
-                        route_id=i.getStringExtra("route_id");
-                        user_id=i.getStringExtra("user_id");
-                        number_of_persons=i.getStringExtra("person_traveling");
-                        remaining_balance=i.getStringExtra("remaining_balance");
+
                         if (number_of_persons==null || number_of_persons.equals("") || number_of_persons==""){
                             number_of_persons="1";
                         }
-                        Random num = new Random();
-                        int rnum = num.nextInt(999);
-
-
-                        if (rnum<0){
-
-                            rnum = rnum*-1;
-
-
-                        }
-                        Calendar cal = Calendar.getInstance();
-                        String tym =String.valueOf( cal.getTimeInMillis());
-                        final String confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
 
                         Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
 
                         dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
                         dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,s,"0000-00-00");
+                        dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,s,"0000-00-00");
+
                         dbManager.update_customer_balance(user_id,remaining_balance);
 
 
@@ -212,9 +218,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 //                                                editor.putString("id", id);
 //                                                editor.commit();
 //                                                startService(new Intent(Signup_activity.this, HelloService.class));
-//                                                Intent intent = new Intent(Signup_activity.this,Login_Activity.class);
-//                                                startActivity(intent);
-                                                finish();
+
                                             }catch (Exception e){
                                                 Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
                                             }
@@ -238,7 +242,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                                 String message = null;
                                 if (e instanceof NetworkError) {
                                     message = "Cannot connect to Internet...Please check your connection!";
-                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                 }
                                // loading.dismiss();
                             }
@@ -259,16 +263,6 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
                         RequestQueue requestQueue = Volley.newRequestQueue(Qr_Activity.this);
                         requestQueue.add(strreq);
-
-
-
-
-
-
-
-
-
-
 
 
                     }

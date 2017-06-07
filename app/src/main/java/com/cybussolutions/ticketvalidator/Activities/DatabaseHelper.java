@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FARE = "FARE";
     public static final String CUSTOMER_ACCOUNTS = "CUSTOMER_ACCOUNTS";
     public static final String HISTORY_TRAVEL = "HISTORY_TRAVEL";
+    public static final String HISTORY_TRAVEL_LIVE="HISTORY_TRAVEL_LIVE";
 
     // Table columns SIGNUP.
     public static final String _ID = "customer_id";
@@ -61,6 +62,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String H_DATE_ADDED = "date_added";
     public static final String H_DATE_MODIFIED = "date_modified";
 
+
+// table columns history travel live////
+    public static final String H_LIVE_ID = "id";
+    public static final String H_live_ROUTE_ID = "route_id";
+    public static final String H_live_USER_ID = "user_id";
+    public static final String H_live_TRANS_ID = "trans_id";
+    public static final String H_live_PERSON_TRAVELING = "person_travling";
+    public static final String H_live_DATE_ADDED = "date_added";
+    public static final String H_live_DATE_MODIFIED = "date_modified";
+
     // Database Information
     static final String DB_NAME = "TICKET_VALIDATOR.DB";
 
@@ -85,6 +96,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_HISTORY_TRAVEL = "create table " + HISTORY_TRAVEL + "(" + H_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_ROUTE_ID + " TEXT, "  + H_TRANS_ID + " TEXT, "+ H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
 
+    private static final String CREATE_TABLE_HISTORY_TRAVEL_LIVE = "create table " + HISTORY_TRAVEL_LIVE + "(" + H_LIVE_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_live_ROUTE_ID + " TEXT, "  + H_live_TRANS_ID + " TEXT, "+ H_live_USER_ID + " TEXT," + H_live_PERSON_TRAVELING + " TEXT," + H_live_DATE_ADDED + " TEXT,"+ H_live_DATE_MODIFIED + " TEXT);";
+
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -97,6 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_FARE);
         db.execSQL(CREATE_TABLE_CUSTOMER_ACCOUNTS);
         db.execSQL(CREATE_TABLE_HISTORY_TRAVEL);
+        db.execSQL(CREATE_TABLE_HISTORY_TRAVEL_LIVE);
     }
 
     @Override
@@ -106,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + FARE);
         db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + HISTORY_TRAVEL);
+        db.execSQL("DROP TABLE IF EXISTS" + HISTORY_TRAVEL_LIVE);
         onCreate(db);
     }
 }

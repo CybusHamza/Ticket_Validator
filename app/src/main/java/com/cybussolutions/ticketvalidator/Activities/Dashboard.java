@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,16 +27,19 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class Dashboard extends AppCompatActivity {
 
+    boolean doubleBackToExitPressedOnce = false;
+
     Toolbar toolbar;
-    Button btnStartTrip;
-    TextView tvTotalTrips;
-    String totalTrips;
+    Button btnStartTrip,btnRecharge;
+    TextView tvTotalTrips,tvMWBalance;
+    String totalTrips,MWBalance;
 
     SharedPreferences prefs = null;
     SharedPreferences.Editor editor;
 
 
     Drawer result;
+    String userEmail,userName,customer_id,customer_total_balance;
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
@@ -51,11 +55,14 @@ public class Dashboard extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
+    private DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        dbManager = new DBManager(Dashboard.this);
+        dbManager.open();
         toolbar = (Toolbar)findViewById(R.id.app_bar_dashboard);
         toolbar.setTitle("Dashboard");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -67,12 +74,19 @@ public class Dashboard extends AppCompatActivity {
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        totalTrips = preferences.getString("TotalTrips","");
+        totalTrips = preferences.getString("TotalTrips","0");
+        userEmail=preferences.getString("UserEmail",null);
+        userName=preferences.getString("name",null);
+        customer_id=preferences.getString("id",null);
+        customer_total_balance=dbManager.fetch_customer_balance(customer_id);
 
 
         tvTotalTrips = (TextView)findViewById(R.id.tvTotalTrips);
+        tvMWBalance= (TextView) findViewById(R.id.tvMWBalance);
         tvTotalTrips.setText(totalTrips);
+        tvMWBalance.setText("$"+customer_total_balance);
         btnStartTrip = (Button)findViewById(R.id.btnStartTrip);
+        btnRecharge= (Button) findViewById(R.id.btnRecharge);
         btnStartTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,10 +97,22 @@ public class Dashboard extends AppCompatActivity {
 
             }
         });
+        btnRecharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable()) {
+                    dbManager.delete_route_balance_fare_table();
+                    startService(new Intent(Dashboard.this, HelloService.class));
+                }else {
+                    Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -160,5 +186,23 @@ public class Dashboard extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }

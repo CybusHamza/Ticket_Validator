@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import java.util.Map;
 public class HelloService extends Service {
 
     private DBManager dbManager;
+    ArrayList<String> transId = new ArrayList<>();
 
     String id,route_code,route_name,route_start,route_destination,route_added_date,time,route_added_by,route_updated_date,route_updated_by;
     String fare_id,fare_route,fare_price,fare_type,added_by,update_by,date_added,date_updated;
@@ -51,7 +53,7 @@ public class HelloService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Let it continue running until it is stopped.
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(HelloService.this);
 
         customer_id=preferences.getString("id",null);
@@ -137,8 +139,15 @@ public class HelloService extends Service {
                         h_date_added=object.getString("date_added");
                         h_date_modified=object.getString("date_modified");
                         h_trans_data = object.getString("trans_id");
-                        dbManager.insert_into_history_travel(h_route_id,h_trans_data,h_user_id,h_person_travling,h_date_added,h_date_modified);
-                    }
+
+                        /*transId=dbManager.fetch_history_trans_id(h_user_id);
+                        if(transId.size()>0) {
+                            if ((h_trans_data!=transId.get(i)) || !h_trans_data.equals(transId.get(i)))
+                                dbManager.insert_into_history_travel(h_route_id, h_trans_data, h_user_id, h_person_travling, h_date_added, h_date_modified);
+                        }else {*/
+                        dbManager.insert_into_history_travel(h_route_id, h_trans_data, h_user_id, h_person_travling, h_date_added, h_date_modified);
+                       // }
+                        }
 
                 } catch (JSONException e) {
                     e.printStackTrace();

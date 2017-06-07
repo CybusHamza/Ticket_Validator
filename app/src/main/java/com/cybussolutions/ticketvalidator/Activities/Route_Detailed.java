@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.style.EasyEditSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class Route_Detailed extends AppCompatActivity {
 
-    String rates;
+    String rates,fareType;
 
     Toolbar toolbar;
     int s;
@@ -37,12 +38,15 @@ public class Route_Detailed extends AppCompatActivity {
     TextView tvRoute,Tfiar,tvPrice,tvTime;
     String KEY_FROM= "from";
     String KEY_TO = "to";
-    String to,from , price,route_id;
+    String to,from , price,route_id,route_time;
    // TextView Tdistance;
     Button proceed;
     ProgressBar progressBar;
 
     Drawer result;
+
+    String userEmail,userName;
+
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
@@ -74,6 +78,8 @@ public class Route_Detailed extends AppCompatActivity {
         dbManager.open();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
+        userEmail=preferences.getString("UserEmail",null);
+        userName=preferences.getString("name",null);
 
         customer_id=preferences.getString("id",null);
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
@@ -82,6 +88,8 @@ public class Route_Detailed extends AppCompatActivity {
         toolbar.setTitle("Proceed To Payment");
         setSupportActionBar(toolbar);
         EtnumberOfPersons = (EditText)findViewById(R.id.etNumberOfPersons);
+
+        numOfPersons = EtnumberOfPersons.getText().toString();
         EtnumberOfPersons.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -95,7 +103,11 @@ public class Route_Detailed extends AppCompatActivity {
                     if(charSequence.length()<1)
                         numOfPersons="1";
                     int result = Integer.valueOf(numOfPersons) * Integer.valueOf(rates);
-                    tvTarrif.setText(String.valueOf(result));
+                    if(result!=0) {
+                        tvTarrif.setText(String.valueOf(result));
+                    }else {
+                        EtnumberOfPersons.setText("");
+                    }
                 }else {
                     tvPrice.setText("No rates defined");
                     Toast.makeText(getApplicationContext(),"No rates defined for this route",Toast.LENGTH_LONG).show();
@@ -108,14 +120,14 @@ public class Route_Detailed extends AppCompatActivity {
 
             }
         });
-        numOfPersons = EtnumberOfPersons.getText().toString();
+
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -196,18 +208,21 @@ public class Route_Detailed extends AppCompatActivity {
         route_id=intent.getStringExtra("route_id");
         to = intent.getStringExtra("to");
         from = intent.getStringExtra("from");
+        route_time=intent.getStringExtra("time");
       //  tvRoute.setText("From " +from + " To " + to );
 
         fiar = intent.getStringExtra("route_fiar");
         distance = intent.getStringExtra("route_distance");
 
         rates=dbManager.fetch_fare(route_id);
+        fareType=dbManager.fetch_fare_type(route_id);
         if(rates==null){
             tvPrice.setText("no rates defined");
             Toast.makeText(getApplicationContext(),"no rates defined",Toast.LENGTH_LONG).show();
         }else {
             tvPrice.setText(rates.toString());
             tvTarrif.setText(rates.toString());
+            tvTime.setText(route_time);
         }
 
 
@@ -300,26 +315,16 @@ public class Route_Detailed extends AppCompatActivity {
                             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
                             SharedPreferences.Editor prefEditor = pref.edit();
                             String id = pref.getString("id", "");
-                            String f = id + "," + fare;
-
+                            String f = id + "," + fare+","+fareType;
                             prefEditor.putString("qr_string", f);
-
                             prefEditor.apply();
-
-                            if(!EtnumberOfPersons.getText().equals("")) {
 
                                 SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                                 SharedPreferences.Editor editor = preferences1.edit();
                                 editor.putString("NOP",EtnumberOfPersons.getText().toString());
                                 editor.putString("balance",String.valueOf(remainingbalance));
-
                                 editor.putString("fare",String.valueOf(fare));
-
-
                                 editor.apply();
-
-
-
 
                                 Intent intent = new Intent(Route_Detailed.this, Qr_Activity.class);
                                 intent.putExtra("route_id", route_id);
@@ -328,9 +333,6 @@ public class Route_Detailed extends AppCompatActivity {
                                 intent.putExtra("remaining_balance", String.valueOf(remainingbalance));
                                 startActivity(intent);
                                 finish();
-                            }else {
-                                Toast.makeText(getApplicationContext(),"Plz enter no. of persons to proceed",Toast.LENGTH_LONG).show();
-                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "your balance is not enough to proceed", Toast.LENGTH_LONG).show();
                         }

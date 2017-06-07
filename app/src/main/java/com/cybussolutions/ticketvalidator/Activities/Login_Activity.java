@@ -116,8 +116,12 @@ public class Login_Activity extends AppCompatActivity {
         public void onResponse(String response) {
 
             loading.dismiss();
+            String checkCredentials=response.trim().toString();
+            if(checkCredentials.equals("\"Incorrect Information\"")){
+                Toast.makeText(Login_Activity.this, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
+            }
 
-            if (!(response.equals("\t\r\n\r\n\tfalse"))) {
+            else if (!(response.equals("\t\r\n\r\n\tfalse"))) {
                 try {
                     JSONArray jsonResponse = new JSONArray(response);
                     for (int i = 0; i <= jsonResponse.length(); i++) {
@@ -130,7 +134,7 @@ public class Login_Activity extends AppCompatActivity {
                         String pro_pic = jsonObject.get("profile_pic").toString();
 
 
-                        Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
 
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -167,7 +171,7 @@ public class Login_Activity extends AppCompatActivity {
                 }
 
             } else {
-                Toast.makeText(Login_Activity.this, "Incorrect User name or Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login_Activity.this, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -203,7 +207,7 @@ public class Login_Activity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else {
-                    Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Incorrect Email or password", Toast.LENGTH_LONG).show();
                 }
                // dbManager.insert("3","rizwan", "jillani","demo456","03134969548","1","rizwan@gmail.com","1");
                 //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
@@ -226,7 +230,6 @@ public class Login_Activity extends AppCompatActivity {
         requestQueue.add(request);
 
     }
-
         });
 
     }

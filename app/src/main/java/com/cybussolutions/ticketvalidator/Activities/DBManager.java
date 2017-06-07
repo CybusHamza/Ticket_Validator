@@ -97,6 +97,18 @@ public class DBManager {
         contentValue.put(DatabaseHelper.H_DATE_MODIFIED, h_date_modified);
         long result = database.insert(DatabaseHelper.HISTORY_TRAVEL, null, contentValue);
     }
+    public void insert_into_history_travel_live(String h_route_id,String h_trans_data,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
+        ContentValues contentValue = new ContentValues();
+
+        // contentValue.put(DatabaseHelper.H_ID, h_id);
+        contentValue.put(DatabaseHelper.H_live_ROUTE_ID, h_route_id);
+        contentValue.put(DatabaseHelper.H_live_TRANS_ID,h_trans_data);
+        contentValue.put(DatabaseHelper.H_live_USER_ID, h_user_id);
+        contentValue.put(DatabaseHelper.H_live_PERSON_TRAVELING, h_person_traveling);
+        contentValue.put(DatabaseHelper.H_live_DATE_ADDED, h_date_added);
+        contentValue.put(DatabaseHelper.H_live_DATE_MODIFIED, h_date_modified);
+        long result = database.insert(DatabaseHelper.HISTORY_TRAVEL_LIVE, null, contentValue);
+    }
 
     public String[] fetch() {
 
@@ -250,6 +262,18 @@ public class DBManager {
         }
         return id;
     }
+    public String fetch_route_elapsed_time(String route_start,String route_destination) {
+        String[] args={route_start,route_destination};
+        Cursor cursor=database.rawQuery("SELECT time FROM ROUTES WHERE route_start = ? and route_destination = ?", args);
+        String time = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                time=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return time;
+    }
     public String fetch_customer_balance(String customer_id) {
         String[] args={customer_id};
         Cursor cursor=database.rawQuery("SELECT customer_balance FROM CUSTOMER_ACCOUNTS WHERE customer_id = "+customer_id,null);
@@ -276,7 +300,19 @@ public class DBManager {
         }
         return price;
     }
+    public String fetch_fare_type(String route_id) {
+        String[] args={route_id};
+        Cursor cursor=database.rawQuery("SELECT Fare_type FROM FARE WHERE Fare_route = "+route_id, null);
+        String fare_type = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                fare_type=cursor.getString(0);
 
+            } while (cursor.moveToNext());
+        }
+        return fare_type;
+    }
     public String fetch_history_table(String user_id,String trans_id) {
         String[] args={user_id,trans_id};
         Cursor cursor=database.rawQuery("SELECT person_travling FROM HISTORY_TRAVEL WHERE user_id = ? and trans_id = ?", args);
@@ -310,7 +346,7 @@ public class DBManager {
 
     public ArrayList<String> fetch_history_trans_id(String user_id){
         String[] args = {user_id};
-        Cursor cursor = database.rawQuery("SELECT trans_id FROM HISTORY_TRAVEL WHERE user_id = ?",args);
+        Cursor cursor = database.rawQuery("SELECT DISTINCT trans_id FROM HISTORY_TRAVEL WHERE user_id = ?",args);
         ArrayList<String> stringArrayList = new ArrayList<>();
         if (cursor.moveToFirst()){
             do {
@@ -320,8 +356,60 @@ public class DBManager {
         }
         return  stringArrayList;
 
-
     }
+    public ArrayList<String> fetch_history_trans_id_for_live(){
+        String[] columns = new String[] { DatabaseHelper.H_live_TRANS_ID};
+        Cursor cursor = database.query(DatabaseHelper.HISTORY_TRAVEL_LIVE, columns, null, null, null, null, null);
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                stringArrayList.add(cursor.getString(0));
+            }
+            while (cursor.moveToNext());
+        }
+        return  stringArrayList;
+    }
+
+    public String fetch_route_id_for_live(String trans_id) {
+
+        String[] args={trans_id};
+        Cursor cursor=database.rawQuery("SELECT route_id FROM HISTORY_TRAVEL_LIVE WHERE trans_id = ?", args);
+        String id = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                id=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return id;
+    }
+    public String fetch_person_traveling_for_live(String trans_id) {
+
+        String[] args={trans_id};
+        Cursor cursor=database.rawQuery("SELECT person_travling FROM HISTORY_TRAVEL_LIVE WHERE trans_id = ?", args);
+        String person_traveling = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                person_traveling=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return person_traveling;
+    }
+    public String fetch_date_added_for_live(String trans_id) {
+
+        String[] args={trans_id};
+        Cursor cursor=database.rawQuery("SELECT date_added FROM HISTORY_TRAVEL_LIVE WHERE trans_id = ?", args);
+        String date_added = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                date_added=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return date_added;
+    }
+
 
 
     public int update(long _id, String first_name, String last_name,String email,String phone_number) {
@@ -350,6 +438,24 @@ public class DBManager {
 
     public void delete(long _id) {
         database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper._ID + "=" + _id, null);
+    }
+    public void delete_route_balance_fare_table() {
+        database.delete(DatabaseHelper.ROUTES,null, null);
+        database.delete(DatabaseHelper.CUSTOMER_ACCOUNTS,null, null);
+        database.delete(DatabaseHelper.FARE,null, null);
+    }
+    public void delete_both_history_tables(){
+        database.delete(DatabaseHelper.HISTORY_TRAVEL,null,null);
+        database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE,null,null);
+    }
+
+    public void delete_history_data_local(String trans_id){
+      long result=  database.delete(DatabaseHelper.HISTORY_TRAVEL, "trans_id="+trans_id, null);
+
+    }
+    public void delete_history_data_live(String trans_id){
+       long result= database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, "trans_id="+trans_id, null);
+
     }
 
 }

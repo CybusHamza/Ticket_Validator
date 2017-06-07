@@ -2,6 +2,7 @@ package com.cybussolutions.ticketvalidator.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ import java.util.Map;
 public class Feedback extends AppCompatActivity {
 
 
-
+    boolean doubleBackToExitPressedOnce = false;
     EditText etEmail,etFeedback;
     RatingBar rb;
 
@@ -270,7 +271,24 @@ sendFeedback = (Button)findViewById(R.id.buttonFeedback);
         requestQueue.add(request);
 
     }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
 
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 
 }
