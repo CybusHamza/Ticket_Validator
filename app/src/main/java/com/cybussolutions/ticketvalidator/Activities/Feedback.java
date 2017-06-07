@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator;
+package com.cybussolutions.ticketvalidator.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.StringBuilderPrinter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cybussolutions.ticketvalidator.Activities.Dashboard;
-import com.cybussolutions.ticketvalidator.Activities.History;
-import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
-import com.cybussolutions.ticketvalidator.Activities.MainScreen;
-import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
-import com.cybussolutions.ticketvalidator.Activities.Profile_Detailed;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
+import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;

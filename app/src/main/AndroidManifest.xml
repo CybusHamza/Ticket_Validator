@@ -23,7 +23,7 @@
         <activity android:name=".Activities.Qr_Activity" />
         <activity android:name=".Activities.Login_Activity" />
         <activity android:name=".Activities.Signup_activity" />
-        <activity android:name=".Splash">
+        <activity android:name=".Activities.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,11 +34,11 @@
         <service android:name=".Activities.HelloService" />
 
         <activity android:name=".Activities.History" />
-        <activity android:name=".Profile" />
+        <activity android:name=".Activities.Profile" />
         <activity android:name=".Activities.PaymentMethod_extended" />
         <activity android:name=".Activities.Dashboard" />
         <activity android:name=".Activities.Profile_Detailed" />
-        <activity android:name=".Feedback" />
+        <activity android:name=".Activities.Feedback" />
         <activity android:name=".Activities.Confirmation"></activity>
     </application>
 

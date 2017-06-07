@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator;
+package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.cybussolutions.ticketvalidator.Network.End_Points;
+import com.cybussolutions.ticketvalidator.R;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -46,7 +46,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {

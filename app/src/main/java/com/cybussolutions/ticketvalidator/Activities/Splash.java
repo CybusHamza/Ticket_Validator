@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator;
+package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -6,14 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.cybussolutions.ticketvalidator.Activities.HelloService;
-import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
-import com.cybussolutions.ticketvalidator.Activities.MainScreen;
-import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
-import com.cybussolutions.ticketvalidator.Activities.Qr_Activity;
-import com.cybussolutions.ticketvalidator.Activities.Signup_activity;
+import com.cybussolutions.ticketvalidator.R;
 
 public class Splash extends AppCompatActivity {
 

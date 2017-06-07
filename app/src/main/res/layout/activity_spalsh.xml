@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="horizontal"
-    tools:context="com.cybussolutions.ticketvalidator.Splash">
+    tools:context=".Activities.Splash">
 
     <ImageView
         android:id="@+id/imageView"

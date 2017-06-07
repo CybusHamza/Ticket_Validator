@@ -7,7 +7,7 @@
     android:background="#fff"
 
     android:orientation="vertical"
-    tools:context="com.cybussolutions.ticketvalidator.Feedback">
+    tools:context=".Activities.Feedback">
 
     <include
         android:id="@+id/app_bar"
