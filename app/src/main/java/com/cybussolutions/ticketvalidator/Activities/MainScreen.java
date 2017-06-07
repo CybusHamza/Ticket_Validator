@@ -54,6 +54,7 @@ public class MainScreen extends AppCompatActivity {
     ArrayList<String> from_routes = new ArrayList<>();
     ArrayList<String> to_routes ;
     TextView txt;
+
     Spinner from,to;
     Button procedd;
     String fromLocation;
