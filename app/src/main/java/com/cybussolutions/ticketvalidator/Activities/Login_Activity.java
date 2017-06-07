@@ -230,7 +230,6 @@ public class Login_Activity extends AppCompatActivity {
         requestQueue.add(request);
 
     }
-
         });
 
     }

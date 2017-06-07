@@ -341,16 +341,11 @@ public class History extends AppCompatActivity {
                         //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
                         hd.setRouteStart(jsonObject.getString("rout_start").toString());
 
-//
 //                        b.setBrandName(jsonObject.getString("brand_name"));
 //                        b.setId(jsonObject.getString("email"));
 //                        b.setUrl(jsonObject.getString("brand_logo"));
-
-
                         HistoryList.add(hd);
                         // movieList.add(b);
-
-
                     }
                 }
 
@@ -373,7 +368,6 @@ public class History extends AppCompatActivity {
                         if (error instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please check your connection!";
                             //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
                             String userid = preferences.getString("id", "");
