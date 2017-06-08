@@ -76,7 +76,7 @@ public class Login_Activity extends AppCompatActivity {
         Boolean checkBoxSavedData = preferences.getBoolean("checkBoxRememberMe", false);
 
         if (checkBoxSavedData) {
-            Intent intent = new Intent(Login_Activity.this, MainScreen.class);
+            Intent intent = new Intent(Login_Activity.this, Dashboard.class);
             finish();
             startActivity(intent);
         }

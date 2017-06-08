@@ -2,13 +2,15 @@ package com.cybussolutions.ticketvalidator.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.style.EasyEditSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -26,6 +29,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 public class Route_Detailed extends AppCompatActivity {
 
@@ -46,6 +51,8 @@ public class Route_Detailed extends AppCompatActivity {
     Drawer result;
 
     String userEmail,userName;
+    private String url,profile_pic;
+    Bitmap[] bitmap1;
 
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
@@ -80,6 +87,7 @@ public class Route_Detailed extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
         userEmail=preferences.getString("UserEmail",null);
         userName=preferences.getString("name",null);
+        profile_pic=preferences.getString("pro_pic",null);
 
         customer_id=preferences.getString("id",null);
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
@@ -124,11 +132,33 @@ public class Route_Detailed extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        bitmap1 = new Bitmap[1];
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
+
+        Picasso.with(Route_Detailed.this)
+                .load(url)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        bitmap1[0] =bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                        Log.e("here","onBitmapFailed");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Log.e("here","onPrepareLoad");
+                    }
+                });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
-                .withProfileImagesVisible(false)
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(bitmap1[0]))
+                .withProfileImagesVisible(true)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
                             @Override
@@ -142,7 +172,7 @@ public class Route_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 

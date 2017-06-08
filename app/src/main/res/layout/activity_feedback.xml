@@ -7,7 +7,7 @@
     android:background="#fff"
 
     android:orientation="vertical"
-    tools:context=".Activities.Feedback">
+    tools:context=".Feedback">
 
     <include
         android:id="@+id/app_bar"

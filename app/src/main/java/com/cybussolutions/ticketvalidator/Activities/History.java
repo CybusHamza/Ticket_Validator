@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Adapter.CustomHistoryListAdapter;
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
@@ -71,6 +72,8 @@ public class History extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(5).withName("Logout");
+    SecondaryDrawerItem feedback = new SecondaryDrawerItem()
+            .withIdentifier(6).withName("Feedback");
     private DBManager dbManager;
     ArrayList<String> routeIds=new ArrayList<String>();
     ArrayList<String> userIds=new ArrayList<String>();
@@ -128,7 +131,7 @@ public class History extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -166,6 +169,12 @@ public class History extends AppCompatActivity {
                             startActivity(intent);
                             finish();
 
+                        }
+                        if (drawerItem==feedback){
+
+                            Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         return true;

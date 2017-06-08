@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -221,26 +222,32 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         procedd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!from.getSelectedItem().toString().equals("")|| !to.getSelectedItem().toString().equals("")) {
+                String check1=from.getSelectedItem().toString();
 
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("FROM",from.getSelectedItem().toString());
-                    editor.putString("TO",to.getSelectedItem().toString());
-                    editor.apply();
+                if(check1!=""&& check1!="<Select>") {
+                    String check2=to.getSelectedItem().toString();
+                    if(check2!=""&& check2!="<Select>") {
+
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("FROM", from.getSelectedItem().toString());
+                        editor.putString("TO", to.getSelectedItem().toString());
+                        editor.apply();
 
 
-
-                    route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
-                    route_time=dbManager.fetch_route_elapsed_time(from.getSelectedItem().toString(), to.getSelectedItem().toString());
-                    Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
-                    intent.putExtra("route_id", route_id.toString());
-                    intent.putExtra("from", from.getSelectedItem().toString());
-                    intent.putExtra("to", to.getSelectedItem().toString());
-                    intent.putExtra("time",route_time);
-                    startActivity(intent);
+                        route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
+                        route_time = dbManager.fetch_route_elapsed_time(from.getSelectedItem().toString(), to.getSelectedItem().toString());
+                        Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
+                        intent.putExtra("route_id", route_id.toString());
+                        intent.putExtra("from", from.getSelectedItem().toString());
+                        intent.putExtra("to", to.getSelectedItem().toString());
+                        intent.putExtra("time", route_time);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Plz select your destination to proceed",Toast.LENGTH_LONG).show();
+                    }
                 }else {
-                    Toast.makeText(getApplicationContext(),"Plz select your destination to proceed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Plz select your Start Point to proceed",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -251,20 +258,20 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
 
         public void onItemSelected(AdapterView<?> parent, View view, final int pos,
                                    long id) {
+            if(pos!=0) {
+                fromLocation = stringArrayList.get(pos);
+                stringArrayList1 = dbManager.fetch_route_table(fromLocation);
+                ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>
+                        (MainScreen.this, R.layout.spinner_item, stringArrayList1);
 
-            fromLocation = stringArrayList.get(pos);
-            stringArrayList1=dbManager.fetch_route_table(fromLocation);
-            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>
-                    (MainScreen.this, R.layout.spinner_item,stringArrayList1);
+                dataAdapter1.setDropDownViewResource
+                        (android.R.layout.simple_spinner_dropdown_item);
 
-            dataAdapter1.setDropDownViewResource
-                    (android.R.layout.simple_spinner_dropdown_item);
-
-            to.setAdapter(dataAdapter1);
+                to.setAdapter(dataAdapter1);
 
 
-          //  getRoutes();
-
+                //  getRoutes();
+            }
 
         }
 

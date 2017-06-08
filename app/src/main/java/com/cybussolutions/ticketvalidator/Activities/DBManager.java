@@ -170,6 +170,7 @@ public class DBManager {
         String[] args={route_start};
         Cursor cursor=database.rawQuery("SELECT route_destination FROM ROUTES WHERE route_start = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        stringArrayList.add(0,"<Select>");
         if(cursor.moveToFirst()){
             do
             {
@@ -230,6 +231,7 @@ public class DBManager {
        // Cursor cursor = database.query(DatabaseHelper.ROUTES, columns, null, null, null, null, null);
         Cursor cursor=database.rawQuery(select,null);
         ArrayList<String> stringArrayList=new ArrayList<String>();
+        stringArrayList.add(0,"<Select>");
         if(cursor.moveToFirst()){
             do
             {

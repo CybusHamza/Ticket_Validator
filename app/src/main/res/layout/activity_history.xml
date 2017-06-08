@@ -37,6 +37,7 @@
         android:backgroundTint="#fff"
         android:textColor="#fff"
         android:textColorHint="#fff"
+        android:textCursorDrawable="@null"
         android:id="@+id/searchData"
         android:layout_weight="1"/>
 

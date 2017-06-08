@@ -110,7 +110,8 @@
         android:textStyle="bold"
         android:layout_marginTop="89dp"
         android:layout_alignTop="@+id/from_spinner"
-        android:layout_alignEnd="@+id/proceed" />
+        android:layout_alignEnd="@+id/proceed"
+        android:layout_alignStart="@+id/textView7" />
 
 
 </RelativeLayout>

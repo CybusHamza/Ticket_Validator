@@ -34,11 +34,10 @@
         <service android:name=".Activities.HelloService" />
 
         <activity android:name=".Activities.History" />
-        <activity android:name=".Activities.Profile" />
         <activity android:name=".Activities.PaymentMethod_extended" />
         <activity android:name=".Activities.Dashboard" />
         <activity android:name=".Activities.Profile_Detailed" />
-        <activity android:name=".Activities.Feedback" />
+        <activity android:name=".Feedback" />
         <activity android:name=".Activities.Confirmation"></activity>
     </application>
 

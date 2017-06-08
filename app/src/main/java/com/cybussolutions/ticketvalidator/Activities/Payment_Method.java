@@ -3,12 +3,14 @@ package com.cybussolutions.ticketvalidator.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -26,6 +29,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 public class Payment_Method extends AppCompatActivity {
 
@@ -61,6 +66,8 @@ public class Payment_Method extends AppCompatActivity {
 
 SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
      String userEmail,userName;
+    private String url,profile_pic;
+    Bitmap[] bitmap1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
         SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userEmail=pref1.getString("UserEmail",null);
         userName=pref1.getString("name",null);
+        profile_pic=pref1.getString("pro_pic",null);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Proceed To Payment");
@@ -79,11 +87,33 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        bitmap1 = new Bitmap[1];
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
+
+        Picasso.with(Payment_Method.this)
+                .load(url)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        bitmap1[0] =bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                        Log.e("here","onBitmapFailed");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Log.e("here","onPrepareLoad");
+                    }
+                });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
-                .withProfileImagesVisible(false)
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(bitmap1[0]))
+                .withProfileImagesVisible(true)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
                             @Override
@@ -92,6 +122,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
                             }
                         }
                 ).build();
+
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
                 .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )

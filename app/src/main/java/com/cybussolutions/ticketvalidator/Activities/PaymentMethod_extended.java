@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -30,6 +31,8 @@ public class PaymentMethod_extended extends AppCompatActivity {
     Toolbar toolbar;
     Drawer result;
 
+    String userEmail,userName;
+
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
@@ -42,6 +45,8 @@ public class PaymentMethod_extended extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
+    SecondaryDrawerItem feedback = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Feedback");
 
 
 
@@ -59,6 +64,9 @@ public class PaymentMethod_extended extends AppCompatActivity {
         toolbar.setTitle("Proceed To Payment");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userEmail=pref1.getString("UserEmail",null);
+        userName=pref1.getString("name",null);
 
 
 
@@ -67,7 +75,7 @@ public class PaymentMethod_extended extends AppCompatActivity {
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -78,7 +86,7 @@ public class PaymentMethod_extended extends AppCompatActivity {
                         }
                 ).build();
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -122,6 +130,12 @@ public class PaymentMethod_extended extends AppCompatActivity {
                             startActivity(intent);
                             finish();
 
+                        }
+                        if (drawerItem==feedback){
+
+                            Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         return true;

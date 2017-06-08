@@ -1,4 +1,4 @@
-package com.cybussolutions.ticketvalidator.Activities;
+package com.cybussolutions.ticketvalidator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,8 +21,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Activities.Dashboard;
+import com.cybussolutions.ticketvalidator.Activities.History;
+import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
+import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
+import com.cybussolutions.ticketvalidator.Activities.Profile_Detailed;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
-import com.cybussolutions.ticketvalidator.R;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -67,6 +71,8 @@ String email,feedBackt;
 
 
 String serviceString;
+    private String userEmail,userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,10 +88,13 @@ rb = (RatingBar)findViewById(R.id.rating);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
 
+        SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userEmail=pref1.getString("UserEmail",null);
+        userName=pref1.getString("name",null);
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName("Aqsa").withEmail("whatever@gmil.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
                 .withProfileImagesVisible(false)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
@@ -177,6 +186,11 @@ sendFeedback = (Button)findViewById(R.id.buttonFeedback);
 
                 email = etEmail.getText().toString();
                // feedBackt = etFeedback.getText().toString();
+                String feedback=etFeedback.getText().toString();
+                if(feedback.equals("")){
+                    Toast.makeText(getApplicationContext(),"You cant proceed without giving us feedback",Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 switch (r)
@@ -234,11 +248,12 @@ sendFeedback = (Button)findViewById(R.id.buttonFeedback);
 
                 // loading.dismiss();
 
-                if ((response.equals(""))) {
-                    Toast.makeText(getApplicationContext(),"Email Sent",Toast.LENGTH_LONG).show();
+                if ((response.trim().toString().equals("Mail Sent Successfully"))) {
+                    Toast.makeText(getApplicationContext(),"Feedback Sent Successfully",Toast.LENGTH_LONG).show();
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Email Not Sent", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Feedback Not Sent",Toast.LENGTH_LONG).show();
+
                 }
             }
 

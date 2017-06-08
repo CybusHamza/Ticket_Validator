@@ -59,6 +59,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
     Toolbar toolbar;
     private DBManager dbManager;
     String route_id,user_id,number_of_persons,remaining_balance;
+    String date;
 
     @Override
 
@@ -163,7 +164,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                         dateFormatter.setLenient(false);
                         Date today = new Date();
-                        String s = dateFormatter.format(today);
+                        date = dateFormatter.format(today);
 
                         if (number_of_persons==null || number_of_persons.equals("") || number_of_persons==""){
                             number_of_persons="1";
@@ -173,8 +174,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
                         dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
-                        dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,s,"0000-00-00");
-                        dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,s,"0000-00-00");
+
 
                         dbManager.update_customer_balance(user_id,remaining_balance);
 
@@ -243,6 +243,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                                 if (e instanceof NetworkError) {
                                     message = "Cannot connect to Internet...Please check your connection!";
                                    // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                                    dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
+                                    dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
                                 }
                                // loading.dismiss();
                             }
@@ -254,7 +256,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                                 params.put("user_id", user_id);
                                 params.put("person_traveling", number_of_persons);
                                 params.put("trans_id", confirmNum);
-                                params.put("date_added", "0000-00-00");
+                                params.put("date_added", date);
                               //  params.put("gender",gender);
                                 params.put("date_modified","557678");
                                 return params;

@@ -15,7 +15,7 @@ public class End_Points {
     public static String INSERT_TRAVEL_HISTORY = BASE_URL + "insertTravelHistory";
     public static String GET_FARE_TABLE_DATA = BASE_URL + "getFareTable";
     public static String GET_LIVE_DATA=BASE_URL+"syncLocalDataBase";
-    public static String POST_IMAGE = "http://epay.cybussolutions.com"+ "upload_image_mobile.php";  //sdfghjk
+    public static String POST_IMAGE = "http://epay.cybussolutions.com/epay/"+ "upload_image_mobile.php";  //sdfghjk
     public  static String EDIT_profile = BASE_URL + "editProfile";
     public static String SENDFEEDBACK = BASE_URL + "confirmSendEmail";
 
