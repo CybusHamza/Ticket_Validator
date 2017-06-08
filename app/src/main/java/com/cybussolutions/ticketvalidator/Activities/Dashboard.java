@@ -47,6 +47,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.cybussolutions.ticketvalidator.Profile;
 
 public class Dashboard extends AppCompatActivity {
     ArrayList<String> stringArrayList5 = new ArrayList<>();
@@ -95,17 +96,11 @@ public class Dashboard extends AppCompatActivity {
         toolbar.setTitle("Dashboard");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
+        getHistory();
         if(isNetworkAvailable()) {
             startService(new Intent(this, HelloService.class));
-            getHistory();
         }else {
-            stringArrayList5 = dbManager.fetch_history_trans_id(customer_id);
-            String s = Integer.toString(stringArrayList5.size());
 
-
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("TotalTrips", s);
-            editor.apply();
            // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
         }
 
@@ -117,10 +112,9 @@ public class Dashboard extends AppCompatActivity {
         profile_pic=preferences.getString("pro_pic",null);
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
 
-
         tvTotalTrips = (TextView)findViewById(R.id.tvTotalTrips);
         tvMWBalance= (TextView) findViewById(R.id.tvMWBalance);
-        tvTotalTrips.setText(totalTrips);
+
         tvMWBalance.setText("$"+customer_total_balance);
         btnStartTrip = (Button)findViewById(R.id.btnStartTrip);
         btnRecharge= (Button) findViewById(R.id.btnRecharge);
@@ -281,6 +275,7 @@ public class Dashboard extends AppCompatActivity {
                     JSONArray array = new JSONArray(response);
                     String s = Integer.toString(array.length());
 
+                    tvTotalTrips.setText(s);
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("TotalTrips", s);
@@ -304,10 +299,18 @@ public class Dashboard extends AppCompatActivity {
                         String message = null;
                         if (error instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please check your connection!";
+
                             //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
                             String userid = preferences.getString("id", "");
+                            stringArrayList5 = dbManager.fetch_history_trans_id(customer_id);
+                            String s = Integer.toString(stringArrayList5.size());
+                            tvTotalTrips.setText(s);
+
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("TotalTrips", s);
+                            editor.apply();
 
 
 

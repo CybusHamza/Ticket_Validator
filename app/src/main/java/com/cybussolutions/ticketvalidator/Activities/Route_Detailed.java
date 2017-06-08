@@ -31,6 +31,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.cybussolutions.ticketvalidator.Profile;
 
 public class Route_Detailed extends AppCompatActivity {
 

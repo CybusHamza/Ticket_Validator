@@ -53,7 +53,7 @@ public class Splash extends AppCompatActivity {
                             startActivity(intent);
                         }
                         if (!(Qrsting.isEmpty())|| SignInStatus=="1"){
-                            Intent intent = new Intent(Splash.this, Payment_Method.class);
+                            Intent intent = new Intent(Splash.this, Dashboard.class);
                             startActivity(intent);
                         }
 

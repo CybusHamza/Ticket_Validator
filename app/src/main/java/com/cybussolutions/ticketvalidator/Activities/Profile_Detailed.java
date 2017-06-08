@@ -23,6 +23,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
+import com.cybussolutions.ticketvalidator.Profile;
 
 public class Profile_Detailed extends AppCompatActivity {
 

@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cybussolutions.ticketvalidator.Feedback;
+import com.cybussolutions.ticketvalidator.Profile;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;

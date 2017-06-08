@@ -39,6 +39,7 @@
         <activity android:name=".Activities.Profile_Detailed" />
         <activity android:name=".Feedback" />
         <activity android:name=".Activities.Confirmation"></activity>
+        <activity android:name=".Profile"></activity>
     </application>
 
 </manifest>
