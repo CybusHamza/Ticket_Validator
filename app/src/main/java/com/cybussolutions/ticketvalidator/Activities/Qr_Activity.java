@@ -30,25 +30,37 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Adapter.CustomHistoryListAdapter;
+import com.cybussolutions.ticketvalidator.Beacon.ActivityBeacon;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+import com.estimote.sdk.SystemRequirementsChecker;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.BeaconTransmitter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static android.R.attr.id;
 
@@ -60,6 +72,35 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
     private DBManager dbManager;
     String route_id,user_id,number_of_persons,remaining_balance;
     String date;
+    private BeaconManager beaconManager;
+    private Region region;
+    private static final Map<String, List<String>> PLACES_BY_BEACONS;
+    static {
+        Map<String, List<String>> placesByBeacons = new HashMap<>();
+        placesByBeacons.put("2:4", new ArrayList<String>() {{
+            add("1");
+            add("2");
+            add("c");
+
+        }});
+        placesByBeacons.put("2:4", new ArrayList<String>() {{
+            add("1");
+            add("2");
+            add("a");
+        }});
+        PLACES_BY_BEACONS = Collections.unmodifiableMap(placesByBeacons);
+    }
+    private List<String> placesNearBeacon(Beacon beacon) {
+        String beaconKey = String.format("%d:%d", beacon.getMajor(), beacon.getMinor());
+        if(String.valueOf(beacon.getMajor())==user_id){
+            Toast.makeText(getApplicationContext(),"Successfully get Beacon",Toast.LENGTH_LONG).show();
+        }
+        if (PLACES_BY_BEACONS.containsKey(beaconKey)) {
+
+            return PLACES_BY_BEACONS.get(beaconKey);
+        }
+        return Collections.emptyList();
+    }
 
     @Override
 
@@ -71,6 +112,19 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         toolbar.setTitle("Generate QR Code");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        beaconManager = new BeaconManager(this);
+        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+            @Override
+            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
+                if (!list.isEmpty()) {
+                    Beacon nearestBeacon = list.get(0);
+                    List<String> places = placesNearBeacon(nearestBeacon);
+                    // TODO: update the UI here
+                    Log.d("Beacon", "Nearest places: " + places);
+                }
+            }
+        });
+        region = new Region("ranged region", UUID.fromString("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6"), null, null);
 
 
         Button button1 = (Button) findViewById(R.id.button1);
@@ -89,7 +143,6 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
           Qrsting=  preferences.getString("qr_string","");
 
-
        // Qrsting = intent.getStringExtra("Qr_string");
 
     }
@@ -98,12 +151,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button1:
-
                startDialog();
-
                 break;
-
-
            /* case R.id.btnCnfrm:
 
                 Intent intent = new Intent(Qr_Activity.this,Confirmation.class);
@@ -278,5 +327,25 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                 });
         myAlertDialog.show();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                beaconManager.startRanging(region);
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        beaconManager.stopRanging(region);
+        super.onPause();
+    }
+
 
 }

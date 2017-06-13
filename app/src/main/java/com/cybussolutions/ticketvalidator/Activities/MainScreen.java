@@ -173,23 +173,16 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                             Intent intent=new Intent(getApplicationContext(),Dashboard.class);
                             startActivity(intent);
                             finish();
-
                         }
-
                         if (drawerItem==feedback){
-
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
                             startActivity(intent);
                             finish();
                         }
                         return true;
-
                     }
 
                 }).build();
-
-
-
 
         txt = (TextView) findViewById(R.id.textView3);
         from = (Spinner) findViewById(R.id.from_spinner);
@@ -197,14 +190,8 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         procedd = (Button) findViewById(R.id.proceed);
 
        // getData();
-
-
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
                 (MainScreen.this, R.layout.spinner_item,stringArrayList);
-
-
-
 
         //               (MainScreen.this, android.R.layout.simple_spinner_item,stringArrayList);
 
@@ -213,11 +200,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
 
         from.setAdapter(dataAdapter);
 
-
-
         from.setOnItemSelectedListener(new CustomOnItemSelectedListener_from());
-
-
 
         procedd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +217,6 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                         editor.putString("TO", to.getSelectedItem().toString());
                         editor.apply();
 
-
                         route_id = dbManager.fetch_route_id(from.getSelectedItem().toString(), to.getSelectedItem().toString());
                         route_time = dbManager.fetch_route_elapsed_time(from.getSelectedItem().toString(), to.getSelectedItem().toString());
                         Intent intent = new Intent(MainScreen.this, Route_Detailed.class);
@@ -244,10 +226,10 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                         intent.putExtra("time", route_time);
                         startActivity(intent);
                     }else {
-                        Toast.makeText(getApplicationContext(),"Plz select your destination to proceed",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Please select your destination to proceed",Toast.LENGTH_LONG).show();
                     }
                 }else {
-                    Toast.makeText(getApplicationContext(),"Plz select your Start Point to proceed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Please select your Start Point to proceed",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -268,7 +250,6 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                         (android.R.layout.simple_spinner_dropdown_item);
 
                 to.setAdapter(dataAdapter1);
-
 
                 //  getRoutes();
             }
@@ -306,7 +287,6 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                         if(!(to_routes.contains(object.getString("rout_destination"))))
                         {
 //                            to_routes.add(object.getString("rout_destination"));
-
                         }
                     }
 
