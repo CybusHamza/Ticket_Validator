@@ -83,7 +83,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
             Toast.makeText(getApplicationContext(),"Successfully get Beacon",Toast.LENGTH_LONG).show();
             beaconManager.stopRanging(region);
         }
-      /*  if (PLACES_BY_BEACONS.containsKey(beaconKey)) {
+      /*  if (PLACES_BY_BEACONS.cont
+      ainsKey(beaconKey)) {
 
             return PLACES_BY_BEACONS.get(beaconKey);
         }*/
