@@ -1,6 +1,7 @@
 package com.cybussolutions.ticketvalidator;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,9 +33,11 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -66,7 +69,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Profile extends AppCompatActivity {
+
+    ProgressDialog ringProgressDialog;
 
     boolean doubleBackToExitPressedOnce = false;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -83,7 +90,7 @@ public class Profile extends AppCompatActivity {
 
 
     private static final int CAMERA_REQUEST = 1888;
-    private static int RESULT_LOAD_IMG = 2;
+    private static int RESULT_LOAD_IMG = 0;
     String imgDecodableString;
     Context context;
 
@@ -146,7 +153,7 @@ public class Profile extends AppCompatActivity {
         userEmail=pref1.getString("UserEmail",null);
         userName=pref1.getString("name",null);
         profile_pic=pref1.getString("pro_pic",null);
-        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic.trim();
 
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
@@ -236,6 +243,8 @@ public class Profile extends AppCompatActivity {
         email = preferences.getString("UserEmail","");
         number = preferences.getString("number","");
         name =  preferences.getString("name","");
+        fname =  preferences.getString("first_name","");
+        lname =  preferences.getString("last_name","");
         id = preferences.getString("id","");
 
 
@@ -261,9 +270,7 @@ public class Profile extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(b64!=null){
-                    LoadImage();
-                }
+
                 number = etNum.getText().toString();
                 email = etEmail.getText().toString();
 
@@ -271,12 +278,10 @@ public class Profile extends AppCompatActivity {
                 name = etName.getText().toString();
 
 
-                String[] names = name.split(" ");
-                fname = names[0];
-                lname = names[2];
 
 
-                if (number.length() > 0) {
+
+                if (number.length() > 0 && (!number.equals("") && number!=null) && (!name.equals("")&& name!=null) && (!email.equals("")&& email!=null)) {
 
                     try {
 
@@ -305,89 +310,21 @@ public class Profile extends AppCompatActivity {
 
 
                     }
-                    if (isValid && email.matches(EMAIL_PATTERN)) {
+                    if (isValid && email.matches(EMAIL_PATTERN) && (number!="" ||number!=null) && (name!=""|| name!=null) && (email!=""|| email!=null)) {
+                        /*String[] names = name.split(" ");
 
-                        Toast.makeText(getApplicationContext(), "is Valid", Toast.LENGTH_LONG).show();
-
-
-
-
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        final String img = preferences.getString("pro_pic","");
-
-
-
-
-                        //        if(number.matches()){}
-
-
-                        StringRequest request = new StringRequest(Request.Method.POST,End_Points.EDIT_profile, new Response.Listener<String>() {
-
-                            @Override
-                            public void onResponse(String response) {
-
-                                // loading.dismiss();
-
-                                if (!(response.equals(""))) {
-                                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
-//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                                SharedPreferences.Editor editor = preferences.edit();
-//                                editor.putString("img",response);
-//                                editor.apply();
-
-
-
-
-
-                                } else {
-                                    Toast.makeText(Profile.this, "data not updated", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
+                        fname = names[0];
+                        lname = names[1];*/
+                        ringProgressDialog = ProgressDialog.show(Profile.this, "Please wait ...", "Uploading data ...", true);
+                        ringProgressDialog.setCancelable(false);
+                        ringProgressDialog.show();
+                        if(picturePath==null) {
+                            updateProfile();
+                        }else if(b64!=null){
+                            LoadImage();
                         }
-                                , new Response.ErrorListener()
-
-                        {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                //   loading.dismiss();
-                                String message = null;
-                                if (error instanceof NetworkError) {
-                                    message = "Cannot connect to Internet...Please check your connection!";
-                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> map = new HashMap<String, String>();
-                                map.put("cust_id", id);
-                                map.put("cust_fname", fname);
-                                map.put("cust_lname",lname);
-                                map.put("cust_phoneNum",number);
-                                map.put("cust_propic",img);
-                                map.put("cust_email",email);
-                                return map;
-                            }
-                        };
-
-                        RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
-                        requestQueue.add(request);
-
-
-
-                           /* if (b64 != null){
-                                LoadImage();
-
-                            }*/
 
                     }
-
-
-
-
 
                     if (isValid && !(email.matches(EMAIL_PATTERN))) {
 
@@ -400,6 +337,16 @@ public class Profile extends AppCompatActivity {
                     }
 
 
+                }else {
+                    if(number.equals("")){
+                        Toast.makeText(getApplicationContext(), "Number field is empty", Toast.LENGTH_LONG).show();
+                    }
+                    if(name.equals("")){
+                        Toast.makeText(getApplicationContext(), "Name field is empty", Toast.LENGTH_LONG).show();
+                    }
+                    if(email.equals("")){
+                        Toast.makeText(getApplicationContext(), "Email field is empty", Toast.LENGTH_LONG).show();
+                    }
                 }
 
 
@@ -522,9 +469,6 @@ public class Profile extends AppCompatActivity {
                     bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
                     byte[] ba = bao.toByteArray();
                     b64 = Base64.encodeToString(ba,Base64.NO_WRAP);
-
-
-
                     //   LoadImage();
 
                 }
@@ -597,14 +541,17 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 // loading.dismiss();
+                ringProgressDialog.dismiss();
                 if (!(response.equals(""))) {
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("pro_pic",response);
                     editor.apply();
+                    updateProfile();
 
                 } else {
+                    ringProgressDialog.dismiss();
                     Toast.makeText(Profile.this, "Picture not uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -616,10 +563,33 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //   loading.dismiss();
+                ringProgressDialog.dismiss();
                 String message = null;
-                if (error instanceof NetworkError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                if (error instanceof NoConnectionError) {
+
+                    new SweetAlertDialog(Profile.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Error!")
+                            .setConfirmText("OK").setContentText("No Internet Connection")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+                                }
+                            })
+                            .show();
+                } else if (error instanceof TimeoutError) {
+
+                    new SweetAlertDialog(Profile.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Error!")
+                            .setConfirmText("OK").setContentText("Connection TimeOut! Please check your internet connection.")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+
+                                }
+                            })
+                            .show();
                 }
             }
 
@@ -705,13 +675,7 @@ public class Profile extends AppCompatActivity {
         return encImage;
     }
 
-
-
-
-
-
-
-    public void Login()
+  /*public void Login()
     {
 
         //   loading = ProgressDialog.show(Login_Activity.this, "Please wait...", "Checking Credentails ...", false, false);
@@ -765,7 +729,7 @@ public class Profile extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
         requestQueue.add(request);
 
-    }
+    }*/
 
     public String getPathFromURI(Uri contentUri) {
         String res = null;
@@ -798,10 +762,10 @@ public class Profile extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        if (requestCode == REQUEST_PERMISSIONS) {
+        if (requestCode == REQUEST_PERMISSIONS || requestCode==REQUEST_IMAGE_CAPTURE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //The External Storage Write Permission is granted to you... Continue your left job...
-                if(requestCode==RESULT_LOAD_IMG) {
+                if(requestCode==0) {
                     gallery();
                 }
                 if(requestCode==1){
@@ -839,7 +803,108 @@ public class Profile extends AppCompatActivity {
             }
         }, 2000);
     }
+public void updateProfile(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    final String img = preferences.getString("pro_pic","");
 
+    //        if(number.matches()){}
+
+    StringRequest request = new StringRequest(Request.Method.POST,End_Points.EDIT_profile, new Response.Listener<String>() {
+
+        @Override
+        public void onResponse(String response) {
+
+            // loading.dismiss();
+
+            if (!(response.equals(""))) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("UserEmail", etEmail.getText().toString());
+                editor.putString("number",etNum.getText().toString());
+                //editor.putString("email",email);
+                editor.putString("name",etName.getText().toString());
+                editor.apply();
+                ringProgressDialog.dismiss();
+                new SweetAlertDialog(Profile.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Success!")
+                        .setConfirmText("OK").setContentText("Successful")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismiss();
+                                Intent intent=new Intent(Profile.this,Profile_Detailed.class);
+                                finish();
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+                //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                SharedPreferences.Editor editor = preferences.edit();
+//                                editor.putString("img",response);
+//                                editor.apply();
+
+            } else {
+                Toast.makeText(Profile.this, "data not updated", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+            , new Response.ErrorListener()
+
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            //   loading.dismiss();
+            ringProgressDialog.dismiss();
+            String message = null;
+            if (error instanceof NoConnectionError) {
+
+                new SweetAlertDialog(Profile.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error!")
+                        .setConfirmText("OK").setContentText("No Internet Connection")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismiss();
+                            }
+                        })
+                        .show();
+            } else if (error instanceof TimeoutError) {
+
+                new SweetAlertDialog(Profile.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error!")
+                        .setConfirmText("OK").setContentText("Connection TimeOut! Please check your internet connection.")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismiss();
+
+                            }
+                        })
+                        .show();
+            }
+
+        }
+
+
+    }) {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("cust_id", id);
+            map.put("cust_fname", name);
+            map.put("cust_lname","");
+            map.put("cust_phoneNum",etNum.getText().toString());
+            map.put("cust_propic",img);
+            map.put("cust_email",email);
+            return map;
+        }
+    };
+
+    RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
+    requestQueue.add(request);
+}
 
 }
 

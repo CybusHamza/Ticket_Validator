@@ -90,6 +90,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         }*/
         return Collections.emptyList();
     }
+    Button generateQrButton;
 
     @Override
 
@@ -103,8 +104,9 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         beaconManager = new BeaconManager(this);
 
-        Button button1 = (Button) findViewById(R.id.button1);
-        button1.setOnClickListener(this);
+        generateQrButton = (Button) findViewById(R.id.button1);
+        generateQrButton.setOnClickListener(this);
+        generateQrButton.setVisibility(View.VISIBLE);
 
       //  Button button =(Button)findViewById(R.id.btnCnfrm);
        // button.setOnClickListener(this);
@@ -149,7 +151,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
 
-
+                        generateQrButton.setVisibility(View.INVISIBLE);
                         //Find screen size
                         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
                             @Override
@@ -219,7 +221,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                             number_of_persons="1";
                         }
 
-                        Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
 
                         dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
@@ -237,7 +239,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
                                         if(!(Response.equals("")))
                                         {
-                                              Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+                                              //Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
 //                                            dbManager = new DBManager(Signup_activity.this);
 //                                            dbManager.open();
                                             try{
@@ -258,7 +260,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
 
 
-                                                Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+                                              //  Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
                                               //  dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
 
 //                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
@@ -269,7 +271,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 //                                                startService(new Intent(Signup_activity.this, HelloService.class));
 
                                             }catch (Exception e){
-                                                Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
+                                                //Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
                                             }
                                             //  dbManager.insert(first_name, last_name, email, phone_number);
                                             //Cursor cursor=dbManager.fetch();

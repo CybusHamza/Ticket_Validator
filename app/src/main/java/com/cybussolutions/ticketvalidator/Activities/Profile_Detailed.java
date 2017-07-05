@@ -160,7 +160,7 @@ public class Profile_Detailed extends AppCompatActivity {
         name =  preferences.getString("name","");
 
 
-        Picasso.with(getApplicationContext()).load("http://epay.cybussolutions.com/epay/" + pro_pic).into(userImg);
+        Picasso.with(getApplicationContext()).load("http://epay.cybussolutions.com/epay/" + pro_pic.trim()).into(userImg);
 
 
         tvEmail.setText(email);

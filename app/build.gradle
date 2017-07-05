@@ -36,4 +36,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.estimote:sdk:0.9.4@aar'
     compile 'org.altbeacon:android-beacon-library:2+'
+    compile 'cn.pedant.sweetalert:library:1.3'
 }

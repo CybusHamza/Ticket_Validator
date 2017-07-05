@@ -97,7 +97,7 @@ public class Login_Activity extends AppCompatActivity {
                 userEmail = etEmail.getText().toString();
                 userPassword = etPassword.getText().toString();
                 if (userEmail.length() ==0 || userPassword.length()==0){
-                    Toast.makeText(getApplicationContext(),"Plz enter email and password",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please enter email and password",Toast.LENGTH_SHORT).show();
                 }
                 else {
 
@@ -140,7 +140,8 @@ public class Login_Activity extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("UserEmail", userEmail);
                         editor.putString("number",num);
-                        //editor.putString("email",email);
+                        editor.putString("first_name",f_name);
+                        editor.putString("last_name",l_name);
                         editor.putString("name",f_name + "  "+ l_name);
 
                         editor.putString("pro_pic",pro_pic);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ import java.util.Map;
 
 public class History extends AppCompatActivity {
     String routeId;
-
+    boolean doubleBackToExitPressedOnce = false;
     ListView historyListView;
     Toolbar toolbar;
 
@@ -163,7 +164,7 @@ public class History extends AppCompatActivity {
 
                         }
                         if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile.class);
+                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }
@@ -202,9 +203,6 @@ public class History extends AppCompatActivity {
         }else {
             getHistory();
             // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
-
-
-
         }
 
 
@@ -482,5 +480,23 @@ public class History extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
+    }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }
