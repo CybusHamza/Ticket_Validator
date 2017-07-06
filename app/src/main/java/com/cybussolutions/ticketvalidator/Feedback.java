@@ -51,7 +51,7 @@ public class Feedback extends AppCompatActivity {
 
     Drawer result;
 
-    PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
+    SecondaryDrawerItem home = new SecondaryDrawerItem().withIdentifier(2).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
@@ -60,7 +60,7 @@ public class Feedback extends AppCompatActivity {
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Profile");
 
-    SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withName("Feedback");
+    PrimaryDrawerItem feedback = new PrimaryDrawerItem().withIdentifier(1).withName("Feedback");
 
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
@@ -108,7 +108,7 @@ public class Feedback extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(5).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 

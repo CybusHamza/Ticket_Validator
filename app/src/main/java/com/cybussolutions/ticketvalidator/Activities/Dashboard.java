@@ -66,9 +66,9 @@ public class Dashboard extends AppCompatActivity {
     Drawer result;
     String userEmail,userName,customer_id,customer_total_balance,profile_pic;
 
-    PrimaryDrawerItem EditProfile = new PrimaryDrawerItem().withIdentifier(1).withName("Profile");
-    SecondaryDrawerItem home = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Home");
+    SecondaryDrawerItem EditProfile = new SecondaryDrawerItem().withIdentifier(2).withName("Profile");
+    PrimaryDrawerItem home = new PrimaryDrawerItem()
+            .withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
@@ -180,7 +180,7 @@ public class Dashboard extends AppCompatActivity {
 
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -232,6 +232,7 @@ public class Dashboard extends AppCompatActivity {
                     }
 
                 }).build();
+
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
         tvMWBalance.setText("$"+customer_total_balance);
     }

@@ -99,14 +99,14 @@ public class Profile extends AppCompatActivity {
     Drawer result;
     String formattedDate;
 
-    PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
+    SecondaryDrawerItem home = new SecondaryDrawerItem().withIdentifier(2).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Your Trips");
 
-    SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Profile");
+    PrimaryDrawerItem EditProfile = new PrimaryDrawerItem()
+            .withIdentifier(1).withName("Profile");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
@@ -175,7 +175,7 @@ public class Profile extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems( EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(1).addDrawerItems( EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 

@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -92,6 +93,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
     }
     Button generateQrButton;
 
+    TextView showLabel;
+
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
@@ -105,8 +108,10 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         beaconManager = new BeaconManager(this);
 
         generateQrButton = (Button) findViewById(R.id.button1);
+        showLabel = (TextView) findViewById(R.id.labelForUser);
         generateQrButton.setOnClickListener(this);
         generateQrButton.setVisibility(View.VISIBLE);
+        showLabel.setVisibility(View.INVISIBLE);
 
       //  Button button =(Button)findViewById(R.id.btnCnfrm);
        // button.setOnClickListener(this);
@@ -152,6 +157,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         generateQrButton.setVisibility(View.INVISIBLE);
+                        showLabel.setVisibility(View.VISIBLE);
                         //Find screen size
                         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
                             @Override
