@@ -71,7 +71,7 @@ public class History extends AppCompatActivity {
             .withIdentifier(3).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(4).withName("Edit Profile");
+            .withIdentifier(4).withName("Profile");
 
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
@@ -135,7 +135,7 @@ public class History extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -145,6 +145,7 @@ public class History extends AppCompatActivity {
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(History.this, History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 

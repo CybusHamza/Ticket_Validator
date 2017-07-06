@@ -43,7 +43,7 @@ public class Profile_Detailed extends AppCompatActivity {
             .withIdentifier(2).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
@@ -87,7 +87,7 @@ public class Profile_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -100,6 +100,7 @@ public class Profile_Detailed extends AppCompatActivity {
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(Profile_Detailed.this, History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 
@@ -151,7 +152,7 @@ public class Profile_Detailed extends AppCompatActivity {
         tvEmail = (TextView)findViewById(R.id.tvUserEmail);
         tvName = (TextView)findViewById(R.id.tvUserName);
         tvNum = (TextView)findViewById(R.id.tvuserNumber);
-
+        userImg.setImageDrawable(getResources().getDrawable(R.drawable.man));
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         email = preferences.getString("UserEmail","");
@@ -159,7 +160,7 @@ public class Profile_Detailed extends AppCompatActivity {
         number = preferences.getString("number","");
         name =  preferences.getString("name","");
 
-
+        if(!pro_pic.equals(""))
         Picasso.with(getApplicationContext()).load("http://epay.cybussolutions.com/epay/" + pro_pic.trim()).into(userImg);
 
 

@@ -58,7 +58,7 @@ public class Feedback extends AppCompatActivity {
             .withIdentifier(2).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withName("Feedback");
 
@@ -66,11 +66,10 @@ public class Feedback extends AppCompatActivity {
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
 
-Toolbar toolbar;
-String email,feedBackt;
+    Toolbar toolbar;
+    String email,feedBackt;
 
-
-String serviceString;
+    String serviceString;
     private String userEmail,userName;
 
     @Override
@@ -80,8 +79,8 @@ String serviceString;
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Feedback");
-rb = (RatingBar)findViewById(R.id.rating);
-            etEmail = (EditText)findViewById(R.id.email);
+        rb = (RatingBar)findViewById(R.id.rating);
+        etEmail = (EditText)findViewById(R.id.email);
         etFeedback = (EditText)findViewById(R.id.feedback);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -109,7 +108,7 @@ rb = (RatingBar)findViewById(R.id.rating);
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -122,6 +121,7 @@ rb = (RatingBar)findViewById(R.id.rating);
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(getApplicationContext(), History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 

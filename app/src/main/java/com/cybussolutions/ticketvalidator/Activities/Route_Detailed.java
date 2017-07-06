@@ -63,7 +63,7 @@ public class Route_Detailed extends AppCompatActivity {
             .withIdentifier(2).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
@@ -173,7 +173,7 @@ public class Route_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips, feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 

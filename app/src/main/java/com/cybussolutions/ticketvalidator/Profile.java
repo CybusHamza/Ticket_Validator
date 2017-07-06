@@ -63,6 +63,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -105,7 +106,7 @@ public class Profile extends AppCompatActivity {
             .withIdentifier(2).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
@@ -141,6 +142,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
 //         collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
 //           AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -173,7 +175,7 @@ public class Profile extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems( EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -186,6 +188,7 @@ public class Profile extends AppCompatActivity {
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(Profile.this, History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 
@@ -234,10 +237,12 @@ public class Profile extends AppCompatActivity {
         etNum = (EditText) findViewById(R.id.userNumber);
         btnUpdate = (Button)findViewById(R.id.update);
         ImageView iv=(ImageView)findViewById(R.id.imageBtn);
-
-        Picasso.with(Profile.this)
-                .load(url)
-                .into(iv);
+        iv.setImageDrawable(getResources().getDrawable(R.drawable.man));
+        if(!profile_pic.equals("")) {
+            Picasso.with(Profile.this)
+                    .load(url)
+                    .into(iv);
+        }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         email = preferences.getString("UserEmail","");
@@ -446,16 +451,87 @@ public class Profile extends AppCompatActivity {
                 int columnIndex = cursor.getColumnIndex(FILE[0]);
                 picturePath = cursor.getString(columnIndex);
                 cursor.close();
-                Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                int w=userImg.getWidth();
+                int h=userImg.getHeight();
+                //Bitmap bm = BitmapFactory.decodeFile(URI.getPath());
+                //Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                Bitmap bm=decodeSampledBitmapFromResource(picturePath, w, h);
                 if (!picturePath.equals("")) {
                    /* Bitmap bm = BitmapFactory.decodeFile(picturePath);
                     ByteArrayOutputStream bao = new ByteArrayOutputStream();
                     bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
                     byte[] ba = bao.toByteArray();*/
+                    //int w=userImg.getWidth();
+                    //int h=userImg.getHeight();
+                /* Get the size of the image */
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    bmOptions.inJustDecodeBounds = true;
+                     BitmapFactory.decodeFile(picturePath,bmOptions);
+                   // BitmapFactory.decodeFile(picturePath, bmOptions);
+                    int photoW = bmOptions.outWidth;
+                    int photoH = bmOptions.outHeight;
 
+		/* Figure out which way needs to be reduced less */
+                    int scaleFactor = 1;
+                    if ((w > 0) || (h > 0)) {
+                        scaleFactor = Math.min(photoW/w, photoH/h);
+                    }
+
+		/* Set bitmap options to scale the image decode target */
+                    bmOptions.inJustDecodeBounds = false;
+                    bmOptions.inSampleSize = scaleFactor;
+                    bmOptions.inPurgeable = true;
+
+                   // Bitmap unscaled=BitmapFactory.decodeFile(picturePath);
+                   Bitmap scaled=bm.createScaledBitmap(bm,w,h,true);
+
+                    Uri tempUri = getImageUri(getApplicationContext(), scaled);
+                    String Data_Path = tempUri.getPath();
+                    try
+                    {
+                        ExifInterface exif = new ExifInterface(picturePath);
+                        int exifOrientation = exif.getAttributeInt(
+                                ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_NORMAL);
+                        Log.v("MainController", "Orient: " + exifOrientation);
+                        int rotate = 0;
+                        switch (exifOrientation)
+                        {
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                rotate = 90;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                rotate = 180;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                rotate = 270;
+                                break;
+                        }
+                        Log.v("MainController", "Rotation: " + rotate);
+                        if (rotate != 0)
+                        {
+                            // Getting width & height of the given image.
+                            int w1 = userImg.getWidth();
+                            int h1 = userImg.getHeight();
+                            // Setting pre rotate
+                            Matrix mtx = new Matrix();
+                            mtx.preRotate(rotate);
+                            // Rotating Bitmap
+                            scaled = Bitmap.createBitmap(scaled, 0, 0, w1, h1, mtx, false);
+                            userImg = (ImageView) findViewById(R.id.imageBtn);
+                            userImg.setImageBitmap(scaled);
+                        }else {
+                            userImg = (ImageView) findViewById(R.id.imageBtn);
+                            userImg.setImageBitmap(scaled);
+                        }
+
+                    }
+                    catch (IOException e)
+                    {
+                        Log.e("MainController", "Couldn't correct orientation: " + e.toString());
+                    }
 //added lines
-                    userImg = (ImageView) findViewById(R.id.imageBtn);
-                    userImg.setImageBitmap(bm);
+
 //added lines
                     // byte[] b = baos.toByteArray();
 //                    b64 = Base64.encodeToString(ba, Base64.DEFAULT);
@@ -466,7 +542,7 @@ public class Profile extends AppCompatActivity {
                     formattedDate = df.format(c.getTime());
 
                     ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
+                    scaled.compress(Bitmap.CompressFormat.JPEG, 50, bao);
                     byte[] ba = bao.toByteArray();
                     b64 = Base64.encodeToString(ba,Base64.NO_WRAP);
                     //   LoadImage();
@@ -905,6 +981,47 @@ public void updateProfile(){
     RequestQueue requestQueue = Volley.newRequestQueue(Profile.this);
     requestQueue.add(request);
 }
+    public static int calculateInSampleSize(BitmapFactory.Options options,
+                                            int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and
+            // width
+            final int heightRatio = Math.round((float) height
+                    / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will
+            // guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(String path,
+                                                         int reqWidth, int reqHeight) {
+        Log.d("path", path);
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth,
+                reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
+    }
 
 }
 

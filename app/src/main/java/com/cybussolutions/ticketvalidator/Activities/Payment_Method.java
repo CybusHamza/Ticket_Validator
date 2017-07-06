@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,8 @@ public class Payment_Method extends AppCompatActivity {
     String price;
     boolean doubleBackToExitPressedOnce = false;
 
+    int pos;
+
     Drawer result;
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
@@ -57,7 +60,7 @@ public class Payment_Method extends AppCompatActivity {
             .withIdentifier(2).withName("Your Trips");
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
 
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
@@ -70,6 +73,10 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
     private String url,profile_pic;
     Bitmap[] bitmap1;
 
+    Button confirmPaymentMethodBtn;
+    private RadioButton radioButton;
+    String checkedBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +87,9 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
         profile_pic=pref1.getString("pro_pic",null);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Proceed To Payment");
+        toolbar.setTitle("Payment Method");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
@@ -125,7 +130,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
                 ).build();
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback,  logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -144,6 +149,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(Payment_Method.this, History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 
@@ -186,98 +192,93 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
 
                 }).build();
 
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // TODO Auto-generated method stub
+
+                // Method 1 For Getting Index of RadioButton
+                pos=radioGroup.getCheckedRadioButtonId();
+                radioButton = (RadioButton) findViewById(pos);
+                checkedBox=radioButton.getText().toString();
+                //up();
+
+            }
+        });
+        confirmPaymentMethodBtn=(Button)findViewById(R.id.select_payment_method_btn);
+        pos=radioGroup.getCheckedRadioButtonId();
+        if(pos!=-1) {
+            radioButton = (RadioButton) findViewById(pos);
+            checkedBox = radioButton.getText().toString();
+        }
 
 
+        confirmPaymentMethodBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(radioGroup.getCheckedRadioButtonId()==-1) {
+                    Toast.makeText(getApplicationContext(),"Please Select some payment method to proceed",Toast.LENGTH_LONG).show();
+                }else {
+                    if(checkedBox.equals("Qr Code")){
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("payment_method_id","qr");
+                        editor.apply();
+                        Toast.makeText(getApplicationContext(),"Qr Code Selected",Toast.LENGTH_LONG).show();
+                    }else if(checkedBox.equals("Request Qr Card")){
+                        Toast.makeText(getApplicationContext(),"Not in operation yet....",Toast.LENGTH_LONG).show();
+                    }
 
+                }
+            }
+        });
 
-        hiddenTv = (TextView)findViewById(R.id.hiddenTv);
+       /* hiddenTv = (TextView)findViewById(R.id.hiddenTv);
         hiddeniv = (ImageView) findViewById(R.id.hiddenIv);
-        hidden = (LinearLayout)findViewById(R.id.hidden);
+        hidden = (LinearLayout)findViewById(R.id.hidden);*/
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
         String p =preferences.getString("payment_method_id","");
         if (p.equals("qr")) {
+            radioButton= (RadioButton) findViewById(R.id.radio0);
+            radioButton.setChecked(true);
 
-
-
-            String f = p+","+fare;
+           /* String f = p+","+fare;
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
             SharedPreferences.Editor prefEditor = pref.edit();
 
             prefEditor.putString("qr_string",p);
-
                 prefEditor.apply();
-
-
             hiddeniv.setImageDrawable(getDrawable(R.drawable.icon_qr));
             hiddenTv.setText("QR Code");
-            hidden.setAlpha(1);
-
-
-
-
+            hidden.setAlpha(1);*/
         }
         if (p.equals("card")){
           //  hiddeniv.setImageBitmap(getDrawable(R.drawable.qr_card_icon));
-            Drawable d = getDrawable(R.drawable.qr_card_icon);
+           /* Drawable d = getDrawable(R.drawable.qr_card_icon);
             hiddeniv.setImageDrawable(d);
             hiddenTv.setText("QR Card");
-            hidden.setAlpha(1);
+            hidden.setAlpha(1);*/
 
 
         }
         if (p.isEmpty()){
-            hidden.setVisibility(View.GONE);
+           /* hidden.setVisibility(View.GONE);*/
         }
 
-
-//        final Intent intent = getIntent();
-//
-//        from = intent.getStringExtra("from");
-//        to = intent.getStringExtra("to");
-//        price = intent.getStringExtra("price");
-
-
-//        getData();
-//        tvFareData = (TextView)findViewById(R.id.tvFareData);
-//
-//        tvFareData.setText("$ "+price);
-//
-//
-//        fareText = (TextView) findViewById(R.id.fair);
-//        pay = (Button) findViewById(R.id.pay);
-//        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-      //  sms = (LinearLayout) findViewById(R.id.radioButton);
-      //  card = (LinearLayout) findViewById(R.id.radioButton2);
-       // qr = (LinearLayout) findViewById(R.id.radioButton3);
         tvSelectPaymentMethod = (TextView)findViewById(R.id.tvSelectPaymentMethod);
 
 
-        tvSelectPaymentMethod.setOnClickListener(new View.OnClickListener() {
+        /*tvSelectPaymentMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             Intent intent = new Intent(getApplicationContext(),PaymentMethod_extended.class);
                 startActivity(intent);
                 finish();
-
-
-//
-//            if (card.getAlpha()==0&& qr.getAlpha()==0) {
-//                //    sms.setAlpha(1);
-//                card.setAlpha(1);
-//                qr.setAlpha(1);
-//            }
-//            else {
-//                card.setAlpha(0);
-//                qr.setAlpha(0);
-//
-//            }
-//
-
-
-
             }
-        });
+        });*/
 //
 //        qr.setOnClickListener(new View.OnClickListener() {
 //            @Override

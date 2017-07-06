@@ -66,16 +66,13 @@ public class Dashboard extends AppCompatActivity {
     Drawer result;
     String userEmail,userName,customer_id,customer_total_balance,profile_pic;
 
-    PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
+    PrimaryDrawerItem EditProfile = new PrimaryDrawerItem().withIdentifier(1).withName("Profile");
+    SecondaryDrawerItem home = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
     SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Your Trips");
-
-    SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Edit Profile");
-
-
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
@@ -110,12 +107,12 @@ public class Dashboard extends AppCompatActivity {
         userName=preferences.getString("name",null);
         customer_id=preferences.getString("id",null);
         profile_pic=preferences.getString("pro_pic",null);
-        customer_total_balance=dbManager.fetch_customer_balance(customer_id);
+
 
         tvTotalTrips = (TextView)findViewById(R.id.tvTotalTrips);
         tvMWBalance= (TextView) findViewById(R.id.tvMWBalance);
 
-        tvMWBalance.setText("$"+customer_total_balance);
+
         btnStartTrip = (Button)findViewById(R.id.btnStartTrip);
         btnRecharge= (Button) findViewById(R.id.btnRecharge);
         btnStartTrip.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +180,7 @@ public class Dashboard extends AppCompatActivity {
 
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout,feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -193,6 +190,7 @@ public class Dashboard extends AppCompatActivity {
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(Dashboard.this, History.class);
                             startActivity(intent);
+                            finish();
                         }
                         if(drawerItem== logout){
 
@@ -234,8 +232,8 @@ public class Dashboard extends AppCompatActivity {
                     }
 
                 }).build();
-
-
+        customer_total_balance=dbManager.fetch_customer_balance(customer_id);
+        tvMWBalance.setText("$"+customer_total_balance);
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

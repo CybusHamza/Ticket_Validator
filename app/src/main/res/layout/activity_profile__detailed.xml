@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/a"
+    android:background="@drawable/background"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.cybussolutions.ticketvalidator.Activities.Profile_Detailed">
@@ -12,6 +12,7 @@
         layout="@layout/app_bar">
     </include>
     <LinearLayout
+        android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -22,24 +23,29 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/PDimageView"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:src="@drawable/man"
-            android:layout_height="200dp"
-
+            android:layout_height="150dp"
             app:civ_border_width="5dp"
             app:civ_border_color="#FFf"
             />
-
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User Name"
-            android:textSize="20sp"
+            android:text="Name:"
+            android:textSize="18sp"
             android:gravity="center"
             android:textColor="#fff"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,18 +56,24 @@
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:textColor="#fff"
-            android:textSize="15sp"
-            android:layout_margin="5dp"/>
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
 
-
+</LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textSize="20sp"
-            android:gravity="center"
+            android:text="Email:"
+            android:textSize="18sp"
             android:textColor="#fff"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
 
 
         <TextView
@@ -70,21 +82,25 @@
             android:text="user Name"
             android:id="@+id/tvUserEmail"
             android:inputType="textEmailAddress"
-            android:layout_gravity="center"
             android:textColor="#fff"
-            android:textSize="15sp"
-            android:layout_margin="5dp"/>
-
-
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
+</LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone Number"
-            android:textSize="20sp"
-            android:gravity="center"
+            android:text="Phone:"
+            android:textSize="18sp"
             android:textColor="#fff"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
 
 
         <TextView
@@ -94,21 +110,26 @@
             android:id="@+id/tvuserNumber"
             android:layout_gravity="center"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:inputType="number"
-            android:layout_margin="5dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
 
-
-        <Button
-            android:id="@+id/editPro"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
-            android:background="#00f"
-            android:text="Edit"
-            android:textColor="#fff"
-            android:textSize="30sp" />
-
+</LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+    <Button
+        android:id="@+id/editPro"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_btn_route_detailed"
+        android:text="Edit"
+        android:layout_marginBottom="90dp"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp" />
+</RelativeLayout>

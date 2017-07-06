@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".Activities.Payment_Method">
 
@@ -14,7 +15,7 @@
         >
 
     </include>
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Payment Methods"
@@ -66,14 +67,16 @@
             android:layout_marginRight="20dp"
 
             android:background="#8989"/>
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="18dp"
-        android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true">
 
 
 
@@ -82,12 +85,66 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Select Your Payment Method"
-            android:gravity="center"
-            android:textSize="15sp"
+
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="#fff"
             android:layout_marginLeft="20dp"
             android:id="@+id/tvSelectPaymentMethod"
             />
     </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayout1"
+        android:layout_marginTop="50dp">
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:textSize="25dp"
+                android:buttonTint="#fff"
+                android:textColor="#fff"
+                android:layout_marginLeft="10dp"
+                android:text="Qr Code" />
+
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="25dp"
+                android:buttonTint="#fff"
+                android:textColor="#fff"
+                android:text="Request Qr Card" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/select_payment_method_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:text="Click to confirm mehtod"
+        android:background="@drawable/bg_btn_route_detailed"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:textColor="#fff"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        />
     <!--<View-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="1dp"-->
@@ -139,4 +196,4 @@
     <!--android:background="#8989"/>-->
 
     <!--</LinearLayout>-->
-</LinearLayout>
+</RelativeLayout>
