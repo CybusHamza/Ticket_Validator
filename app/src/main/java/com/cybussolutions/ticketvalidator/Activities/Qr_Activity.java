@@ -252,6 +252,10 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                                 String message = null;
                                 if (e instanceof NetworkError) {
                                     message = "Cannot connect to Internet...Please check your connection!";
+                                    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                    dateFormatter.setLenient(false);
+                                    Date today = new Date();
+                                    date = dateFormatter.format(today);
                                    // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                     dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
                                     dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");

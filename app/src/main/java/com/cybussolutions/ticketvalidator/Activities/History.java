@@ -372,7 +372,7 @@ public class History extends AppCompatActivity {
                                 for (int i = 0; i < stringArrayList5.size(); i++) {
                                     HistoryData hd = new HistoryData();
                                     String stringArrayList = dbManager.fetch_history_table(userid, stringArrayList5.get(i));
-                                    String stringArrayList1 = dbManager.fetch_history_table_date(userid);
+                                    String stringArrayList1 = dbManager.fetch_history_table_date(userid,stringArrayList5.get(i));
                                     routeId = dbManager.fetch_route_id_for_history(userid, stringArrayList5.get(i));
                                     String stringArrayList2 = dbManager.h_fetch_route_table_start(routeId);
                                     String stringArrayList3 = dbManager.h_fetch_route_table_dest(routeId);

@@ -330,9 +330,9 @@ public class DBManager {
         return personTraveling;
         //return stringArrayList;
     }
-    public String fetch_history_table_date(String user_id) {
-        String[] args={user_id};
-        Cursor cursor=database.rawQuery("SELECT date_added FROM HISTORY_TRAVEL WHERE user_id = ?", args);
+    public String fetch_history_table_date(String user_id,String transid) {
+        String[] args={user_id,transid};
+        Cursor cursor=database.rawQuery("SELECT date_added FROM HISTORY_TRAVEL WHERE user_id = ? and trans_id = ?", args);
         ArrayList<String> stringArrayList=new ArrayList<String>();
         String date=null;
         if(cursor.moveToFirst()){

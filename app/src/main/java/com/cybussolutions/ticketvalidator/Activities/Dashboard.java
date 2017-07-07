@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -239,6 +240,21 @@ public class Dashboard extends AppCompatActivity {
         }else {
             tvMWBalance.setText("$");
         }
+
+        new CountDownTimer(5000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                customer_total_balance=dbManager.fetch_customer_balance(customer_id);
+                if(customer_total_balance!=null) {
+                    tvMWBalance.setText("$" + customer_total_balance);
+                }else {
+                    tvMWBalance.setText("$");
+                }
+            }
+        }.start();
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
