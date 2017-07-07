@@ -144,26 +144,71 @@ public class DBManager {
         else
         return id;
     }
-    public String login_first_name(String userEmail,String userPassword) {
+    public String login_first_name(String id) {
 
-        String[] args={userEmail,userPassword};
+        String[] args={id};
         // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
-        Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = ? and password = ?", args);
+        Cursor cursor=database.rawQuery("SELECT first_name FROM SIGNUP WHERE customer_id = ?", args);
         // String[] daata = new String[cursor.getCount()];
         ArrayList<String> stringArrayList=new ArrayList<String>();
-        String id=null;
+        String firstName=null;
         if(cursor.moveToFirst()){
             do
             {
-                id=cursor.getString(0);
+                firstName=cursor.getString(0);
 //                stringArrayList.add(cursor.getString(0));
 //                stringArrayList.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
-        if(id==null)
+        return firstName;
+        /*if(id==null)
             return "0";
         else
-            return id;
+            return id;*/
+    }
+    public String login_last_name(String id) {
+
+        String[] args={id};
+        // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
+        Cursor cursor=database.rawQuery("SELECT last_name FROM SIGNUP WHERE customer_id = ?", args);
+        // String[] daata = new String[cursor.getCount()];
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        String lastName=null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                lastName=cursor.getString(0);
+//                stringArrayList.add(cursor.getString(0));
+//                stringArrayList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return lastName;
+        /*if(id==null)
+            return "0";
+        else
+            return id;*/
+    }
+    public String login_number(String id) {
+
+        String[] args={id};
+        // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
+        Cursor cursor=database.rawQuery("SELECT phone_number FROM SIGNUP WHERE customer_id = ?", args);
+        // String[] daata = new String[cursor.getCount()];
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        String lastName=null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                lastName=cursor.getString(0);
+//                stringArrayList.add(cursor.getString(0));
+//                stringArrayList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return lastName;
+        /*if(id==null)
+            return "0";
+        else
+            return id;*/
     }
 
     public ArrayList<String> fetch_route_table(String route_start) {
@@ -449,6 +494,9 @@ public class DBManager {
     public void delete_both_history_tables(){
         database.delete(DatabaseHelper.HISTORY_TRAVEL,null,null);
         database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE,null,null);
+    }
+    public void delete_history_tables(){
+        database.delete(DatabaseHelper.HISTORY_TRAVEL,null,null);
     }
 
     public void delete_history_data_local(String trans_id){

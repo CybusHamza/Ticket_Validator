@@ -189,9 +189,16 @@ public class Login_Activity extends AppCompatActivity {
                 dbManager.open();
                 message = "Cannot connect to Internet...Please check your connection!";
                 String id=dbManager.login(userEmail,userPassword);
+                String firstName=dbManager.login_first_name(id);
+                String lastName=dbManager.login_last_name(id);
+                String phone=dbManager.login_number(id);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("UserEmail", userEmail);
+                editor.putString("first_name",firstName);
+                editor.putString("last_name",lastName);
+                editor.putString("number",phone);
+                editor.putString("name",firstName + "  "+ lastName);
                 editor.putString("id", id);
                 editor.apply();
                 if (rememberMeCheckBox.isChecked()) {

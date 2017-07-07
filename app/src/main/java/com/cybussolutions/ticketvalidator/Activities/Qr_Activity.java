@@ -77,7 +77,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
     String date;
     private BeaconManager beaconManager;
     private Region region;
-
+    String confirmNum;
 
     Button generateQrButton;
 
@@ -192,7 +192,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         }
                         Calendar cal = Calendar.getInstance();
                         String tym =String.valueOf( cal.getTimeInMillis());
-                        final String confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
+                        confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         String from= preferences.getString("FROM","");
                         String to =preferences.getString("TO","");
@@ -232,96 +232,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         dbManager.update_customer_balance(user_id,remaining_balance);*/
 
 
-                        StringRequest strreq = new StringRequest(Request.Method.POST,
-                                "http://epay.cybussolutions.com/Api_Service/SendhistoryData",
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String Response) {
-                                       // loading.dismiss();
 
-                                        if(!(Response.equals("")))
-                                        {
-                                              //Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-//                                            dbManager = new DBManager(Signup_activity.this);
-//                                            dbManager.open();
-                                            try{
-                                                JSONObject jsonObject = new  JSONObject(Response);
-//                                                jsonObject.get("userId");
-                                              String id = jsonObject.get("userId").toString();
-////
-//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                                SharedPreferences.Editor editor = preferences.edit();
-//                             //   editor.putString();
-//                                editor.putString("UserEmail", email);
-//                                // editor.putString("UserPassword",userPassword);
-//                                editor.putString("f_name", first_name);
-//                                editor.putString("l_nmae", last_name);
-//                                editor.putString("id", id);
-//                                editor.putString("sign_in_status","1");
-//                                editor.apply();
-
-
-
-                                              //  Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
-                                              //  dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
-
-//                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
-//                                                SharedPreferences.Editor editor = preferences.edit();
-//                                                // editor.putString("UserEmail", userEmail);
-//                                                editor.putString("id", id);
-//                                                editor.commit();
-//                                                startService(new Intent(Signup_activity.this, HelloService.class));
-
-                                            }catch (Exception e){
-                                                //Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
-                                            }
-                                            //  dbManager.insert(first_name, last_name, email, phone_number);
-                                            //Cursor cursor=dbManager.fetch();
-                                        }
-                                        else {
-//                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                                            SharedPreferences.Editor editor = preferences.edit();
-//                                            editor.putString("sign_in_status","0");
-//                                            editor.apply();
-                                            Toast.makeText(Qr_Activity.this, "There was an error", Toast.LENGTH_SHORT).show();
-                                        }
-                                        // showJSON(Response);
-                                        // get response
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError e) {
-                                e.printStackTrace();
-                                String message = null;
-                                if (e instanceof NetworkError) {
-                                    message = "Cannot connect to Internet...Please check your connection!";
-                                    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                                    dateFormatter.setLenient(false);
-                                    Date today = new Date();
-                                    date = dateFormatter.format(today);
-                                   // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                    dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
-                                    dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
-                                }
-                               // loading.dismiss();
-                            }
-                        }) {
-                            @Override
-                            public Map<String, String> getParams() {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("route_id", route_id);
-                                params.put("user_id", user_id);
-                                params.put("person_traveling", number_of_persons);
-                                params.put("trans_id", confirmNum);
-                                params.put("date_added", date);
-                              //  params.put("gender",gender);
-                                params.put("date_modified","557678");
-                                return params;
-                            }
-                        };
-
-                        RequestQueue requestQueue = Volley.newRequestQueue(Qr_Activity.this);
-                        requestQueue.add(strreq);
 
 
                     }
@@ -374,6 +285,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
 
                                                 dbManager.update_customer_balance(user_id,remaining_balance);
+                                                insertintoHistoryTravel();
                                                 finish();
 
                                             }
@@ -468,5 +380,98 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 //                    .show();
         }
     }
+public void insertintoHistoryTravel(){
+    StringRequest strreq = new StringRequest(Request.Method.POST,
+            "http://epay.cybussolutions.com/Api_Service/SendhistoryData",
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String Response) {
+                    // loading.dismiss();
 
+                    if(!(Response.equals("")))
+                    {
+                        //Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+//                                            dbManager = new DBManager(Signup_activity.this);
+//                                            dbManager.open();
+                        try{
+                            JSONObject jsonObject = new  JSONObject(Response);
+//                                                jsonObject.get("userId");
+                            String id = jsonObject.get("userId").toString();
+                            finish();
+////
+//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                SharedPreferences.Editor editor = preferences.edit();
+//                             //   editor.putString();
+//                                editor.putString("UserEmail", email);
+//                                // editor.putString("UserPassword",userPassword);
+//                                editor.putString("f_name", first_name);
+//                                editor.putString("l_nmae", last_name);
+//                                editor.putString("id", id);
+//                                editor.putString("sign_in_status","1");
+//                                editor.apply();
+
+
+
+                            //  Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+                            //  dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
+
+//                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
+//                                                SharedPreferences.Editor editor = preferences.edit();
+//                                                // editor.putString("UserEmail", userEmail);
+//                                                editor.putString("id", id);
+//                                                editor.commit();
+//                                                startService(new Intent(Signup_activity.this, HelloService.class));
+
+                        }catch (Exception e){
+                            //Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
+                        }
+                        //  dbManager.insert(first_name, last_name, email, phone_number);
+                        //Cursor cursor=dbManager.fetch();
+                    }
+                    else {
+//                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                            SharedPreferences.Editor editor = preferences.edit();
+//                                            editor.putString("sign_in_status","0");
+//                                            editor.apply();
+                        Toast.makeText(Qr_Activity.this, "There was an error", Toast.LENGTH_SHORT).show();
+                    }
+                    // showJSON(Response);
+                    // get response
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError e) {
+            e.printStackTrace();
+            String message = null;
+            if (e instanceof NetworkError) {
+                message = "Cannot connect to Internet...Please check your connection!";
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                dateFormatter.setLenient(false);
+                Date today = new Date();
+                date = dateFormatter.format(today);
+                // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
+                dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
+                finish();
+            }
+            // loading.dismiss();
+        }
+    }) {
+        @Override
+        public Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<>();
+            params.put("route_id", route_id);
+            params.put("user_id", user_id);
+            params.put("person_traveling", number_of_persons);
+            params.put("trans_id", confirmNum);
+            params.put("date_added", date);
+            //  params.put("gender",gender);
+            params.put("date_modified","557678");
+            return params;
+        }
+    };
+
+    RequestQueue requestQueue = Volley.newRequestQueue(Qr_Activity.this);
+    requestQueue.add(strreq);
+}
 }
