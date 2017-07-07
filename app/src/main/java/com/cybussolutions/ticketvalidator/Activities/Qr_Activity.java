@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,27 +30,28 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
-import com.estimote.sdk.Beacon;
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.Region;
-import com.estimote.sdk.SystemRequirementsChecker;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
-public class Qr_Activity extends AppCompatActivity implements OnClickListener {
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+public class Qr_Activity extends AppCompatActivity implements OnClickListener, BeaconConsumer {
 
     private String LOG_TAG = "GenerateQRCode";
     String Qrsting;
@@ -61,36 +61,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
     String date;
     private BeaconManager beaconManager;
     private Region region;
- /*   private static final Map<String, List<String>> PLACES_BY_BEACONS;
-    static {
-        Map<String, List<String>> placesByBeacons = new HashMap<>();
-        placesByBeacons.put("2:4", new ArrayList<String>() {{
-            add("1");
-            add("2");
-            add("c");
 
-        }});
-        placesByBeacons.put("2:4", new ArrayList<String>() {{
-            add("1");
-            add("2");
-            add("a");
-        }});
-        PLACES_BY_BEACONS = Collections.unmodifiableMap(placesByBeacons);
-    }*/
-    @NonNull
-    private List<String> placesNearBeacon(Beacon beacon) {
-        String beaconKey = String.format("%d:%d", beacon.getMajor(), beacon.getMinor());
-        if(String.valueOf(beacon.getMajor()).equals(user_id)){
-            Toast.makeText(getApplicationContext(),"Successfully get Beacon",Toast.LENGTH_LONG).show();
-            beaconManager.stopRanging(region);
-        }
-      /*  if (PLACES_BY_BEACONS.cont
-      ainsKey(beaconKey)) {
 
-            return PLACES_BY_BEACONS.get(beaconKey);
-        }*/
-        return Collections.emptyList();
-    }
     Button generateQrButton;
 
     TextView showLabel;
@@ -105,13 +77,14 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
         toolbar.setTitle("Generate QR Code");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        beaconManager = new BeaconManager(this);
 
         generateQrButton = (Button) findViewById(R.id.button1);
         showLabel = (TextView) findViewById(R.id.labelForUser);
         generateQrButton.setOnClickListener(this);
         generateQrButton.setVisibility(View.VISIBLE);
         showLabel.setVisibility(View.INVISIBLE);
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+
 
       //  Button button =(Button)findViewById(R.id.btnCnfrm);
        // button.setOnClickListener(this);
@@ -158,28 +131,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
 
                         generateQrButton.setVisibility(View.INVISIBLE);
                         showLabel.setVisibility(View.VISIBLE);
-                        //Find screen size
-                        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-                            @Override
-                            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-                                if (!list.isEmpty()) {
-                                    Beacon nearestBeacon = list.get(0);
-                                    List<String> places = placesNearBeacon(nearestBeacon);
-                                    // TODO: update the UI here
-                                    Log.d("Beacon", "Nearest places: " + places);
-                                }
-                            }
-                        });
-                        region = new Region("ranged region", UUID.fromString("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6"), null, null);
 
-
-                        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-                            @Override
-                            public void onServiceReady() {
-                                beaconManager.startRanging(region);
-                            }
-                        });
-
+                        beaconManager.bind(Qr_Activity.this);
 
                         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
                         Display display = manager.getDefaultDisplay();
@@ -335,19 +288,86 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener {
                 });
         myAlertDialog.show();
     }
+
+
+
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onBeaconServiceConnect() {
+        beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                if (beacons.size() > 0) {
+                    //EditText editText = (EditText)RangingActivity.this.findViewById(R.id.rangingText);
+                    final Beacon firstBeacon = beacons.iterator().next();
+                    //  logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
+                    String data = firstBeacon.getId1()+","+firstBeacon.getId2()+","+firstBeacon
+                            .getId3();
 
-        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+                  //  Toast.makeText(Qr_Activity.this, data, Toast.LENGTH_SHORT).show();
+
+                    String id1 = firstBeacon.getId1()+"";
+                    String id2 = firstBeacon.getId2()+"";
+                    String id3 = firstBeacon.getId3()+"";
+
+                    if(id2.equals(user_id))
+                    {
+                        beaconManager.unbind(Qr_Activity.this);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new SweetAlertDialog(Qr_Activity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Sucess!")
+                                        .setConfirmText("OK").setContentText("Transaction sucessfull")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismiss();
+                                                finish();
+
+                                            }
+                                        })
+                                        .show();   }
+                        });
+
+                       /* try {
+
+                            Toast.makeText(Qr_Activity.this, "Beacon Found Sucessfully", Toast.LENGTH_SHORT).show();
+                           // beaconManager.stopRangingBeaconsInRegion(new Region("apr", null, null, null));
 
 
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }*/
+                    }
+
+                    //logToDisplay(data);
+                }
+            }
+
+        });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+        } catch (RemoteException e) {   }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
     }
 
     @Override
     protected void onPause() {
-        beaconManager.stopRanging(region);
         super.onPause();
+        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(false);
     }
 
 
