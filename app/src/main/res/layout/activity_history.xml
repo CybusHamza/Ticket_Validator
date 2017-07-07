@@ -50,7 +50,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/history_list"
     android:divider="#fff"
-    android:dividerHeight="0dp"
+    android:dividerHeight="1dp"
     >
 
 </ListView>

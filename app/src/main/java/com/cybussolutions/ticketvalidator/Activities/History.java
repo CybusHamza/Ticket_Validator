@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,9 +16,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.cybussolutions.ticketvalidator.Feedback;
-import com.cybussolutions.ticketvalidator.Profile;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -32,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Adapter.CustomHistoryListAdapter;
 import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
+import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -55,41 +52,35 @@ import java.util.Map;
 
 public class History extends AppCompatActivity {
     String routeId;
-    boolean doubleBackToExitPressedOnce = false;
+
     ListView historyListView;
     Toolbar toolbar;
 
     CustomHistoryListAdapter adapter;
-    private List<HistoryData> HistoryList = new ArrayList<HistoryData>();
-
     Drawer result;
-
-    SecondaryDrawerItem home = new SecondaryDrawerItem().withIdentifier(2).withName("Home");
+    PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
-    PrimaryDrawerItem your_trips = new PrimaryDrawerItem()
-            .withIdentifier(1).withName("Your Trips");
-
+    SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
+            .withIdentifier(3).withName("Your Trips");
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Profile");
-
-
+            .withIdentifier(4).withName("Edit Profile");
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Logout");
+            .withIdentifier(5).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Feedback");
-    private DBManager dbManager;
-    ArrayList<String> routeIds=new ArrayList<String>();
-    ArrayList<String> userIds=new ArrayList<String>();
-    ArrayList<String> personTraveling=new ArrayList<String>();
-    ArrayList<String> transactionIds=new ArrayList<String>();
-    ArrayList<String> dateAdded=new ArrayList<String>();
-    ArrayList<String> dateModified=new ArrayList<String>();
+            .withIdentifier(6).withName("Feedback");
+    ArrayList<String> routeIds = new ArrayList<String>();
+    ArrayList<String> userIds = new ArrayList<String>();
+    ArrayList<String> personTraveling = new ArrayList<String>();
+    ArrayList<String> transactionIds = new ArrayList<String>();
+    ArrayList<String> dateAdded = new ArrayList<String>();
+    ArrayList<String> dateModified = new ArrayList<String>();
     ArrayList<String> stringArrayList5 = new ArrayList<>();
     EditText searchET;
-
-    String routeIdLive,transactionIdLive,personTravelingLive,dateAddedLive,dateModifiedLive;
-    String userEmail,userName;
+    String routeIdLive, transactionIdLive, personTravelingLive, dateAddedLive, dateModifiedLive;
+    String userEmail, userName;
+    private List<HistoryData> HistoryList = new ArrayList<HistoryData>();
+    private DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +88,12 @@ public class History extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         historyListView = (ListView) findViewById(R.id.history_list);
 
-        searchET = (EditText)findViewById(R.id.searchData);
+        searchET = (EditText) findViewById(R.id.searchData);
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        userEmail=preferences.getString("UserEmail",null);
-        userName=preferences.getString("name",null);
+        userEmail = preferences.getString("UserEmail", null);
+        userName = preferences.getString("name", null);
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_history);
@@ -115,7 +106,6 @@ public class History extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-
 
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
@@ -134,48 +124,47 @@ public class History extends AppCompatActivity {
 //      //  new SecondaryDrawerItem().withName("Your Trips")
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
-        result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(4).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
+        result = new DrawerBuilder().withActivity(this).withAccountHeader(header)
+                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout, feedback
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                        if (drawerItem== your_trips){
+                        if (drawerItem == your_trips) {
                             Intent intent = new Intent(History.this, History.class);
                             startActivity(intent);
-                            finish();
                         }
-                        if(drawerItem== logout){
+                        if (drawerItem == logout) {
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
                             editor.apply();
 
-                            Intent intent=new Intent(getApplicationContext(),Login_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
                             startActivity(intent);
                             finish();
                         }
-                        if (drawerItem== payment){
-                            Intent intent=new Intent(getApplicationContext(),Payment_Method.class);
-                            startActivity(intent);
-                            finish();
-
-                        }
-                        if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        if (drawerItem==home){
-                            Intent intent=new Intent(getApplicationContext(),Dashboard.class);
+                        if (drawerItem == payment) {
+                            Intent intent = new Intent(getApplicationContext(), Payment_Method.class);
                             startActivity(intent);
                             finish();
 
                         }
-                        if (drawerItem==feedback){
+                        if (drawerItem == EditProfile) {
+                            Intent intent = new Intent(getApplicationContext(), Profile.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem == home) {
+                            Intent intent = new Intent(getApplicationContext(), Dashboard.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                        if (drawerItem == feedback) {
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
                             startActivity(intent);
@@ -187,78 +176,66 @@ public class History extends AppCompatActivity {
                     }
 
                 }).build();
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             dbManager = new DBManager(History.this);
             dbManager.open();
-            transactionIds=dbManager.fetch_history_trans_id_for_live();
-            for(int i=0;i<transactionIds.size();i++) {
-                transactionIdLive=transactionIds.get(i);
+            transactionIds = dbManager.fetch_history_trans_id_for_live();
+            for (int i = 0; i < transactionIds.size(); i++) {
+                transactionIdLive = transactionIds.get(i);
                 routeIdLive = dbManager.fetch_route_id_for_live(transactionIds.get(i));
-                personTravelingLive=dbManager.fetch_person_traveling_for_live(transactionIdLive);
-                dateAddedLive=dbManager.fetch_date_added_for_live(transactionIdLive);
+                personTravelingLive = dbManager.fetch_person_traveling_for_live(transactionIdLive);
+                dateAddedLive = dbManager.fetch_date_added_for_live(transactionIdLive);
                 insertIntoTravelHistory();
-             //  Toast.makeText(getApplicationContext(),transactionIds.get(i).toString(),Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(),transactionIds.get(i).toString(),Toast.LENGTH_LONG).show();
             }
             getHistory();
 
-        }else {
+        } else {
             getHistory();
             // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
-        }
 
+
+        }
 
 
         searchET.addTextChangedListener(new TextWatcher() {
-                                            @Override
-                                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                            }
+            }
 
-                                            @Override
-                                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                                                String nameToSearch = searchET.getText().toString();
-                                                ArrayList<HistoryData> filteredLeaves = new ArrayList<HistoryData>();
-
-                                                for (HistoryData data : HistoryList) {
-                                                    if (data.getRouteStart().toLowerCase().contains(nameToSearch.toLowerCase()) || data.getDate().toLowerCase().equalsIgnoreCase(nameToSearch.toLowerCase())) {
-                                                        filteredLeaves.add(data);
-                                                    }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
 
-                                                }
+                String nameToSearch = searchET.getText().toString();
+                ArrayList<HistoryData> filteredLeaves = new ArrayList<HistoryData>();
+
+                for (HistoryData data : HistoryList) {
+                    if (data.getRouteStart().toLowerCase().contains(nameToSearch.toLowerCase()) || data.getDate().toLowerCase().equalsIgnoreCase(nameToSearch.toLowerCase())) {
+                        filteredLeaves.add(data);
+                    }
+
+
+                }
                 /*leaveDatas.clear();
                 leaveDatas.addAll(filteredLeaves);
                 leaves_adapter.notifyDataSetChanged();*/
-                                                adapter = new CustomHistoryListAdapter(History.this, filteredLeaves);
-                                                historyListView.setAdapter(adapter);
+                adapter = new CustomHistoryListAdapter(History.this, filteredLeaves);
+                historyListView.setAdapter(adapter);
 
-                                            }                //     listView.setAdapter(leaves_adapter);
-
-
-
-        @Override
-        public void afterTextChanged(Editable s) {
+            }                //     listView.setAdapter(leaves_adapter);
 
 
-        }
-    });
+            @Override
+            public void afterTextChanged(Editable s) {
 
 
+            }
+        });
 
 
-
-
-
-
-
-
-
-
-
-
-                                        }
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu){
 //
@@ -301,7 +278,7 @@ public class History extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void getHistory(){
+    private void getHistory() {
         final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
@@ -317,6 +294,7 @@ public class History extends AppCompatActivity {
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = preferences.edit();
+                    String userid = preferences.getString("id", "");
                     editor.putString("TotalTrips", s);
                     editor.apply();
 
@@ -341,7 +319,14 @@ public class History extends AppCompatActivity {
                         hd.setTime(time);
                         hd.setDate(date);
                         //  hd.setRoute_added_date(String.valueOf(jsonObject.get("route_added_date")));
+
                         hd.setRouteStart(jsonObject.getString("rout_start").toString());
+
+                     //   dbManager.delete_both_history_tables();
+
+                    //    dbManager.insert_into_history_travel(jsonObject.get("route_id").toString(),jsonObject.get("trans_id").toString(),userid,jsonObject.get("person_travling").toString(),jsonObject.get("route_updated_date").toString(),jsonObject.get("route_updated_date").toString());
+
+
 
 //                        b.setBrandName(jsonObject.getString("brand_name"));
 //                        b.setId(jsonObject.getString("email"));
@@ -434,7 +419,8 @@ public class History extends AppCompatActivity {
         requestQueue.add(request);
 
     }
-    private void insertIntoTravelHistory(){
+
+    private void insertIntoTravelHistory() {
         final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.INSERT_TRAVEL_HISTORY, new Response.Listener<String>() {
@@ -447,9 +433,9 @@ public class History extends AppCompatActivity {
                 dbManager.delete_history_data_local(transactionIdLive);
                 dbManager.delete_history_data_live(transactionIdLive);
 
-               // dbManager.delete_both_history_tables();
+                // dbManager.delete_both_history_tables();
                 //getHistory();
-                  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
             }
         },
                 new Response.ErrorListener() {
@@ -472,32 +458,14 @@ public class History extends AppCompatActivity {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
                 String userid = preferences.getString("id", "");
                 map.put("user_id", userid);
-                map.put("route_id",routeIdLive);
-                map.put("trans_id",transactionIdLive);
-                map.put("person_travling",personTravelingLive);
-                map.put("date_added",dateAddedLive);
+                map.put("route_id", routeIdLive);
+                map.put("trans_id", transactionIdLive);
+                map.put("person_travling", personTravelingLive);
+                map.put("date_added", dateAddedLive);
                 return map;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
-    }
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
     }
 }
