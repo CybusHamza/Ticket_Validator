@@ -1,16 +1,29 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
@@ -40,6 +54,8 @@ import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,7 +81,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
     Button generateQrButton;
 
-    TextView showLabel;
+    TextView showLabel,textViewTop;
+    private int REQUEST_PERMISSIONS=1,REQUEST_BLUETOOTH=2;
 
     @Override
 
@@ -80,12 +97,15 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
         generateQrButton = (Button) findViewById(R.id.button1);
         showLabel = (TextView) findViewById(R.id.labelForUser);
+        textViewTop = (TextView) findViewById(R.id.textView1);
         generateQrButton.setOnClickListener(this);
         generateQrButton.setVisibility(View.VISIBLE);
         showLabel.setVisibility(View.INVISIBLE);
+        textViewTop.setVisibility(View.VISIBLE);
         beaconManager = BeaconManager.getInstanceForApplication(this);
 
-
+        dbManager = new DBManager(Qr_Activity.this);
+        dbManager.open();
       //  Button button =(Button)findViewById(R.id.btnCnfrm);
        // button.setOnClickListener(this);
 
@@ -100,7 +120,29 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
           Qrsting=  preferences.getString("qr_string","");
 
        // Qrsting = intent.getStringExtra("Qr_string");
+        if (ActivityCompat.checkSelfPermission(Qr_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+
+            if (Build.VERSION.SDK_INT > 22) {
+
+                requestPermissions(new String[]{Manifest.permission
+                                .ACCESS_FINE_LOCATION},
+                        REQUEST_PERMISSIONS);
+
+            }else {
+
+            }
+
+        }
+        BluetoothAdapter bluetooth= BluetoothAdapter.getDefaultAdapter();
+        if (!bluetooth.isEnabled()) {
+            Toast.makeText(getApplicationContext(),
+                    "Turning ON Bluetooth", Toast.LENGTH_LONG);
+            // Intent enableBtIntent = new
+            // Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
+        }
     }
 
     public void onClick(View v) {
@@ -131,6 +173,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
                         generateQrButton.setVisibility(View.INVISIBLE);
                         showLabel.setVisibility(View.VISIBLE);
+                        textViewTop.setVisibility(View.INVISIBLE);
 
                         beaconManager.bind(Qr_Activity.this);
 
@@ -182,11 +225,11 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
                        // Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
 
-                        dbManager = new DBManager(Qr_Activity.this);
+                        /*dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
 
 
-                        dbManager.update_customer_balance(user_id,remaining_balance);
+                        dbManager.update_customer_balance(user_id,remaining_balance);*/
 
 
                         StringRequest strreq = new StringRequest(Request.Method.POST,
@@ -327,6 +370,10 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                                             @Override
                                             public void onClick(SweetAlertDialog sDialog) {
                                                 sDialog.dismiss();
+
+
+
+                                                dbManager.update_customer_balance(user_id,remaining_balance);
                                                 finish();
 
                                             }
@@ -373,6 +420,54 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
         super.onResume();
         if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(false);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
+        if (requestCode == REQUEST_PERMISSIONS || requestCode==REQUEST_BLUETOOTH ) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //The External Storage Write Permission is granted to you... Continue your left job...
+
+            } else {
+
+
+                Toast.makeText(Qr_Activity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if(requestCode == 0) {
+                if (requestCode == 0 && resultCode == RESULT_OK) {
+
+
+                } else {
+                    Toast.makeText(this, "Bluetooth Permission must required",
+                            Toast.LENGTH_LONG).show();
+
+
+                }
+            }else if(requestCode==1) {
+                if (requestCode == 1 && resultCode == RESULT_OK
+                        && null != data) {
+
+
+                } else {
+                    Toast.makeText(this, "Location Permission must required",
+                            Toast.LENGTH_LONG).show();
+
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(e.getLocalizedMessage(), "test");
+//            Toast.makeText(this, "", Toast.LENGTH_LONG)
+//                    .show();
+        }
+    }
 
 }

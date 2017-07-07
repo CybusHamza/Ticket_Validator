@@ -58,17 +58,17 @@ public class History extends AppCompatActivity {
 
     CustomHistoryListAdapter adapter;
     Drawer result;
-    PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
+    SecondaryDrawerItem home = new SecondaryDrawerItem().withIdentifier(2).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Payment");
-    SecondaryDrawerItem your_trips = new SecondaryDrawerItem()
-            .withIdentifier(3).withName("Your Trips");
+    PrimaryDrawerItem your_trips = new PrimaryDrawerItem()
+            .withIdentifier(1).withName("Your Trips");
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem()
-            .withIdentifier(4).withName("Edit Profile");
+            .withIdentifier(2).withName("Profile");
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
-            .withIdentifier(5).withName("Logout");
+            .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
-            .withIdentifier(6).withName("Feedback");
+            .withIdentifier(2).withName("Feedback");
     ArrayList<String> routeIds = new ArrayList<String>();
     ArrayList<String> userIds = new ArrayList<String>();
     ArrayList<String> personTraveling = new ArrayList<String>();
@@ -125,7 +125,7 @@ public class History extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result = new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(home, payment, your_trips, EditProfile, logout, feedback
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(4).addDrawerItems(EditProfile,home, payment, your_trips, feedback,  logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
@@ -154,7 +154,7 @@ public class History extends AppCompatActivity {
 
                         }
                         if (drawerItem == EditProfile) {
-                            Intent intent = new Intent(getApplicationContext(), Profile.class);
+                            Intent intent = new Intent(getApplicationContext(), Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }
