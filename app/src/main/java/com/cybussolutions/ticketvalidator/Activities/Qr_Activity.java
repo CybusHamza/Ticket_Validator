@@ -458,7 +458,6 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     Toast.makeText(this, "Location Permission must required",
                             Toast.LENGTH_LONG).show();
 
-
                 }
             }
 
