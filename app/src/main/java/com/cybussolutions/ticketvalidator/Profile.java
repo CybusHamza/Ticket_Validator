@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -22,7 +23,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -34,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,7 +42,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.cybussolutions.ticketvalidator.Activities.Dashboard;
 import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
@@ -65,7 +63,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -127,13 +124,10 @@ public class Profile extends AppCompatActivity {
     //
     private static final int REQUEST_PERMISSIONS=0;
 
-
-
     public static Phonenumber.PhoneNumber phonenumberProto;
     PhoneNumberUtil phoneNumberUtil;
     Boolean isValid;
     String userEmail,userName;
-
     String dateAndTime;
     AlertDialog myalertdialog;
     Calendar calender;

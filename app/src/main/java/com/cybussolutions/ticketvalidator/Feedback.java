@@ -83,6 +83,10 @@ public class Feedback extends AppCompatActivity {
         etEmail = (EditText)findViewById(R.id.email);
         etFeedback = (EditText)findViewById(R.id.feedback);
         setSupportActionBar(toolbar);
+
+        etEmail.setFocusable(false);
+        etEmail.setClickable(false);
+
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);

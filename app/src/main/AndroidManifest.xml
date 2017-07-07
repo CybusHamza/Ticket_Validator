@@ -51,7 +51,8 @@
 
         <service android:name=".Activities.HelloService" />
 
-        <activity android:name=".Activities.History" />
+        <activity android:name=".Activities.History"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".Activities.PaymentMethod_extended" />
         <activity android:name=".Activities.Dashboard" />
         <activity android:name=".Activities.Profile_Detailed" />

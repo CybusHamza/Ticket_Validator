@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +31,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.cybussolutions.ticketvalidator.Profile;
 
 public class Route_Detailed extends AppCompatActivity {
 
@@ -107,7 +106,7 @@ public class Route_Detailed extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(rates!=null) {
+                if(rates!=null && !(tvPrice.getText().toString().equals("No rates defined"))) {
                     numOfPersons = EtnumberOfPersons.getText().toString();
                     if(charSequence.length()<1)
                         numOfPersons="1";

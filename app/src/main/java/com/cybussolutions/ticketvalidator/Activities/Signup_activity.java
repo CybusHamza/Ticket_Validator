@@ -3,14 +3,11 @@ package com.cybussolutions.ticketvalidator.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 import org.json.JSONObject;
 
@@ -40,6 +38,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout inputLayoutFirstName, inputLayoutLastName, inputLayoutEmail, inputLayoutPassword, inputLayoutReenterPassword, inputLayoutPhoneNumber;
     private Button btnSignUp;
 
+    public static Phonenumber.PhoneNumber phonenumberProto;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     String gender;
@@ -146,7 +145,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
                         else if(!(Response.equals("")))
                         {
-                          //  Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+                           Toast.makeText(getApplicationContext(), "user registered successfully", Toast.LENGTH_LONG).show();
                             dbManager = new DBManager(Signup_activity.this);
                             dbManager.open();
                             try{
@@ -166,7 +165,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
 
 
-                                Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
                                 dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
 
                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);

@@ -6,25 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by AQSA SHaaPARR on 4/18/2017.
  */
-
-
-import android.widget.Filter;
-import android.widget.Filterable;
 
 public class CustomHistoryListAdapter extends BaseAdapter {
 
@@ -79,8 +70,8 @@ public class CustomHistoryListAdapter extends BaseAdapter {
         HistoryData historyData = historyDataList.get(i);
         int totalFare = Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf(historyData.getPersonTravelling());
 
-        tvCharge.setText("$" + String.valueOf(totalFare));
-        tvCpp.setText("$" + historyData.getFare_Price());
+        tvCharge.setText("₦" + String.valueOf(totalFare));
+        tvCpp.setText("₦" + historyData.getFare_Price());
         tvDestinition.setText(historyData.getRoute_destinition());
         tvStart.setText(historyData.getRouteStart());
         tvPersons.setText(historyData.getPersonTravelling());
