@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -154,8 +156,9 @@ public class Profile extends AppCompatActivity {
         SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userEmail=pref1.getString("UserEmail",null);
         userName=pref1.getString("name",null);
-        profile_pic=pref1.getString("pro_pic",null);
-        url =  "http://epay.cybussolutions.com/epay/"+profile_pic.trim();
+        profile_pic=pref1.getString("pro_pic","");
+
+      //  url =  "http://epay.cybussolutions.com/epay/"+profile_pic.trim();
 
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
@@ -240,7 +243,7 @@ public class Profile extends AppCompatActivity {
         iv.setImageDrawable(getResources().getDrawable(R.drawable.man));
         if(!profile_pic.equals("")) {
             Picasso.with(Profile.this)
-                    .load(url)
+                    .load("http://epay.cybussolutions.com/epay/"+profile_pic.trim()).placeholder(getResources().getDrawable(R.drawable.man))
                     .into(iv);
         }
 
@@ -1022,6 +1025,11 @@ public void updateProfile(){
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, options);
     }
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }
 

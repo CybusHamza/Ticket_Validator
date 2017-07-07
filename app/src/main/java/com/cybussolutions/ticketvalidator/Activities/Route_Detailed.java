@@ -173,7 +173,7 @@ public class Route_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).addDrawerItems(EditProfile,home, payment, your_trips, feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips, feedback, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -202,7 +202,7 @@ public class Route_Detailed extends AppCompatActivity {
 
                         }
                         if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile.class);
+                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
                             startActivity(intent);
                             finish();
                         }

@@ -234,7 +234,11 @@ public class Dashboard extends AppCompatActivity {
                 }).build();
 
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
-        tvMWBalance.setText("$"+customer_total_balance);
+        if(customer_total_balance!=null) {
+            tvMWBalance.setText("$" + customer_total_balance);
+        }else {
+            tvMWBalance.setText("$");
+        }
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -279,6 +283,7 @@ public class Dashboard extends AppCompatActivity {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("TotalTrips", s);
                     editor.apply();
+
 
                 }
 

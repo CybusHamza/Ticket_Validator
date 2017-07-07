@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:textColor="#fff"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
 
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email:"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
@@ -83,7 +83,7 @@
             android:id="@+id/tvUserEmail"
             android:inputType="textEmailAddress"
             android:textColor="#fff"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
 </LinearLayout>
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone:"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
@@ -110,7 +110,7 @@
             android:id="@+id/tvuserNumber"
             android:layout_gravity="center"
             android:textColor="#fff"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:inputType="number"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>

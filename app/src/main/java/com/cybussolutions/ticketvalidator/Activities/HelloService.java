@@ -129,6 +129,7 @@ public class HelloService extends Service {
                         c_customer_balance = object.getString("customer_balance");
                         dbManager.insert_into_customer_accounts(c_id, c_customer_id, c_customer_balance);
                     }
+
                     JSONArray history = main_object.getJSONArray("history");
                     for (int i = 0; i < history.length(); i++) {
                         JSONObject object = history.getJSONObject(i);
