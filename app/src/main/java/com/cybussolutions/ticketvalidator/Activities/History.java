@@ -194,7 +194,7 @@ public class History extends AppCompatActivity {
 
             } else {
                 getHistory();
-                Toast.makeText(History.this, "No Data To Sycn", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(History.this, "No Data To Sycn", Toast.LENGTH_SHORT).show();
             }
            /* for (int i = 0; i < transactionIds.size(); i++) {
                 transactionIdLive = transactionIds.get(i);
@@ -457,7 +457,7 @@ public class History extends AppCompatActivity {
 
                 // dbManager.delete_both_history_tables();
                 //getHistory();
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
             }
         },
                 new Response.ErrorListener() {

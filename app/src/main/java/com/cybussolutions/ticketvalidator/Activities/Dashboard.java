@@ -131,6 +131,7 @@ public class Dashboard extends AppCompatActivity {
                 if(isNetworkAvailable()) {
                     dbManager.delete_route_balance_fare_table();
                     startService(new Intent(Dashboard.this, HelloService.class));
+                    Toast.makeText(getApplicationContext(),"Recharged",Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
                 }
