@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,6 +53,8 @@ import java.util.Map;
 
 public class History extends AppCompatActivity {
     String routeId;
+    boolean doubleBackToExitPressedOnce = false;
+    static  int count;
 
     ListView historyListView;
     Toolbar toolbar;
@@ -82,10 +85,13 @@ public class History extends AppCompatActivity {
     private List<HistoryData> HistoryList = new ArrayList<HistoryData>();
     private DBManager dbManager;
 
+    HashMap<Integer,ArrayList<String>> data = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        count=0;
         historyListView = (ListView) findViewById(R.id.history_list);
 
         searchET = (EditText) findViewById(R.id.searchData);
@@ -179,16 +185,26 @@ public class History extends AppCompatActivity {
         if (isNetworkAvailable()) {
             dbManager = new DBManager(History.this);
             dbManager.open();
-            transactionIds = dbManager.fetch_history_trans_id_for_live();
-            for (int i = 0; i < transactionIds.size(); i++) {
+           // transactionIds = dbManager.fetch_history_trans_id_for_live();
+          //  data = dbManager.fetch_trans();
+            data=dbManager.fetch_trans_id_live();
+            if (data.size() > 0) {
+
+                insertIntoTravelHistory(data.get(count));
+
+            } else {
+                getHistory();
+                Toast.makeText(History.this, "No Data To Sycn", Toast.LENGTH_SHORT).show();
+            }
+           /* for (int i = 0; i < transactionIds.size(); i++) {
                 transactionIdLive = transactionIds.get(i);
                 routeIdLive = dbManager.fetch_route_id_for_live(transactionIds.get(i));
                 personTravelingLive = dbManager.fetch_person_traveling_for_live(transactionIdLive);
                 dateAddedLive = dbManager.fetch_date_added_for_live(transactionIdLive);
-                insertIntoTravelHistory();
+                insertIntoTravelHistory(transactionIdLive);
                 //  Toast.makeText(getApplicationContext(),transactionIds.get(i).toString(),Toast.LENGTH_LONG).show();
-            }
-            getHistory();
+            }*/
+
 
         } else {
             getHistory();
@@ -420,7 +436,7 @@ public class History extends AppCompatActivity {
 
     }
 
-    private void insertIntoTravelHistory() {
+    public void insertIntoTravelHistory(final  ArrayList<String> transId) {
         final ProgressDialog loading = ProgressDialog.show(History.this, "", "Please wait...", false, false);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.INSERT_TRAVEL_HISTORY, new Response.Listener<String>() {
@@ -430,8 +446,14 @@ public class History extends AppCompatActivity {
                 loading.dismiss();
                 dbManager = new DBManager(History.this);
                 dbManager.open();
-                dbManager.delete_history_data_local(transactionIdLive);
-                dbManager.delete_history_data_live(transactionIdLive);
+                int size = data.size()-1;
+                if(size >= count)
+                {   ++count;
+                    insertIntoTravelHistory(data.get(count));
+                    dbManager.delete_history_data_local(transId.get(0));
+                    dbManager.delete_history_data_live(transId.get(0));
+                }
+                getHistory();
 
                 // dbManager.delete_both_history_tables();
                 //getHistory();
@@ -458,14 +480,33 @@ public class History extends AppCompatActivity {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(History.this);
                 String userid = preferences.getString("id", "");
                 map.put("user_id", userid);
-                map.put("route_id", routeIdLive);
-                map.put("trans_id", transactionIdLive);
-                map.put("person_travling", personTravelingLive);
-                map.put("date_added", dateAddedLive);
+                map.put("route_id", transId.get(1));
+                map.put("trans_id", transId.get(2));
+                map.put("person_travling", transId.get(4));
+                map.put("date_added", transId.get(5));
                 return map;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }

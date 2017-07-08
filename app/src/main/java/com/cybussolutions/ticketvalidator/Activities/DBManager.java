@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBManager {
 
@@ -416,6 +417,31 @@ public class DBManager {
         }
         return  stringArrayList;
     }
+    public HashMap<Integer,ArrayList<String>> fetch_trans_id_live() {
+        Cursor cursor = database.query(DatabaseHelper.HISTORY_TRAVEL_LIVE, null, null, null, null, null, null);
+        int i=0;
+        HashMap<Integer,ArrayList<String>> data = new HashMap<>();
+
+        if(cursor.moveToFirst()){
+            do
+            {
+                ArrayList<String> stringArrayList=new ArrayList<String>();
+                stringArrayList.add(cursor.getString(0));
+                stringArrayList.add(cursor.getString(1));
+                stringArrayList.add(cursor.getString(2));
+                stringArrayList.add(cursor.getString(3));
+                stringArrayList.add(cursor.getString(4));
+                stringArrayList.add(cursor.getString(5));
+                stringArrayList.add(cursor.getString(6));
+
+                data.put(i,stringArrayList);
+                i++;
+
+
+            } while (cursor.moveToNext());
+        }
+        return data;
+    }
 
     public String fetch_route_id_for_live(String trans_id) {
 
@@ -500,11 +526,15 @@ public class DBManager {
     }
 
     public void delete_history_data_local(String trans_id){
-      long result=  database.delete(DatabaseHelper.HISTORY_TRAVEL, "trans_id="+trans_id, null);
-
+        //database.execSQL("delete from HISTORY_TRAVEL where trans_id="+ trans_id);
+      long result1= database.delete(DatabaseHelper.HISTORY_TRAVEL,DatabaseHelper.H_ID + "=" + trans_id, null);
+       // long result= database.delete(DatabaseHelper.HISTORY_TRAVEL,"HISTORY_TRAVEL.trans_id = "+trans_id,null);
+      //database.delete(DatabaseHelper.HISTORY_TRAVEL, DatabaseHelper.H_TRANS_ID + "=" + trans_id, null);
     }
     public void delete_history_data_live(String trans_id){
-       long result= database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, "trans_id="+trans_id, null);
+        //database.execSQL("delete from HISTORY_TRAVEL_LIVE where trans_id="+ trans_id);
+       //long result= database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, "HISTORY_TRAVEL_LIVE.trans_id = "+trans_id, null);
+        database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, DatabaseHelper.H_LIVE_ID + "=" + trans_id, null);
 
     }
 
