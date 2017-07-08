@@ -7,11 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -48,7 +48,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import com.cybussolutions.ticketvalidator.Profile;
 
 public class Dashboard extends AppCompatActivity {
     ArrayList<String> stringArrayList5 = new ArrayList<>();
@@ -236,9 +235,9 @@ public class Dashboard extends AppCompatActivity {
 
         customer_total_balance=dbManager.fetch_customer_balance(customer_id);
         if(customer_total_balance!=null) {
-            tvMWBalance.setText("$" + customer_total_balance);
+            tvMWBalance.setText("₦" + customer_total_balance);
         }else {
-            tvMWBalance.setText("$");
+            tvMWBalance.setText("₦");
         }
 
         new CountDownTimer(5000, 1000) {
@@ -249,9 +248,9 @@ public class Dashboard extends AppCompatActivity {
             public void onFinish() {
                 customer_total_balance=dbManager.fetch_customer_balance(customer_id);
                 if(customer_total_balance!=null) {
-                    tvMWBalance.setText("$" + customer_total_balance);
+                    tvMWBalance.setText("₦" + customer_total_balance);
                 }else {
-                    tvMWBalance.setText("$");
+                    tvMWBalance.setText("₦");
                 }
             }
         }.start();

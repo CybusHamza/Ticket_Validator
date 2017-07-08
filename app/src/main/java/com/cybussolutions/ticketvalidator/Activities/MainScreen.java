@@ -58,6 +58,7 @@ public class MainScreen extends AppCompatActivity {
 
     Spinner from,to;
     Button procedd;
+    Button back;
     String fromLocation;
     private ProgressDialog loading;
 
@@ -188,6 +189,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
         from = (Spinner) findViewById(R.id.from_spinner);
         to = (Spinner) findViewById(R.id.to_spinner);
         procedd = (Button) findViewById(R.id.proceed);
+        back = (Button) findViewById(R.id.back);
 
        // getData();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
@@ -202,6 +204,15 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
 
         from.setOnItemSelectedListener(new CustomOnItemSelectedListener_from());
 
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(MainScreen.this,Dashboard.class);
+                finish();
+                startActivity(intent);
+            }
+        });
         procedd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

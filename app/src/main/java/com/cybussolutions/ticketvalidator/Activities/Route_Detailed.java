@@ -335,19 +335,21 @@ public class Route_Detailed extends AppCompatActivity {
                 if (PaymentMethod.matches("qr")) {
                     if (!tvPrice.getText().equals("no rates defined")) {
                         String test = tvTarrif.getText().toString();
-                        int fare = Integer.valueOf(test);
-                        //String balancecheck=customer_total_balance;
-                        int balancecheck = Integer.valueOf(customer_total_balance);
-                        int remainingbalance = balancecheck - fare;
-                        if (fare <= balancecheck) {
+                        if(!(test.equals("___")))
+                        {
+                            int fare = Integer.valueOf(test);
+                            //String balancecheck=customer_total_balance;
+                            int balancecheck = Integer.valueOf(customer_total_balance);
+                            int remainingbalance = balancecheck - fare;
+                            if (fare <= balancecheck) {
 
 
-                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
-                            SharedPreferences.Editor prefEditor = pref.edit();
-                            String id = pref.getString("id", "");
-                            String f = id + "," + fare+","+fareType;
-                            prefEditor.putString("qr_string", f);
-                            prefEditor.apply();
+                                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Route_Detailed.this);
+                                SharedPreferences.Editor prefEditor = pref.edit();
+                                String id = pref.getString("id", "");
+                                String f = id + "," + fare+","+fareType;
+                                prefEditor.putString("qr_string", f);
+                                prefEditor.apply();
 
                                 SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                                 SharedPreferences.Editor editor = preferences1.edit();
@@ -362,14 +364,18 @@ public class Route_Detailed extends AppCompatActivity {
                                 intent.putExtra("person_traveling", EtnumberOfPersons.getText().toString());
                                 intent.putExtra("remaining_balance", String.valueOf(remainingbalance));
                                 startActivity(intent);
-                                finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "your balance is not enough to proceed", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "your balance is not enough to proceed", Toast.LENGTH_LONG).show();
+                            }
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Rates are not defined for this route", Toast.LENGTH_LONG).show();
                         }
-                    }else {
+
+                    }
+                    else {
                         Toast.makeText(getApplicationContext(), "Rates are not defined for this route", Toast.LENGTH_LONG).show();
                     }
-                    }
+
                     if (PaymentMethod.matches("")) {
 
 
@@ -387,6 +393,8 @@ public class Route_Detailed extends AppCompatActivity {
 
 
                     }
+                        }
+
 //                editor.clear();
 //                editor.apply();
 

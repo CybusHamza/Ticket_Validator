@@ -6,23 +6,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Point;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -40,7 +33,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
@@ -54,8 +46,6 @@ import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,6 +61,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
     private String LOG_TAG = "GenerateQRCode";
     String Qrsting;
+    boolean isTrue = false;
     Toolbar toolbar;
     private DBManager dbManager;
     String route_id,user_id,number_of_persons,remaining_balance;
@@ -78,7 +69,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
     private BeaconManager beaconManager;
     private Region region;
     String confirmNum;
-
+    ImageView myImage;
     Button generateQrButton;
 
     TextView showLabel,textViewTop;
@@ -165,7 +156,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
                 Qr_Activity.this);
         myAlertDialog.setTitle("Are You sure?");
-        myAlertDialog.setMessage("Your amount will be deducted after Generating Qr code");
+        myAlertDialog.setMessage("Your amount will be deducted after Scanning Qr code");
 
         myAlertDialog.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
@@ -208,7 +199,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                                 smallerDimension);
                         try {
                             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-                            ImageView myImage = (ImageView) findViewById(R.id.imageView1);
+                            myImage = (ImageView) findViewById(R.id.imageView1);
                             myImage.setImageBitmap(bitmap);
 
                         } catch (WriterException e) {
@@ -260,6 +251,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     //  logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
                     String data = firstBeacon.getId1()+","+firstBeacon.getId2()+","+firstBeacon
                             .getId3();
+                    isTrue =true;
 
                   //  Toast.makeText(Qr_Activity.this, data, Toast.LENGTH_SHORT).show();
 
@@ -274,14 +266,16 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
+                                myImage.setImageDrawable(null);
+                                showLabel.setText("Thank You For Using Epay Service");
                                 new SweetAlertDialog(Qr_Activity.this, SweetAlertDialog.SUCCESS_TYPE)
                                         .setTitleText("Sucess!")
-                                        .setConfirmText("OK").setContentText("Transaction sucessfull")
+                                        .setConfirmText("OK").setContentText("Transaction successful")
                                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sDialog) {
                                                 sDialog.dismiss();
-
 
 
                                                 dbManager.update_customer_balance(user_id,remaining_balance);
@@ -314,6 +308,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {   }
     }
+
+
 
     @Override
     protected void onDestroy() {
