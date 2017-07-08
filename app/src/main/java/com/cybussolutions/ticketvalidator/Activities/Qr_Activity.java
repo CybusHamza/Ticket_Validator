@@ -280,7 +280,10 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
                                                 dbManager.update_customer_balance(user_id,remaining_balance);
                                                 insertintoHistoryTravel();
+                                                Intent intent= new Intent(Qr_Activity.this,Dashboard.class);
                                                 finish();
+                                                startActivity(intent);
+
 
                                             }
                                         })

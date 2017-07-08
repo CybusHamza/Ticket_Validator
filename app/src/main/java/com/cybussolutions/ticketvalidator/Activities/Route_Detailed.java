@@ -1,5 +1,6 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,9 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,12 +52,13 @@ public class Route_Detailed extends AppCompatActivity {
     Button proceed;
     ProgressBar progressBar;
 
+
     Drawer result;
 
     String userEmail,userName;
     private String url,profile_pic;
     Bitmap[] bitmap1;
-
+    LinearLayout linearLayout;
 
     PrimaryDrawerItem home = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
     SecondaryDrawerItem payment = new SecondaryDrawerItem()
@@ -96,6 +101,7 @@ public class Route_Detailed extends AppCompatActivity {
         toolbar.setTitle("Proceed To Payment");
         setSupportActionBar(toolbar);
         EtnumberOfPersons = (EditText)findViewById(R.id.etNumberOfPersons);
+        linearLayout = (LinearLayout)findViewById(R.id.LL);
 
         numOfPersons = EtnumberOfPersons.getText().toString();
         EtnumberOfPersons.addTextChangedListener(new TextWatcher() {
@@ -224,6 +230,19 @@ public class Route_Detailed extends AppCompatActivity {
                     }
 
                 }).build();
+
+
+
+
+            linearLayout.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(Route_Detailed.this);
+                    return false;
+                }
+
+            });
+
 
 
 
@@ -414,7 +433,16 @@ public class Route_Detailed extends AppCompatActivity {
      //   Tdistance.setText(distance);
 
 
+
+
     }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+
 //    public void getData(){
 //        final ProgressDialog progressDialog = ProgressDialog.show(Route_Detailed.this, "Please wait...", "Checking Credentails ...", false, false);
 //
