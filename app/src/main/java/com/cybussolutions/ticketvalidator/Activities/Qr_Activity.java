@@ -270,7 +270,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                                 myImage.setImageDrawable(null);
                                 showLabel.setText("Thank You For Using Epay Service");
                                 new SweetAlertDialog(Qr_Activity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Sucess!")
+                                        .setTitleText("Done")
                                         .setConfirmText("OK").setContentText("Transaction successful")
                                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override

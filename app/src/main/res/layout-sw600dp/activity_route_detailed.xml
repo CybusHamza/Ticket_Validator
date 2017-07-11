@@ -102,37 +102,41 @@
             android:layout_weight="0.25"
             android:inputType="number"
             android:gravity="center"
+            android:text="1"
             android:paddingRight="10dp"
             android:textColor="#006"
             android:digits="0123456789"/>
         <!--</LinearLayout>-->
         <!--</LinearLayout>-->
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_below="@+id/linearLayoutElapsedTime"
-        android:layout_marginTop="120dp"
-        android:background="@drawable/bg_linearlayout_route_detailed_screen"
-        android:orientation="vertical"
-        android:padding="5dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/bg_linearlayout_route_detailed_screen"
 
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2"
+        android:orientation="vertical"
+        android:padding="5dp"
         android:weightSum="1">
+
         <TextView
-            android:gravity="center"
-            android:textColor="#000066"
-            android:textStyle="bold"
-            android:textSize="23sp"
-            android:paddingBottom="5dp"
             android:id="@+id/tvRoute"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1.54"
+            android:gravity="center"
+            android:paddingBottom="5dp"
             android:text="Parking Discount"
-            android:layout_weight="1.54" />
+            android:textColor="#000066"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,97 +148,98 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#006"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:gravity="center"
                 android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Balance"
+                android:textColor="#006"
+                android:textSize="20sp"
 
-                android:text="Balance"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#006"
+                android:layout_weight="0.5"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:text="Tarrif"
-                android:layout_weight="0.5"
+                android:textColor="#006"
+                android:textSize="20sp"
+                android:textStyle="bold"
 
                 />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
             android:weightSum="1">
 
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#006"
-                android:layout_weight="0.5"
-                android:textSize="18sp"
-                android:gravity="center"
                 android:id="@+id/tvBalanceAmount"
-                android:text="$123"/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$0"
-                android:id="@+id/tvTariffAmount"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:text="$123"
+                android:textColor="#006"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvTariffAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="$0"
                 android:textColor="#000066"
-                />
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
 
-            android:background="#006"/>
+            android:background="#006" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="#000066"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:textStyle="bold"
             android:layout_marginTop="5dp"
+            android:gravity="center"
             android:text="Charge"
+            android:textColor="#000066"
+            android:textSize="20sp"
+            android:textStyle="bold"
 
 
             />
 
 
         <TextView
+            android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="___"
-
-            android:textSize="18sp"
-            android:id="@+id/tvPrice"
+            android:layout_gravity="center"
 
             android:layout_marginTop="5dp"
+            android:text="___"
+
+            android:textAppearance="?android:attr/textAppearanceLarge"
 
 
             android:textColor="#006"
-            android:layout_gravity="center"
+            android:textSize="18sp"
 
 
             />
 
     </LinearLayout>
-
-
 
 
     <Button

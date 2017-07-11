@@ -29,7 +29,6 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Adapter.CustomHistoryListAdapter;
 import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
-import com.cybussolutions.ticketvalidator.Profile;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.HistoryData;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -319,14 +318,14 @@ public class History extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(array.getString(i));
 
                         HistoryData hd = new HistoryData();
-                        hd.setDate(jsonObject.get("route_updated_date").toString());
+                        hd.setDate(jsonObject.get("date_added").toString());
                         hd.setFare_Price(jsonObject.get("Fare_price").toString());
                         hd.setPersonTravelling(jsonObject.get("person_travling").toString());
                         hd.setRoute_destinition(jsonObject.get("rout_destination").toString());
                         hd.setTrans_id(jsonObject.get("trans_id").toString());
                         // hd.setTime(jsonObject.get("time").toString());
 
-                        String dateNtime = String.valueOf(jsonObject.get("route_added_date"));
+                        String dateNtime = String.valueOf(jsonObject.get("date_added"));
                         String date, time;
 
                         String[] split = dateNtime.split(" ");
@@ -494,8 +493,10 @@ public class History extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
         }
 
         this.doubleBackToExitPressedOnce = true;

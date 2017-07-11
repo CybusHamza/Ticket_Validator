@@ -74,7 +74,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Canel"
+        android:text="Cancel"
         android:id="@+id/back"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
