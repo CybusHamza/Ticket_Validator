@@ -27,7 +27,7 @@
         android:id="@+id/textView2"
         android:layout_below="@+id/app_bar"
         android:padding="5dp"
-       android:paddingLeft="30dp"
+        android:paddingLeft="30dp"
 
         android:paddingRight="30dp"
         android:layout_centerHorizontal="true"
@@ -113,132 +113,136 @@
         <!--</LinearLayout>-->
     <!--</LinearLayout>-->
 </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_below="@+id/linearLayoutElapsedTime"
-    android:layout_marginTop="2dp"
-    android:background="@drawable/bg_linearlayout_route_detailed_screen"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"
-    android:layout_marginBottom="10dp"
 
-    android:layout_height="wrap_content"
-    android:id="@+id/linearLayout2">
-    <TextView
-        android:gravity="center"
-        android:textColor="#000066"
-        android:textStyle="bold"
-        android:textSize="23sp"
-        android:paddingBottom="5dp"
-        android:id="@+id/tvRoute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Parking Discount"/>
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayoutElapsedTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_linearlayout_route_detailed_screen"
 
-        android:weightSum="1">
-
-
-            <TextView
-             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#006"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:gravity="center"
-            android:layout_weight="0.5"
-
-            android:text="Balance"/>
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#006"
-                android:gravity="center"
-                android:textStyle="bold"
-            android:text="Charge"
-            android:layout_weight="0.5"
-
-                />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
-        android:weightSum="1">
-
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvRoute"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#006"
-            android:layout_weight="0.5"
-            android:textSize="18sp"
             android:gravity="center"
-            android:id="@+id/tvBalanceAmount"
-            android:text="$123"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$0"
-
-            android:id="@+id/tvPrice"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textSize="18sp"
+            android:paddingBottom="5dp"
+            android:text="Parking Discount"
             android:textColor="#000066"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="Balance"
+                    android:textColor="#006"
+                    android:textSize="20sp"
+
+                    android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="Tariff's"
+                    android:textColor="#006"
+                android:textSize="20sp"
+                android:textStyle="bold"
+
+                    />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <TextView
+                android:id="@+id/tvBalanceAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="$123"
+                android:textColor="#006"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="$0"
+                android:textColor="#000066"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+
+            android:background="#006" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Total"
+            android:textColor="#000066"
+            android:textSize="20sp"
+            android:textStyle="bold"
+
+
+            />
+
+
+        <TextView
+            android:id="@+id/tvTariffAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_marginTop="5dp"
+            android:text="___"
+
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+
+            android:textColor="#006"
+            android:textSize="18sp"
+
+
             />
 
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-
-        android:background="#006"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#000066"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        android:text="Tarrif"
-
-
-        />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="___"
-
-        android:textSize="18sp"
-        android:id="@+id/tvTariffAmount"
-
-        android:layout_marginTop="5dp"
-
-
-        android:textColor="#006"
-        android:layout_gravity="center"
-
-
-        />
-
-</LinearLayout>
-
-
 
 
     <Button

@@ -262,7 +262,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     if(id2.equals(user_id))
                     {
                         beaconManager.unbind(Qr_Activity.this);
-
+                        dbManager.update_customer_balance(user_id,remaining_balance);
+                        insertintoHistoryTravel();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -278,8 +279,6 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                                                 sDialog.dismiss();
 
 
-                                                dbManager.update_customer_balance(user_id,remaining_balance);
-                                                insertintoHistoryTravel();
                                                 Intent intent= new Intent(Qr_Activity.this,Dashboard.class);
                                                 finish();
                                                 startActivity(intent);

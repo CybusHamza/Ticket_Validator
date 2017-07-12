@@ -24,6 +24,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
 import org.json.JSONObject;
@@ -38,7 +40,6 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout inputLayoutFirstName, inputLayoutLastName, inputLayoutEmail, inputLayoutPassword, inputLayoutReenterPassword, inputLayoutPhoneNumber;
     private Button btnSignUp;
 
-    public static Phonenumber.PhoneNumber phonenumberProto;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     String gender;
@@ -47,6 +48,10 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
     private DBManager dbManager;
     String test;
+
+    public static Phonenumber.PhoneNumber phonenumberProto;
+    PhoneNumberUtil phoneNumberUtil;
+    Boolean isValid;
 
     @Override
 
@@ -74,7 +79,8 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         inputReenterPassword = (EditText) findViewById(R.id.input_re_enter_password);
         inputPhoneNumber = (EditText) findViewById(R.id.input_phone_number);
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
-
+        phoneNumberUtil = PhoneNumberUtil.getInstance();
+        phonenumberProto = new Phonenumber.PhoneNumber();
         btnSignUp = (Button) findViewById(R.id.btn_signup);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,10 +121,10 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Password Mismatches", Toast.LENGTH_LONG).show();
                 return;
             }
-            if (phone_number.length() < 10 || phone_number.length() > 14) {
+            /*if (phone_number.length() < 10 || phone_number.length() > 14) {
                 Toast.makeText(this, "Please enter valid Phone Number", Toast.LENGTH_LONG).show();
                 return;
-            }
+            }*/
 
             if(!email.matches(emailPattern)){
                 Toast.makeText(this, "Please enter a valid Email", Toast.LENGTH_LONG).show();
@@ -126,6 +132,32 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             }
             if(inputPassword.getText().toString().length()<8){
                 Toast.makeText(this, "Minimum password length should be 8 characters", Toast.LENGTH_LONG).show();
+                return;
+            }
+            try {
+
+
+                phonenumberProto = phoneNumberUtil.parse(phone_number, "NG");
+                // Toast.makeText(getApplicationContext(),"number is entered",Toast.LENGTH_SHORT).show();
+                isValid = phoneNumberUtil
+                        .isValidNumber(phonenumberProto);
+            } catch (NumberParseException e) {
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            //catch (Exception e) {
+            //  e.printStackTrace();
+            //}
+
+            if (!(isValid)) {
+                // String internationalFormat = phoneNumberUtil.format(phonenumberProto,PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Phone number is INVALID: " + phone_number,
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
         }
