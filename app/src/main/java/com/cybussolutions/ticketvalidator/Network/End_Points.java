@@ -18,6 +18,9 @@ public class End_Points {
     public static String POST_IMAGE = "http://epay.cybussolutions.com/epay/"+ "upload_image_mobile.php";  //sdfghjk
     public  static String EDIT_profile = BASE_URL + "editProfile";
     public static String SENDFEEDBACK = BASE_URL + "confirmSendEmail";
+    public static String VERIFY_OLD_PASS = BASE_URL + "verifyOldPass";
+    public static String CHANGE_PASSWORD = BASE_URL + "changePass";
+    public static String FORGOT_PASSWORD = BASE_URL + "forgotPass";
 
 
     }

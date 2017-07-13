@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,6 +44,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +77,8 @@ public class History extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
     ArrayList<String> routeIds = new ArrayList<String>();
     ArrayList<String> userIds = new ArrayList<String>();
     ArrayList<String> personTraveling = new ArrayList<String>();
@@ -80,9 +88,13 @@ public class History extends AppCompatActivity {
     ArrayList<String> stringArrayList5 = new ArrayList<>();
     EditText searchET;
     String routeIdLive, transactionIdLive, personTravelingLive, dateAddedLive, dateModifiedLive;
-    String userEmail, userName;
+    String userEmail, userName,profile_pic;
     private List<HistoryData> HistoryList = new ArrayList<HistoryData>();
     private DBManager dbManager;
+    String route_id;
+
+    private String url;
+    Bitmap[] bitmap1;
 
     HashMap<Integer,ArrayList<String>> data = new HashMap<>();
 
@@ -92,6 +104,16 @@ public class History extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         count=0;
         historyListView = (ListView) findViewById(R.id.history_list);
+       /* historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               // route_id = dbManager.fetch_route_id());
+                Toast.makeText(getApplicationContext(),historyListView.getItemAtPosition(position).toString(),Toast.LENGTH_LONG).show();
+            }
+        });*/
+
+
+        //id + "," + fare+","+fareType;route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number;
 
         searchET = (EditText) findViewById(R.id.searchData);
 
@@ -99,6 +121,7 @@ public class History extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userEmail = preferences.getString("UserEmail", null);
         userName = preferences.getString("name", null);
+        profile_pic=preferences.getString("pro_pic",null);
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar_history);
@@ -112,11 +135,33 @@ public class History extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menuu);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
+        bitmap1 = new Bitmap[1];
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
+
+        Picasso.with(History.this)
+                .load(url)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        bitmap1[0] =bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                        Log.e("here","onBitmapFailed");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Log.e("here","onPrepareLoad");
+                    }
+                });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
-                .withProfileImagesVisible(false)
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(bitmap1[0]))
+                .withProfileImagesVisible(true)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
                             @Override
@@ -130,7 +175,7 @@ public class History extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result = new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(4).addDrawerItems(EditProfile,home, payment, your_trips, feedback,  logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(4).addDrawerItems(EditProfile,home, payment, your_trips, feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
@@ -172,6 +217,11 @@ public class History extends AppCompatActivity {
                         if (drawerItem == feedback) {
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
                             startActivity(intent);
                             finish();
                         }

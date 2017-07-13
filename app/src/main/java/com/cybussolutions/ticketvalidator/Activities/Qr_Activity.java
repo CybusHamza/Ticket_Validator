@@ -219,13 +219,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         /*dbManager = new DBManager(Qr_Activity.this);
                         dbManager.open();
 
-
                         dbManager.update_customer_balance(user_id,remaining_balance);*/
-
-
-
-
-
                     }
                 });
 

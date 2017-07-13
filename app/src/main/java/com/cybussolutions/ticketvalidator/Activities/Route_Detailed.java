@@ -75,6 +75,10 @@ public class Route_Detailed extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
+
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
+
     private DBManager dbManager;
      String customer_id,customer_total_balance;
     TextView tvTarrif;
@@ -181,7 +185,7 @@ public class Route_Detailed extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips, feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips, feedback,changePassword ,logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -223,6 +227,11 @@ public class Route_Detailed extends AppCompatActivity {
                         if (drawerItem==feedback){
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
                             startActivity(intent);
                             finish();
                         }

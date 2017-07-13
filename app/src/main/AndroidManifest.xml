@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
@@ -35,30 +35,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.MonitoringActivity"
-            android:label="@string/app_name" >
-        <!--    <intent-filter>
+            android:label="@string/app_name">
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".Activities.RangingActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
 
         <service android:name=".Activities.HelloService" />
 
-        <activity android:name=".Activities.History"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".Activities.History"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activities.PaymentMethod_extended" />
         <activity android:name=".Activities.Dashboard" />
         <activity android:name=".Activities.Profile_Detailed" />
         <activity android:name=".Feedback" />
         <activity android:name=".Activities.Confirmation" />
         <activity android:name=".Profile" />
+        <activity android:name=".Activities.ChangePassword"></activity>
     </application>
 
 </manifest>

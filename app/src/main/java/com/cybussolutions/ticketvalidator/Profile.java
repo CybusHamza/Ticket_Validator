@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -42,6 +43,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Activities.ChangePassword;
 import com.cybussolutions.ticketvalidator.Activities.Dashboard;
 import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
@@ -61,6 +63,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -113,6 +116,10 @@ public class Profile extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
+
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
+
     String b64;
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -134,6 +141,7 @@ public class Profile extends AppCompatActivity {
     int seconds;
     Button btnUpdate;
     String url,profile_pic;
+    Bitmap[] bitmap1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,12 +161,33 @@ public class Profile extends AppCompatActivity {
         profile_pic=pref1.getString("pro_pic","");
 
       //  url =  "http://epay.cybussolutions.com/epay/"+profile_pic.trim();
+        bitmap1 = new Bitmap[1];
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
 
+        Picasso.with(Profile.this)
+                .load(url)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        bitmap1[0] =bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                        Log.e("here","onBitmapFailed");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Log.e("here","onPrepareLoad");
+                    }
+                });
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
-                .withProfileImagesVisible(false)
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(bitmap1[0]))
+                .withProfileImagesVisible(true)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
                             @Override
@@ -172,7 +201,7 @@ public class Profile extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(1).addDrawerItems( EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(1).addDrawerItems( EditProfile,home, payment, your_trips,feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -219,6 +248,11 @@ public class Profile extends AppCompatActivity {
                         if (drawerItem==feedback){
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
                             startActivity(intent);
                             finish();
                         }

@@ -2,11 +2,14 @@ package com.cybussolutions.ticketvalidator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.ticketvalidator.Activities.ChangePassword;
 import com.cybussolutions.ticketvalidator.Activities.Dashboard;
 import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
@@ -36,6 +40,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,13 +71,16 @@ public class Feedback extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
 
     Toolbar toolbar;
     String email,feedBackt;
 
     String serviceString;
-    private String userEmail,userName;
-
+    private String userEmail,userName,profile_pic;
+    private String url;
+    Bitmap[] bitmap1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,11 +103,33 @@ public class Feedback extends AppCompatActivity {
         SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userEmail=pref1.getString("UserEmail",null);
         userName=pref1.getString("name",null);
+        profile_pic=pref1.getString("pro_pic",null);
+        bitmap1 = new Bitmap[1];
+        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
 
+        Picasso.with(Feedback.this)
+                .load(url)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        bitmap1[0] =bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                        Log.e("here","onBitmapFailed");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Log.e("here","onPrepareLoad");
+                    }
+                });
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.drawable.bg_ep_slider_header)
-                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail))
-                .withProfileImagesVisible(false)
+                .addProfiles(new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(bitmap1[0]))
+                .withProfileImagesVisible(true)
                 .withOnAccountHeaderListener(
                         new AccountHeader.OnAccountHeaderListener() {
                             @Override
@@ -112,7 +143,7 @@ public class Feedback extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(5).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(5).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -162,6 +193,11 @@ public class Feedback extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
+                            startActivity(intent);
+                            finish();
+                        }
                         return true;
 
                     }
@@ -169,7 +205,7 @@ public class Feedback extends AppCompatActivity {
                 }).build();
 
 
-sendFeedback = (Button)findViewById(R.id.buttonFeedback);
+        sendFeedback = (Button)findViewById(R.id.buttonFeedback);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         email=  preferences.getString("UserEmail","");

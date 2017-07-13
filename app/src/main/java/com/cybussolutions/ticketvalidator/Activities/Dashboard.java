@@ -1,5 +1,6 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +80,8 @@ public class Dashboard extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem feedback = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Feedback");
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
     private DBManager dbManager;
     private String url;
     Bitmap[] bitmap1;
@@ -181,7 +186,7 @@ public class Dashboard extends AppCompatActivity {
 
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips,feedback, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -224,6 +229,11 @@ public class Dashboard extends AppCompatActivity {
                         if (drawerItem==feedback){
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
                             startActivity(intent);
                             finish();
                         }
@@ -352,5 +362,37 @@ public class Dashboard extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
 
+    }
+
+    public void oldPass(){
+        final Dialog dialog = new Dialog(getApplicationContext());
+        dialog.setContentView(R.layout.custom_dialog_old_password);
+        dialog.setTitle("Change Password");
+        final EditText inputOldPass = (EditText) dialog.findViewById(R.id.old_pass_et);
+        Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(inputOldPass.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Please Enter Old Password",Toast.LENGTH_LONG).show();
+                }else {
+                    newPass();
+                }
+            }
+        });
+
+
+
+        dialog.show();
+    }
+    public void newPass(){
+        final Dialog dialog = new Dialog(getApplicationContext());
+        dialog.setContentView(R.layout.custom_dialog_new_password);
+        dialog.setTitle("Change Password");
+        EditText inputnewPass = (EditText) dialog.findViewById(R.id.new_pass_et);
+        EditText inputconfirmPass = (EditText) dialog.findViewById(R.id.confirm_pass_et);
+        Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
+
+        dialog.show();
     }
 }
