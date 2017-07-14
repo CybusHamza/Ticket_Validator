@@ -165,7 +165,7 @@ public class ChangePassword extends AppCompatActivity {
 
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(7).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(6).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
