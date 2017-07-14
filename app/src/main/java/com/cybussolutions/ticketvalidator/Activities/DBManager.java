@@ -500,6 +500,13 @@ public class DBManager {
         int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS, contentValues, DatabaseHelper.C_CUSTOMER_ID + " = " + customer_id, null);
         return i;
     }
+
+    public int update_local_password(String customer_id,String password) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.PASSWORD, password);
+        int i = database.update(DatabaseHelper.TABLE_NAME, contentValues, DatabaseHelper._ID + " = " + customer_id, null);
+        return i;
+    }
     public int update_history_travel(String route_id, String user_id,String person_traveling,String trans_id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.H_ROUTE_ID, route_id);

@@ -66,10 +66,9 @@ public class Payment_Method extends AppCompatActivity {
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
 
+    SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
 
-
-SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
-     String userEmail,userName;
+    String userEmail,userName;
     private String url,profile_pic;
     Bitmap[] bitmap1;
 
@@ -225,7 +224,7 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withN
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Payment_Method.this);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("payment_method_id","qr");
-                        editor.apply();
+                        editor.commit();
                         Toast.makeText(getApplicationContext(),"Qr Code Selected",Toast.LENGTH_LONG).show();
                     }else if(checkedBox.equals("Request Qr Card")){
                         Toast.makeText(getApplicationContext(),"Not in operation yet....",Toast.LENGTH_LONG).show();

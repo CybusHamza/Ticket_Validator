@@ -71,6 +71,8 @@ public class ChangePassword extends AppCompatActivity {
     EditText etOldPass,etNewPass,etConfirmPass;
     Button btnOk,btnSaveNewPass;
 
+    private DBManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,9 +284,12 @@ public class ChangePassword extends AppCompatActivity {
             public void onResponse(String response) {
                 loading.dismiss();
                 if(response.trim().equals("1")){
+                    dbManager = new DBManager(ChangePassword.this);
+                    dbManager.open();
+                    dbManager.update_local_password(userId,etNewPass.getText().toString());
                     new SweetAlertDialog(ChangePassword.this, SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText("Success!")
-                            .setConfirmText("OK").setContentText("Password Change Successfully")
+                            .setConfirmText("OK").setContentText("Password Changed Successfully")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
