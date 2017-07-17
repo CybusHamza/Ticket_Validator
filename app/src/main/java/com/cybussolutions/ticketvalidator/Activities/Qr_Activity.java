@@ -2,16 +2,21 @@ package com.cybussolutions.ticketvalidator.Activities;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.location.GpsStatus;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -126,6 +131,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
         }
         BluetoothAdapter bluetooth= BluetoothAdapter.getDefaultAdapter();
+
         if (!bluetooth.isEnabled()) {
             Toast.makeText(getApplicationContext(),
                     "Turning ON Bluetooth", Toast.LENGTH_LONG);
@@ -133,6 +139,35 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             // Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(new Intent(
                     BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
+        }
+
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        // Check if enabled and if not send user to the GPS settings
+        if (!enabled) {
+            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                    Qr_Activity.this);
+            myAlertDialog.setTitle("Gps must require");
+            myAlertDialog.setMessage("You need to turn on your gps location to proceed");
+
+            myAlertDialog.setPositiveButton("Enable",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    });
+
+            myAlertDialog.setNegativeButton("Deny",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Please turn on your location to proceed", Toast.LENGTH_LONG);
+                            finish();
+                        }
+                    });
+            myAlertDialog.show();
         }
     }
 
@@ -348,6 +383,22 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
 
                 } else {
+                    if (!((BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().isEnabled()){
+                        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                        builder.setTitle("Bluetooth not enabled");
+                        builder.setMessage("Please enable Bluetooth.");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                finish();
+                            }
+
+                        });
+                        builder.show();
+
+                    }
                     Toast.makeText(this, "Bluetooth Permission must required",
                             Toast.LENGTH_LONG).show();
 

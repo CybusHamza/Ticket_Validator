@@ -65,6 +65,8 @@ public class Payment_Method extends AppCompatActivity {
 
     SecondaryDrawerItem logout = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Logout");
+    SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Change Password");
 
     SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(2).withName("Feedback");
 
@@ -129,7 +131,7 @@ public class Payment_Method extends AppCompatActivity {
                 ).build();
 
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(3).addDrawerItems(EditProfile,home, payment, your_trips,feedback,  logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(3).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword,  logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -183,6 +185,11 @@ public class Payment_Method extends AppCompatActivity {
                             startActivity(intent);
                             finish();
 
+                        }
+                        if (drawerItem==changePassword){
+                            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         return true;
