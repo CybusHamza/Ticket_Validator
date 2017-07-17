@@ -79,7 +79,9 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
     TextView showLabel,textViewTop;
     private int REQUEST_PERMISSIONS=1,REQUEST_BLUETOOTH=2;
-
+    BluetoothAdapter bluetooth;
+    LocationManager service;
+    boolean enabled;
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
@@ -130,7 +132,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             }
 
         }
-        BluetoothAdapter bluetooth= BluetoothAdapter.getDefaultAdapter();
+         bluetooth= BluetoothAdapter.getDefaultAdapter();
 
         if (!bluetooth.isEnabled()) {
             Toast.makeText(getApplicationContext(),
@@ -141,8 +143,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
         }
 
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         // Check if enabled and if not send user to the GPS settings
         if (!enabled) {
@@ -162,20 +164,59 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             myAlertDialog.setNegativeButton("Deny",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Toast.makeText(getApplicationContext(),
+                            /*Toast.makeText(getApplicationContext(),
                                     "Please turn on your location to proceed", Toast.LENGTH_LONG);
-                            finish();
+                            finish();*/
                         }
                     });
             myAlertDialog.show();
         }
+
     }
 
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.button1:
-               startDialog();
+                bluetooth= BluetoothAdapter.getDefaultAdapter();
+                enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (bluetooth.isEnabled() && enabled) {
+                    startDialog();
+                }else {
+                    if (!enabled) {
+                        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                                Qr_Activity.this);
+                        myAlertDialog.setTitle("Gps must require");
+                        myAlertDialog.setMessage("You need to turn on your gps location to proceed");
+
+                        myAlertDialog.setPositiveButton("Enable",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                        myAlertDialog.setNegativeButton("Deny",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                            /*Toast.makeText(getApplicationContext(),
+                                    "Please turn on your location to proceed", Toast.LENGTH_LONG);
+                            finish();*/
+                                    }
+                                });
+                        myAlertDialog.show();
+                    }
+                    if (!bluetooth.isEnabled()) {
+                        Toast.makeText(getApplicationContext(),
+                                "Turning ON Bluetooth", Toast.LENGTH_LONG);
+                        // Intent enableBtIntent = new
+                        // Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(new Intent(
+                                BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
+                    }
+                    //Toast.makeText(getApplicationContext(),"Please enable bluetooth and gps information to generate QR code",Toast.LENGTH_LONG).show();
+                }
                 break;
            /* case R.id.btnCnfrm:
 
@@ -392,15 +433,15 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
                             @Override
                             public void onDismiss(DialogInterface dialog) {
-                                finish();
+
                             }
 
                         });
                         builder.show();
 
                     }
-                    Toast.makeText(this, "Bluetooth Permission must required",
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(this, "Bluetooth Permission must required",
+//                            Toast.LENGTH_LONG).show();
 
 
                 }
@@ -440,7 +481,7 @@ public void insertintoHistoryTravel(){
                             JSONObject jsonObject = new  JSONObject(Response);
 //                                                jsonObject.get("userId");
                             String id = jsonObject.get("userId").toString();
-                            finish();
+                           // finish();
 ////
 //                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //                                SharedPreferences.Editor editor = preferences.edit();
@@ -495,7 +536,7 @@ public void insertintoHistoryTravel(){
                 // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 dbManager.insert_into_history_travel(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
                 dbManager.insert_into_history_travel_live(route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00");
-                finish();
+               // finish();
             }
             // loading.dismiss();
         }
