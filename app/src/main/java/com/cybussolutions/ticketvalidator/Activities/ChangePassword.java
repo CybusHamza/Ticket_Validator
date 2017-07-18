@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -69,6 +70,7 @@ public class ChangePassword extends AppCompatActivity {
 
 
     EditText etOldPass,etNewPass,etConfirmPass;
+    TextView tvOldPass,tvNewPass,tvConfirmPass;
     Button btnOk,btnSaveNewPass;
 
     private DBManager dbManager;
@@ -88,14 +90,20 @@ public class ChangePassword extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
 
+        tvOldPass=(TextView)findViewById(R.id.labeloldPass);
+        tvNewPass=(TextView)findViewById(R.id.labenewPass);
+        tvConfirmPass=(TextView)findViewById(R.id.labeconfirmPass);
         etOldPass= (EditText) findViewById(R.id.old_pass_et);
         etNewPass= (EditText) findViewById(R.id.new_pass_et);
         etConfirmPass= (EditText) findViewById(R.id.confirm_pass_et);
         btnOk= (Button) findViewById(R.id.btn_ok);
         btnSaveNewPass= (Button) findViewById(R.id.btn_save_new_pass);
         etOldPass.setVisibility(View.VISIBLE);
+        tvOldPass.setVisibility(View.VISIBLE);
         etNewPass.setVisibility(View.INVISIBLE);
+        tvNewPass.setVisibility(View.INVISIBLE);
         etConfirmPass.setVisibility(View.INVISIBLE);
+        tvConfirmPass.setVisibility(View.INVISIBLE);
         btnOk.setVisibility(View.VISIBLE);
         btnSaveNewPass.setVisibility(View.INVISIBLE);
 
@@ -236,8 +244,11 @@ public class ChangePassword extends AppCompatActivity {
                 loading.dismiss();
                 if(response.trim().equals("1")){
                     etNewPass.setVisibility(View.VISIBLE);
+                    tvNewPass.setVisibility(View.VISIBLE);
                     etConfirmPass.setVisibility(View.VISIBLE);
+                    tvConfirmPass.setVisibility(View.VISIBLE);
                     etOldPass.setVisibility(View.INVISIBLE);
+                    tvOldPass.setVisibility(View.INVISIBLE);
                     btnOk.setVisibility(View.INVISIBLE);
                     btnSaveNewPass.setVisibility(View.VISIBLE);
                    // changePassword();

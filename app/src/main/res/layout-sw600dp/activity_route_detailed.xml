@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="5dp"
-            android:text="Parking Discount"
+            android:text="Transaction Detail"
             android:textColor="#000066"
             android:textSize="23sp"
             android:textStyle="bold" />
