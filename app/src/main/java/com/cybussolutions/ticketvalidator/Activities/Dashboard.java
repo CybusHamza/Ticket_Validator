@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +32,12 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.ticketvalidator.Feedback;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.cybussolutions.ticketvalidator.R;
+import com.interswitchng.sdk.auth.Passport;
+import com.interswitchng.sdk.model.RequestOptions;
+import com.interswitchng.sdk.payment.IswCallback;
+import com.interswitchng.sdk.payment.Payment;
+import com.interswitchng.sdk.payment.android.inapp.PayWithCard;
+import com.interswitchng.sdk.payment.model.PurchaseResponse;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -134,9 +139,37 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isNetworkAvailable()) {
-                    dbManager.delete_route_balance_fare_table();
+                   /* dbManager.delete_route_balance_fare_table();
                     startService(new Intent(Dashboard.this, HelloService.class));
-                    Toast.makeText(getApplicationContext(),"Recharged",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Recharged",Toast.LENGTH_LONG).show();*/
+                    Passport.overrideApiBase(Passport.SANDBOX_API_BASE);
+                    Payment.overrideApiBase(Payment.SANDBOX_API_BASE);
+
+                    RequestOptions options = RequestOptions.builder()
+                            .setClientId("IKIA43A9EE2EF1FAB58341922EF2557C46D94B8FE96C")
+                            .setClientSecret("oMwb2KmHY7UcLYkIW7CiEFL4WK2Qk0PoU8POxAS1Nmg=")
+                            .build();
+
+                    PayWithCard pay = new PayWithCard(Dashboard.this, "12", "Recharge Your Account", "50", "NGN", options,
+                            new IswCallback<PurchaseResponse>()  {
+                                @Override
+                                public void onError(Exception error) {
+                                    // Handle error.
+                                    // Payment not successful.
+
+                                    Toast.makeText(Dashboard.this, error.toString(), Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                public void onSuccess(PurchaseResponse response) {
+
+                                    Toast.makeText(Dashboard.this, response.getAmount(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    pay.start();
+
+
                 }else {
                     Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
                 }

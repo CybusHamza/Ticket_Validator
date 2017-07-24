@@ -34,19 +34,19 @@ public class DBManager {
         dbHelper.close();
     }
 
-    public void insert(String id,String first_name, String last_name,String password,String phone_number,String gender,String email,String cardType) {
-        ContentValues contentValue = new ContentValues();
-        contentValue.put(DatabaseHelper._ID,id);
-        contentValue.put(DatabaseHelper.FIRST_NAME, first_name);
-        contentValue.put(DatabaseHelper.LAST_NAME, last_name);
-        contentValue.put(DatabaseHelper.PASSWORD,password);
-        contentValue.put(DatabaseHelper.PHONE_NUMBER, phone_number);
-        contentValue.put(DatabaseHelper.GENDER,gender);
-        contentValue.put(DatabaseHelper.EMAIL, email);
-        contentValue.put(DatabaseHelper.CARDTYPE,cardType);
-        long result = database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
+        public void insert(String id,String first_name, String last_name,String password,String phone_number,String gender,String email,String cardType) {
+            ContentValues contentValue = new ContentValues();
+            contentValue.put(DatabaseHelper._ID,id);
+            contentValue.put(DatabaseHelper.FIRST_NAME, first_name);
+            contentValue.put(DatabaseHelper.LAST_NAME, last_name);
+            contentValue.put(DatabaseHelper.PASSWORD,password);
+            contentValue.put(DatabaseHelper.PHONE_NUMBER, phone_number);
+            contentValue.put(DatabaseHelper.GENDER,gender);
+            contentValue.put(DatabaseHelper.EMAIL, email);
+            contentValue.put(DatabaseHelper.CARDTYPE,cardType);
+            long result = database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
 
-    }
+        }
     public void insert_into_routes(String id,String route_code, String route_name,String route_start,String route_destination,String route_added_date,String time,String route_added_by,String route_updated_date,String route_updated_by) {
         ContentValues contentValue = new ContentValues();
 
