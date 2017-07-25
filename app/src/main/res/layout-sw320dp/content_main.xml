@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:text="Scan Qr Code"
             android:textColor="@color/accent"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:visibility="invisible"/>
         <TextView
             android:id="@+id/labelOr"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:text="or"
             android:textColor="@color/accent"
-            android:textSize="5dp"
+            android:textSize="15dp"
             android:layout_marginTop="2dp"
             android:visibility="invisible"/>
 

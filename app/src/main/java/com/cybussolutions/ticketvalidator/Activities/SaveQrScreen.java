@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ import java.util.List;
 
 public class SaveQrScreen extends AppCompatActivity {
 
-
+    boolean doubleBackToExitPressedOnce = false;
     ArrayList<String> savedQrString = new ArrayList<>();
     ArrayList<String> savedQrDate = new ArrayList<>();
     ArrayList<String> savedQrId = new ArrayList<>();
@@ -302,4 +303,5 @@ public class SaveQrScreen extends AppCompatActivity {
 //                    .show();
         }
     }
+
 }
