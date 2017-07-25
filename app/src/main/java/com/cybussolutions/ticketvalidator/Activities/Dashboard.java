@@ -92,6 +92,8 @@ public class Dashboard extends AppCompatActivity {
             .withIdentifier(2).withName("Feedback");
     SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Change Password");
+    SecondaryDrawerItem savedQr = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Saved QR");
     Bitmap[] bitmap1;
     private DBManager dbManager;
     private String url;
@@ -234,7 +236,7 @@ public class Dashboard extends AppCompatActivity {
 
 
         result = new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile, home, payment, your_trips, feedback, changePassword, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile, home, payment, your_trips,savedQr, feedback, changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
@@ -282,6 +284,11 @@ public class Dashboard extends AppCompatActivity {
                         }
                         if (drawerItem == changePassword) {
                             Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==savedQr){
+                            Intent intent = new Intent(getApplicationContext(), SaveQrScreen.class);
                             startActivity(intent);
                             finish();
                         }
