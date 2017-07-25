@@ -40,6 +40,7 @@
     android:layout_gravity="center"
     android:background="@drawable/bg_rounded_qrimage"
     android:orientation="vertical"
+
     android:gravity="center"
     >
 
@@ -64,7 +65,6 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"
-
             android:layout_marginTop="10dp" />
         <TextView
             android:id="@+id/labelForUser"
@@ -86,7 +86,6 @@
             android:textColor="#fff"
             android:layout_marginTop="10dp"
             android:visibility="invisible"/>
-
 
 
     </LinearLayout>
