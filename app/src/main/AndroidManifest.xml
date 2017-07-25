@@ -62,7 +62,8 @@
         <activity android:name=".Activities.Confirmation" />
         <activity android:name=".Profile" />
         <activity android:name=".Activities.ChangePassword" />
-        <activity android:name=".Activities.Payment_Recharge"></activity>
+        <activity android:name=".Activities.Payment_Recharge" />
+        <activity android:name=".Activities.SaveQrScreen"></activity>
     </application>
 
 </manifest>

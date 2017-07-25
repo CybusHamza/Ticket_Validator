@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUSTOMER_ACCOUNTS = "CUSTOMER_ACCOUNTS";
     public static final String HISTORY_TRAVEL = "HISTORY_TRAVEL";
     public static final String HISTORY_TRAVEL_LIVE="HISTORY_TRAVEL_LIVE";
+    public static final String QR_CODE_TABLE="SAVE_QR_CODE";
 
     // Table columns SIGNUP.
     public static final String _ID = "customer_id";
@@ -63,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String H_DATE_MODIFIED = "date_modified";
 
 
-// table columns history travel live////
+    // table columns history travel live////
     public static final String H_LIVE_ID = "id";
     public static final String H_live_ROUTE_ID = "route_id";
     public static final String H_live_USER_ID = "user_id";
@@ -71,6 +72,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String H_live_PERSON_TRAVELING = "person_travling";
     public static final String H_live_DATE_ADDED = "date_added";
     public static final String H_live_DATE_MODIFIED = "date_modified";
+
+    ////// COLUMNS QR_CODE_TABLE///////
+    public static final String Q_ID = "q_id";
+    public static final String Q_QR_STRING = "qr_string";
+    public static final String Q_QR_SAVE_DATE = "qr_save_date";
 
     // Database Information
     static final String DB_NAME = "TICKET_VALIDATOR.DB";
@@ -100,6 +106,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_live_ROUTE_ID + " TEXT, "  + H_live_TRANS_ID + " TEXT, "+ H_live_USER_ID + " TEXT," + H_live_PERSON_TRAVELING + " TEXT," + H_live_DATE_ADDED + " TEXT,"+ H_live_DATE_MODIFIED + " TEXT);";
 
 
+    private static final String CREATE_TABLE_SAVE_QR = "create table " + QR_CODE_TABLE + "(" + Q_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Q_QR_STRING + " TEXT, " + Q_QR_SAVE_DATE + " TEXT);";
+
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -112,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_CUSTOMER_ACCOUNTS);
         db.execSQL(CREATE_TABLE_HISTORY_TRAVEL);
         db.execSQL(CREATE_TABLE_HISTORY_TRAVEL_LIVE);
+        db.execSQL(CREATE_TABLE_SAVE_QR);
     }
 
     @Override
@@ -122,6 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + HISTORY_TRAVEL);
         db.execSQL("DROP TABLE IF EXISTS" + HISTORY_TRAVEL_LIVE);
+        db.execSQL("DROP TABLE IF EXISTS" + QR_CODE_TABLE);
         onCreate(db);
     }
 }

@@ -76,12 +76,15 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
     String confirmNum;
     ImageView myImage;
     Button generateQrButton;
+    String qrId="";
 
     TextView showLabel,textViewTop;
     private int REQUEST_PERMISSIONS=1,REQUEST_BLUETOOTH=2;
     BluetoothAdapter bluetooth;
     LocationManager service;
     boolean enabled;
+
+    Button saveQrBtn;
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
@@ -94,10 +97,12 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
         generateQrButton = (Button) findViewById(R.id.button1);
+        saveQrBtn = (Button) findViewById(R.id.saveQrButton);
         showLabel = (TextView) findViewById(R.id.labelForUser);
         textViewTop = (TextView) findViewById(R.id.textView1);
         generateQrButton.setOnClickListener(this);
         generateQrButton.setVisibility(View.VISIBLE);
+        saveQrBtn.setVisibility(View.INVISIBLE);
         showLabel.setVisibility(View.INVISIBLE);
         textViewTop.setVisibility(View.VISIBLE);
         beaconManager = BeaconManager.getInstanceForApplication(this);
@@ -107,12 +112,82 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
       //  Button button =(Button)findViewById(R.id.btnCnfrm);
        // button.setOnClickListener(this);
 
+
+        saveQrBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!qrId.equals("")){
+                    Toast.makeText(Qr_Activity.this,"You saved the qr code",Toast.LENGTH_LONG).show();
+                    Intent intent= new Intent(Qr_Activity.this,Dashboard.class);
+                    finish();
+                    startActivity(intent);
+                }else {
+                    DateFormat dateFormatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    dateFormatter1.setLenient(false);
+                    Date today1 = new Date();
+                    String save_date = dateFormatter1.format(today1);
+                    dbManager.insert_into_save_qr_table(Qrsting, save_date);
+                    Toast.makeText(Qr_Activity.this, "You saved the qr code", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Qr_Activity.this, Dashboard.class);
+                    finish();
+                    startActivity(intent);
+                }
+
+            }
+        });
+
         //Intent intent = getIntent();
         Intent i=getIntent();
         route_id=i.getStringExtra("route_id");
         user_id=i.getStringExtra("user_id");
         number_of_persons=i.getStringExtra("person_traveling");
         remaining_balance=i.getStringExtra("remaining_balance");
+        String checkActivity=i.getStringExtra("activityName");
+
+
+        if(checkActivity.equals("SaveQrScreen")){
+            String savedQrString=i.getStringExtra("savedQrString");
+            qrId=i.getStringExtra("qrId");
+            generateQrButton.setVisibility(View.INVISIBLE);
+            saveQrBtn.setVisibility(View.VISIBLE);
+            showLabel.setVisibility(View.VISIBLE);
+            textViewTop.setVisibility(View.INVISIBLE);
+
+            beaconManager.bind(Qr_Activity.this);
+
+            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = width < height ? width : height;
+            smallerDimension = smallerDimension * 3/4;
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(savedQrString,
+                    null,
+                    Contents.Type.TEXT,
+                    BarcodeFormat.QR_CODE.toString(),
+                    smallerDimension);
+            try {
+                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+                myImage = (ImageView) findViewById(R.id.imageView1);
+                myImage.setImageBitmap(bitmap);
+
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+            String splitSavedQrString[]=savedQrString.split(",");
+            route_id=splitSavedQrString[3];
+            confirmNum=splitSavedQrString[4];
+            user_id=splitSavedQrString[0];
+            number_of_persons=splitSavedQrString[8];
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            dateFormatter.setLenient(false);
+            Date today = new Date();
+            date = dateFormatter.format(today);
+
+          //  route_id,confirmNum,user_id,number_of_persons,date,"0000-00-00"
+        }
         //qr_string
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
           Qrsting=  preferences.getString("qr_string","");
@@ -239,6 +314,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         generateQrButton.setVisibility(View.INVISIBLE);
+                        saveQrBtn.setVisibility(View.VISIBLE);
                         showLabel.setVisibility(View.VISIBLE);
                         textViewTop.setVisibility(View.INVISIBLE);
 
@@ -333,6 +409,9 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     {
                         beaconManager.unbind(Qr_Activity.this);
                         dbManager.update_customer_balance(user_id,remaining_balance);
+                        if(!qrId.equals("")) {
+                            dbManager.delete_saved_qr(qrId);
+                        }
                         insertintoHistoryTravel();
                         runOnUiThread(new Runnable() {
                             @Override

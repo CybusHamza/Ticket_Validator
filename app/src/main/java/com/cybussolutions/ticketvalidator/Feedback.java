@@ -30,6 +30,7 @@ import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Activities.Login_Activity;
 import com.cybussolutions.ticketvalidator.Activities.Payment_Method;
 import com.cybussolutions.ticketvalidator.Activities.Profile_Detailed;
+import com.cybussolutions.ticketvalidator.Activities.SaveQrScreen;
 import com.cybussolutions.ticketvalidator.Network.End_Points;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -73,6 +74,8 @@ public class Feedback extends AppCompatActivity {
             .withIdentifier(2).withName("Logout");
     SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Change Password");
+    SecondaryDrawerItem savedQr = new SecondaryDrawerItem()
+            .withIdentifier(2).withName("Saved QR");
 
     Toolbar toolbar;
     String email,feedBackt;
@@ -143,7 +146,7 @@ public class Feedback extends AppCompatActivity {
 //        new SecondaryDrawerItem().withName("Edit Profile"),
 //                new SecondaryDrawerItem().withName("Logout")
         result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(5).addDrawerItems(EditProfile,home, payment, your_trips,feedback,changePassword, logout
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(6).addDrawerItems(EditProfile,home, payment, your_trips,savedQr,feedback,changePassword, logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
 
@@ -195,6 +198,11 @@ public class Feedback extends AppCompatActivity {
                         }
                         if (drawerItem==changePassword){
                             Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem==savedQr){
+                            Intent intent = new Intent(getApplicationContext(), SaveQrScreen.class);
                             startActivity(intent);
                             finish();
                         }

@@ -111,6 +111,13 @@ public class DBManager {
         long result = database.insert(DatabaseHelper.HISTORY_TRAVEL_LIVE, null, contentValue);
     }
 
+    public void insert_into_save_qr_table(String qr_string,String qr_date) {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.Q_QR_STRING, qr_string);
+        contentValue.put(DatabaseHelper.Q_QR_SAVE_DATE, qr_date);
+        long result = database.insert(DatabaseHelper.QR_CODE_TABLE, null, contentValue);
+    }
+
     public String[] fetch() {
 
         String[] columns = new String[] { DatabaseHelper._ID, DatabaseHelper.FIRST_NAME, DatabaseHelper.LAST_NAME,DatabaseHelper.EMAIL,DatabaseHelper.PHONE_NUMBER };
@@ -417,6 +424,44 @@ public class DBManager {
         }
         return  stringArrayList;
     }
+
+    public ArrayList<String> fetch_saved_qr(){
+        String[] columns = new String[] { DatabaseHelper.Q_QR_STRING};
+        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                stringArrayList.add(cursor.getString(0));
+            }
+            while (cursor.moveToNext());
+        }
+        return  stringArrayList;
+    }
+    public ArrayList<String> fetch_saved_qr_date(){
+        String[] columns = new String[] { DatabaseHelper.Q_QR_SAVE_DATE};
+        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                stringArrayList.add(cursor.getString(0));
+            }
+            while (cursor.moveToNext());
+        }
+        return  stringArrayList;
+    }
+    public ArrayList<String> fetch_saved_qr_id(){
+        String[] columns = new String[] { DatabaseHelper.Q_ID};
+        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                stringArrayList.add(cursor.getString(0));
+            }
+            while (cursor.moveToNext());
+        }
+        return  stringArrayList;
+    }
+
     public HashMap<Integer,ArrayList<String>> fetch_trans_id_live() {
         Cursor cursor = database.query(DatabaseHelper.HISTORY_TRAVEL_LIVE, null, null, null, null, null, null);
         int i=0;
@@ -542,6 +587,12 @@ public class DBManager {
         //database.execSQL("delete from HISTORY_TRAVEL_LIVE where trans_id="+ trans_id);
        //long result= database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, "HISTORY_TRAVEL_LIVE.trans_id = "+trans_id, null);
         database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, DatabaseHelper.H_LIVE_ID + "=" + trans_id, null);
+
+    }
+    public void delete_saved_qr(String qr_id){
+        //database.execSQL("delete from HISTORY_TRAVEL_LIVE where trans_id="+ trans_id);
+        //long result= database.delete(DatabaseHelper.HISTORY_TRAVEL_LIVE, "HISTORY_TRAVEL_LIVE.trans_id = "+trans_id, null);
+        database.delete(DatabaseHelper.QR_CODE_TABLE, DatabaseHelper.Q_ID + "=" + qr_id, null);
 
     }
 
