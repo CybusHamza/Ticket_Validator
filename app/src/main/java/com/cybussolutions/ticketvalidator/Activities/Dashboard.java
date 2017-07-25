@@ -1,6 +1,7 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -57,22 +59,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Dashboard extends AppCompatActivity {
     ArrayList<String> stringArrayList5 = new ArrayList<>();
 
     boolean doubleBackToExitPressedOnce = false;
 
     Toolbar toolbar;
-    Button btnStartTrip,btnRecharge;
-    TextView tvTotalTrips,tvMWBalance;
-    String totalTrips,MWBalance;
+    Button btnStartTrip, btnRecharge;
+    TextView tvTotalTrips, tvMWBalance;
+    String totalTrips, MWBalance;
 
+    String amount, message, trans_ref, trans_identifier, cardtype;
     SharedPreferences prefs = null;
     SharedPreferences.Editor editor;
 
 
     Drawer result;
-    String userEmail,userName,customer_id,customer_total_balance,profile_pic;
+    String userEmail, userName, customer_id, customer_total_balance, profile_pic;
 
     SecondaryDrawerItem EditProfile = new SecondaryDrawerItem().withIdentifier(2).withName("Profile");
     PrimaryDrawerItem home = new PrimaryDrawerItem()
@@ -87,11 +92,9 @@ public class Dashboard extends AppCompatActivity {
             .withIdentifier(2).withName("Feedback");
     SecondaryDrawerItem changePassword = new SecondaryDrawerItem()
             .withIdentifier(2).withName("Change Password");
-    SecondaryDrawerItem savedQr = new SecondaryDrawerItem()
-            .withIdentifier(2).withName("Saved QR");
+    Bitmap[] bitmap1;
     private DBManager dbManager;
     private String url;
-    Bitmap[] bitmap1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,38 +103,38 @@ public class Dashboard extends AppCompatActivity {
         dbManager = new DBManager(Dashboard.this);
         dbManager.open();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        customer_id=preferences.getString("id",null);
-        toolbar = (Toolbar)findViewById(R.id.app_bar_dashboard);
+        customer_id = preferences.getString("id", null);
+        toolbar = (Toolbar) findViewById(R.id.app_bar_dashboard);
         toolbar.setTitle("Dashboard");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
         getHistory();
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             startService(new Intent(this, HelloService.class));
-        }else {
+        } else {
 
-           // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
         }
 
 
-        totalTrips = preferences.getString("TotalTrips","0");
-        userEmail=preferences.getString("UserEmail",null);
-        userName=preferences.getString("name",null);
-        customer_id=preferences.getString("id",null);
-        profile_pic=preferences.getString("pro_pic",null);
+        totalTrips = preferences.getString("TotalTrips", "0");
+        userEmail = preferences.getString("UserEmail", null);
+        userName = preferences.getString("name", null);
+        customer_id = preferences.getString("id", null);
+        profile_pic = preferences.getString("pro_pic", null);
 
 
-        tvTotalTrips = (TextView)findViewById(R.id.tvTotalTrips);
-        tvMWBalance= (TextView) findViewById(R.id.tvMWBalance);
+        tvTotalTrips = (TextView) findViewById(R.id.tvTotalTrips);
+        tvMWBalance = (TextView) findViewById(R.id.tvMWBalance);
 
 
-        btnStartTrip = (Button)findViewById(R.id.btnStartTrip);
-        btnRecharge= (Button) findViewById(R.id.btnRecharge);
+        btnStartTrip = (Button) findViewById(R.id.btnStartTrip);
+        btnRecharge = (Button) findViewById(R.id.btnRecharge);
         btnStartTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Dashboard.this,MainScreen.class);
+                Intent intent = new Intent(Dashboard.this, MainScreen.class);
                 startActivity(intent);
                 finish();
 
@@ -140,7 +143,7 @@ public class Dashboard extends AppCompatActivity {
         btnRecharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkAvailable()) {
+                if (isNetworkAvailable()) {
                    /* dbManager.delete_route_balance_fare_table();
                     startService(new Intent(Dashboard.this, HelloService.class));
                     Toast.makeText(getApplicationContext(),"Recharged",Toast.LENGTH_LONG).show();*/
@@ -148,56 +151,66 @@ public class Dashboard extends AppCompatActivity {
                     Payment.overrideApiBase(Payment.SANDBOX_API_BASE);
 
                     RequestOptions options = RequestOptions.builder()
-                            .setClientId("IKIA43A9EE2EF1FAB58341922EF2557C46D94B8FE96C")
-                            .setClientSecret("oMwb2KmHY7UcLYkIW7CiEFL4WK2Qk0PoU8POxAS1Nmg=")
+                            .setClientId("IKIA9614B82064D632E9B6418DF358A6A4AEA84D7218")
+                            .setClientSecret("XCTiBtLy1G9chAnyg0z3BcaFK4cVpwDg/GTw2EmjTZ8=")
                             .build();
 
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+
                     PayWithCard pay = new PayWithCard(Dashboard.this, "12", "Recharge Your Account", "50", "NGN", options,
-                            new IswCallback<PurchaseResponse>()  {
+                            new IswCallback<PurchaseResponse>() {
                                 @Override
                                 public void onError(Exception error) {
                                     // Handle error.
                                     // Payment not successful.
 
-                                    Toast.makeText(Dashboard.this, error.toString(), Toast.LENGTH_SHORT).show();
+
+                                    Toast.makeText(Dashboard.this, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 }
 
                                 @Override
                                 public void onSuccess(PurchaseResponse response) {
 
-                                    Toast.makeText(Dashboard.this, response.getAmount(), Toast.LENGTH_SHORT).show();
+                                    cardtype = response.getCardType();
+                                    trans_identifier = response.getTransactionIdentifier();
+                                    trans_ref = response.getTransactionRef();
+                                    message = response.getMessage();
+                                    amount = response.getAmount();
+
+                                    sendTrans();
+                                    //   Toast.makeText(Dashboard.this, response.getAmount(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                     pay.start();
 
 
-                }else {
-                    Toast.makeText(getApplicationContext(),"You are not connected to internet, Plz check your network connection",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You are not connected to internet, Plz check your network connection", Toast.LENGTH_LONG).show();
                 }
 
             }
         });
         bitmap1 = new Bitmap[1];
-        url =  "http://epay.cybussolutions.com/epay/"+profile_pic;
+        url = "http://epay.cybussolutions.com/epay/" + profile_pic;
 
         Picasso.with(Dashboard.this)
                 .load(url)
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        bitmap1[0] =bitmap;
+                        bitmap1[0] = bitmap;
                     }
 
                     @Override
                     public void onBitmapFailed(Drawable errorDrawable) {
 
-                        Log.e("here","onBitmapFailed");
+                        Log.e("here", "onBitmapFailed");
                     }
 
                     @Override
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        Log.e("here","onPrepareLoad");
+                        Log.e("here", "onPrepareLoad");
                     }
                 });
 
@@ -220,60 +233,55 @@ public class Dashboard extends AppCompatActivity {
 //                new SecondaryDrawerItem().withName("Logout")
 
 
-        result= new DrawerBuilder().withActivity(this).withAccountHeader(header)
-                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile,home, payment, your_trips,savedQr,feedback,changePassword, logout
+        result = new DrawerBuilder().withActivity(this).withAccountHeader(header)
+                .withToolbar(toolbar).withDrawerWidthDp(250).withSelectedItemByPosition(2).addDrawerItems(EditProfile, home, payment, your_trips, feedback, changePassword, logout
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                        if (drawerItem== your_trips){
+                        if (drawerItem == your_trips) {
                             Intent intent = new Intent(Dashboard.this, History.class);
                             startActivity(intent);
                             finish();
                         }
-                        if(drawerItem== logout){
+                        if (drawerItem == logout) {
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
                             editor.apply();
 
-                            Intent intent=new Intent(getApplicationContext(),Login_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
                             startActivity(intent);
                             finish();
                         }
-                        if (drawerItem== payment){
-                            Intent intent=new Intent(getApplicationContext(),Payment_Method.class);
-                            startActivity(intent);
-                            finish();
-
-                        }
-                        if (drawerItem==EditProfile){
-                            Intent intent=new Intent(getApplicationContext(),Profile_Detailed.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        if (drawerItem==home){
-                            Intent intent=new Intent(getApplicationContext(),Dashboard.class);
+                        if (drawerItem == payment) {
+                            Intent intent = new Intent(getApplicationContext(), Payment_Method.class);
                             startActivity(intent);
                             finish();
 
                         }
-                        if (drawerItem==feedback){
+                        if (drawerItem == EditProfile) {
+                            Intent intent = new Intent(getApplicationContext(), Profile_Detailed.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        if (drawerItem == home) {
+                            Intent intent = new Intent(getApplicationContext(), Dashboard.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                        if (drawerItem == feedback) {
 
                             Intent intent = new Intent(getApplicationContext(), Feedback.class);
                             startActivity(intent);
                             finish();
                         }
-                        if (drawerItem==changePassword){
+                        if (drawerItem == changePassword) {
                             Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        if (drawerItem==savedQr){
-                            Intent intent = new Intent(getApplicationContext(), SaveQrScreen.class);
                             startActivity(intent);
                             finish();
                         }
@@ -284,10 +292,10 @@ public class Dashboard extends AppCompatActivity {
 
                 }).build();
 
-        customer_total_balance=dbManager.fetch_customer_balance(customer_id);
-        if(customer_total_balance!=null) {
+        customer_total_balance = dbManager.fetch_customer_balance(customer_id);
+        if (customer_total_balance != null) {
             tvMWBalance.setText("₦" + customer_total_balance);
-        }else {
+        } else {
             tvMWBalance.setText("₦");
         }
 
@@ -297,21 +305,23 @@ public class Dashboard extends AppCompatActivity {
             }
 
             public void onFinish() {
-                customer_total_balance=dbManager.fetch_customer_balance(customer_id);
-                if(customer_total_balance!=null) {
+                customer_total_balance = dbManager.fetch_customer_balance(customer_id);
+                if (customer_total_balance != null) {
                     tvMWBalance.setText("₦" + customer_total_balance);
-                }else {
+                } else {
                     tvMWBalance.setText("₦");
                 }
             }
         }.start();
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -328,18 +338,19 @@ public class Dashboard extends AppCompatActivity {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
-    private void getHistory(){
-       // final ProgressDialog loading = ProgressDialog.show(Dashboard.this, "", "Please wait...", false, false);
+
+    private void getHistory() {
+        // final ProgressDialog loading = ProgressDialog.show(Dashboard.this, "", "Please wait...", false, false);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GETTRAVEL_HISTORY, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-            //    loading.dismiss();
+                //    loading.dismiss();
                 //  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
 
                 try {
@@ -385,7 +396,6 @@ public class Dashboard extends AppCompatActivity {
                             editor.apply();
 
 
-
                         }
                     }
                 }
@@ -404,7 +414,79 @@ public class Dashboard extends AppCompatActivity {
 
     }
 
-    public void oldPass(){
+    private void sendTrans() {
+        final ProgressDialog loading = ProgressDialog.show(Dashboard.this, "", "Please wait...", false, false);
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.TRANS_LOGS, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                loading.dismiss();
+                Toast.makeText(getApplicationContext(), "Balance Updated Succesfully", Toast.LENGTH_LONG).show();
+                tvMWBalance.setText(" " + response.trim());
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        loading.dismiss();
+
+                        if (error instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            new SweetAlertDialog(Dashboard.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Error!")
+                                    .setConfirmText("OK").setContentText("No Internet Connection")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                        } else if (error instanceof TimeoutError) {
+
+                            new SweetAlertDialog(Dashboard.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Error!")
+                                    .setConfirmText("OK").setContentText("Connection TimeOut! Please check your internet connection.")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismiss();
+
+                                        }
+                                    })
+                                    .show();
+                            //  Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+                String userid = preferences.getString("id", "");
+                map.put("userid", userid);
+                map.put("amount", amount);
+                map.put("card_type", cardtype);
+                map.put("trans_identifier", trans_identifier);
+                map.put("trans_ref_num", trans_ref);
+                map.put("message", message);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
+    }
+
+    public void oldPass() {
         final Dialog dialog = new Dialog(getApplicationContext());
         dialog.setContentView(R.layout.custom_dialog_old_password);
         dialog.setTitle("Change Password");
@@ -413,19 +495,19 @@ public class Dashboard extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inputOldPass.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(),"Please Enter Old Password",Toast.LENGTH_LONG).show();
-                }else {
+                if (inputOldPass.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter Old Password", Toast.LENGTH_LONG).show();
+                } else {
                     newPass();
                 }
             }
         });
 
 
-
         dialog.show();
     }
-    public void newPass(){
+
+    public void newPass() {
         final Dialog dialog = new Dialog(getApplicationContext());
         dialog.setContentView(R.layout.custom_dialog_new_password);
         dialog.setTitle("Change Password");

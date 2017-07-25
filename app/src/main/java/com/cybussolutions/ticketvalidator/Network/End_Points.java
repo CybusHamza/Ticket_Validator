@@ -12,6 +12,8 @@ public class End_Points {
     public static String GETROUTES = BASE_URL + "getDefienedRoutes";
     public static String GETROUTES_RATES = BASE_URL + "getRates";
     public static String GETTRAVEL_HISTORY = BASE_URL + "getTravelHistory";
+    public static String TRANS_LOGS = BASE_URL + "transLog";
+    public static String SEND_TRANS = BASE_URL + "getTravelHistory";
     public static String INSERT_TRAVEL_HISTORY = BASE_URL + "insertTravelHistory";
     public static String GET_FARE_TABLE_DATA = BASE_URL + "getFareTable";
     public static String GET_LIVE_DATA=BASE_URL+"syncLocalDataBase";
