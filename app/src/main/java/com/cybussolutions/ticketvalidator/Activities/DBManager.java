@@ -599,4 +599,8 @@ public class DBManager {
 
     }
 
+    public void delete_route_table() {
+        database.delete(DatabaseHelper.ROUTES,null, null);
+    }
+
 }

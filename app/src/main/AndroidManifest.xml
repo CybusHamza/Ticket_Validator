@@ -82,6 +82,12 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Activities.SaveQrScreen"
             android:screenOrientation="portrait"></activity>
+        <receiver android:name=".Activities.BackEndService">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

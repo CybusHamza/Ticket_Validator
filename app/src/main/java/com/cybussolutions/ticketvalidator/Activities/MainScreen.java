@@ -177,8 +177,6 @@ SecondaryDrawerItem feedback = new SecondaryDrawerItem().withIdentifier(6).withN
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
 
-
-
                         if (drawerItem== your_trips){
                             Intent intent = new Intent(MainScreen.this, History.class);
                             startActivity(intent);

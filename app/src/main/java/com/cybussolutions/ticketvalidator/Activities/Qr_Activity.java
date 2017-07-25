@@ -78,7 +78,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
     Button generateQrButton;
     String qrId="";
 
-    TextView showLabel,textViewTop;
+    TextView showLabel,textViewTop,OrLabel;
     private int REQUEST_PERMISSIONS=1,REQUEST_BLUETOOTH=2;
     BluetoothAdapter bluetooth;
     LocationManager service;
@@ -99,11 +99,13 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
         generateQrButton = (Button) findViewById(R.id.button1);
         saveQrBtn = (Button) findViewById(R.id.saveQrButton);
         showLabel = (TextView) findViewById(R.id.labelForUser);
+        OrLabel = (TextView) findViewById(R.id.labelOr);
         textViewTop = (TextView) findViewById(R.id.textView1);
         generateQrButton.setOnClickListener(this);
         generateQrButton.setVisibility(View.VISIBLE);
         saveQrBtn.setVisibility(View.INVISIBLE);
         showLabel.setVisibility(View.INVISIBLE);
+        OrLabel.setVisibility(View.INVISIBLE);
         textViewTop.setVisibility(View.VISIBLE);
         beaconManager = BeaconManager.getInstanceForApplication(this);
 
@@ -117,8 +119,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             @Override
             public void onClick(View v) {
                 if(!qrId.equals("")){
-                    Toast.makeText(Qr_Activity.this,"You saved the qr code",Toast.LENGTH_LONG).show();
-                    Intent intent= new Intent(Qr_Activity.this,Dashboard.class);
+                    Toast.makeText(Qr_Activity.this,"This qr code is already saved",Toast.LENGTH_LONG).show();
+                    Intent intent= new Intent(Qr_Activity.this,SaveQrScreen.class);
                     finish();
                     startActivity(intent);
                 }else {
@@ -128,7 +130,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     String save_date = dateFormatter1.format(today1);
                     dbManager.insert_into_save_qr_table(Qrsting, save_date,user_id);
                     Toast.makeText(Qr_Activity.this, "You saved the qr code", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Qr_Activity.this, Dashboard.class);
+                    Intent intent = new Intent(Qr_Activity.this, SaveQrScreen.class);
                     finish();
                     startActivity(intent);
                 }
@@ -151,6 +153,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             generateQrButton.setVisibility(View.INVISIBLE);
             saveQrBtn.setVisibility(View.VISIBLE);
             showLabel.setVisibility(View.VISIBLE);
+            OrLabel.setVisibility(View.VISIBLE);
             textViewTop.setVisibility(View.INVISIBLE);
 
             beaconManager.bind(Qr_Activity.this);
@@ -176,6 +179,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
             } catch (WriterException e) {
                 e.printStackTrace();
             }
+            ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
+
             String splitSavedQrString[]=savedQrString.split(",");
             route_id=splitSavedQrString[3];
             confirmNum=splitSavedQrString[4];
@@ -316,6 +321,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         generateQrButton.setVisibility(View.INVISIBLE);
                         saveQrBtn.setVisibility(View.VISIBLE);
                         showLabel.setVisibility(View.VISIBLE);
+                        OrLabel.setVisibility(View.VISIBLE);
                         textViewTop.setVisibility(View.INVISIBLE);
 
                         beaconManager.bind(Qr_Activity.this);

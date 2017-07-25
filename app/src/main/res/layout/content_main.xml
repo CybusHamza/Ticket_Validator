@@ -34,8 +34,8 @@
             android:textSize="15sp"
              />
 <LinearLayout
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="260dp"
+    android:layout_height="260dp"
     android:layout_margin="5dp"
     android:layout_gravity="center"
     android:background="@drawable/bg_rounded_qrimage"
@@ -46,8 +46,8 @@
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_margin="20dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/qr_img" />
@@ -65,16 +65,23 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="5dp" />
         <TextView
             android:id="@+id/labelForUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Scan Qr Code"
             android:textColor="@color/accent"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:visibility="invisible"/>
-
+        <TextView
+            android:id="@+id/labelOr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:textColor="@color/accent"
+            android:textSize="5dp"
+            android:visibility="invisible"/>
         <Button
             android:id="@+id/saveQrButton"
             android:layout_width="wrap_content"
