@@ -13,9 +13,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +68,7 @@ public class Dashboard extends AppCompatActivity {
 
     boolean doubleBackToExitPressedOnce = false;
 
+    AlertDialog myalertdialog;
     Toolbar toolbar;
     Button btnStartTrip, btnRecharge;
     TextView tvTotalTrips, tvMWBalance;
@@ -144,45 +147,44 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isNetworkAvailable()) {
-                   /* dbManager.delete_route_balance_fare_table();
-                    startService(new Intent(Dashboard.this, HelloService.class));
-                    Toast.makeText(getApplicationContext(),"Recharged",Toast.LENGTH_LONG).show();*/
-                    Passport.overrideApiBase(Passport.SANDBOX_API_BASE);
-                    Payment.overrideApiBase(Payment.SANDBOX_API_BASE);
 
-                    RequestOptions options = RequestOptions.builder()
-                            .setClientId("IKIA9614B82064D632E9B6418DF358A6A4AEA84D7218")
-                            .setClientSecret("XCTiBtLy1G9chAnyg0z3BcaFK4cVpwDg/GTw2EmjTZ8=")
-                            .build();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View dialogView = inflater.inflate(R.layout.balance_popup, null);
+                    builder.setView(dialogView);
 
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+                    final EditText balance = (EditText) dialogView.findViewById(R.id.balance);
+                    Button next = (Button) dialogView.findViewById(R.id.next);
+                    Button Cancel = (Button) dialogView.findViewById(R.id.Cancel);
 
-                    PayWithCard pay = new PayWithCard(Dashboard.this, "12", "Recharge Your Account", "50", "NGN", options,
-                            new IswCallback<PurchaseResponse>() {
-                                @Override
-                                public void onError(Exception error) {
-                                    // Handle error.
-                                    // Payment not successful.
+                    myalertdialog = builder.create();
+                    myalertdialog.show();
 
+                    next.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String strBalance =  balance.getText().toString();
 
-                                    Toast.makeText(Dashboard.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            if(strBalance.equals("") || Integer.valueOf(strBalance) <= 10)
+                            {
+                                Toast.makeText(Dashboard.this, "The Enter Amount is Invalid", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                myalertdialog.dismiss();
+                                balanceEpay(strBalance);
+                            }
+                        }
+                    });
 
-                                }
+                    Cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                                @Override
-                                public void onSuccess(PurchaseResponse response) {
+                            myalertdialog.dismiss();
+                        }
+                    });
 
-                                    cardtype = response.getCardType();
-                                    trans_identifier = response.getTransactionIdentifier();
-                                    trans_ref = response.getTransactionRef();
-                                    message = response.getMessage();
-                                    amount = response.getAmount();
-
-                                    sendTrans();
-                                    //   Toast.makeText(Dashboard.this, response.getAmount(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                    pay.start();
 
 
                 } else {
@@ -343,6 +345,47 @@ public class Dashboard extends AppCompatActivity {
         }, 2000);
     }
 
+
+    public void  balanceEpay(String balance)
+    {
+        Passport.overrideApiBase(Passport.SANDBOX_API_BASE);
+        Payment.overrideApiBase(Payment.SANDBOX_API_BASE);
+
+        RequestOptions options = RequestOptions.builder()
+                .setClientId("IKIA9614B82064D632E9B6418DF358A6A4AEA84D7218")
+                .setClientSecret("XCTiBtLy1G9chAnyg0z3BcaFK4cVpwDg/GTw2EmjTZ8=")
+                .build();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+
+        PayWithCard pay = new PayWithCard(Dashboard.this, preferences.getString("first_name",""), "Recharge Your Account", balance, "NGN", options,
+                new IswCallback<PurchaseResponse>() {
+                    @Override
+                    public void onError(Exception error) {
+                        // Handle error.
+                        // Payment not successful.
+
+
+                        Toast.makeText(Dashboard.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onSuccess(PurchaseResponse response) {
+
+                        cardtype = response.getCardType();
+                        trans_identifier = response.getTransactionIdentifier();
+                        trans_ref = response.getTransactionRef();
+                        message = response.getMessage();
+                        amount = response.getAmount();
+
+                        sendTrans();
+                        //   Toast.makeText(Dashboard.this, response.getAmount(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        pay.start();
+
+    }
     private void getHistory() {
         // final ProgressDialog loading = ProgressDialog.show(Dashboard.this, "", "Please wait...", false, false);
 
@@ -424,7 +467,7 @@ public class Dashboard extends AppCompatActivity {
 
                 loading.dismiss();
                 Toast.makeText(getApplicationContext(), "Balance Updated Succesfully", Toast.LENGTH_LONG).show();
-                tvMWBalance.setText(" " + response.trim());
+                tvMWBalance.setText("₦ " + response.trim());
 
             }
         },
