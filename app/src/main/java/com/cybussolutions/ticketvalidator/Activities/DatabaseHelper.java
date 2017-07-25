@@ -76,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////// COLUMNS QR_CODE_TABLE///////
     public static final String Q_ID = "q_id";
     public static final String Q_QR_STRING = "qr_string";
+    public static final String Q_QR_CUSTOMER_ID = "customer_id";
     public static final String Q_QR_SAVE_DATE = "qr_save_date";
 
     // Database Information
@@ -107,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_TABLE_SAVE_QR = "create table " + QR_CODE_TABLE + "(" + Q_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Q_QR_STRING + " TEXT, " + Q_QR_SAVE_DATE + " TEXT);";
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Q_QR_STRING + " TEXT, " + Q_QR_CUSTOMER_ID + " TEXT, " + Q_QR_SAVE_DATE + " TEXT);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

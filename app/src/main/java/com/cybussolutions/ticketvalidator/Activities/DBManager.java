@@ -111,9 +111,10 @@ public class DBManager {
         long result = database.insert(DatabaseHelper.HISTORY_TRAVEL_LIVE, null, contentValue);
     }
 
-    public void insert_into_save_qr_table(String qr_string,String qr_date) {
+    public void insert_into_save_qr_table(String qr_string,String qr_date,String userid) {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.Q_QR_STRING, qr_string);
+        contentValue.put(DatabaseHelper.Q_QR_CUSTOMER_ID, userid);
         contentValue.put(DatabaseHelper.Q_QR_SAVE_DATE, qr_date);
         long result = database.insert(DatabaseHelper.QR_CODE_TABLE, null, contentValue);
     }
@@ -425,9 +426,11 @@ public class DBManager {
         return  stringArrayList;
     }
 
-    public ArrayList<String> fetch_saved_qr(){
-        String[] columns = new String[] { DatabaseHelper.Q_QR_STRING};
-        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+    public ArrayList<String> fetch_saved_qr(String customerid){
+        String[] args = {customerid};
+        Cursor cursor = database.rawQuery("SELECT qr_string FROM SAVE_QR_CODE WHERE customer_id = ?",args);
+       // String[] columns = new String[] { DatabaseHelper.Q_QR_STRING};
+        //Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
         ArrayList<String> stringArrayList = new ArrayList<>();
         if (cursor.moveToFirst()){
             do {
@@ -437,9 +440,9 @@ public class DBManager {
         }
         return  stringArrayList;
     }
-    public ArrayList<String> fetch_saved_qr_date(){
-        String[] columns = new String[] { DatabaseHelper.Q_QR_SAVE_DATE};
-        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+    public ArrayList<String> fetch_saved_qr_date(String customerid){
+        String[] args = {customerid};
+        Cursor cursor = database.rawQuery("SELECT qr_save_date FROM SAVE_QR_CODE WHERE customer_id = ?",args);
         ArrayList<String> stringArrayList = new ArrayList<>();
         if (cursor.moveToFirst()){
             do {
@@ -449,9 +452,9 @@ public class DBManager {
         }
         return  stringArrayList;
     }
-    public ArrayList<String> fetch_saved_qr_id(){
-        String[] columns = new String[] { DatabaseHelper.Q_ID};
-        Cursor cursor = database.query(DatabaseHelper.QR_CODE_TABLE, columns, null, null, null, null, null);
+    public ArrayList<String> fetch_saved_qr_id(String customerid){
+        String[] args = {customerid};
+        Cursor cursor = database.rawQuery("SELECT q_id FROM SAVE_QR_CODE WHERE customer_id = ?",args);
         ArrayList<String> stringArrayList = new ArrayList<>();
         if (cursor.moveToFirst()){
             do {

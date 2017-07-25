@@ -126,7 +126,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     dateFormatter1.setLenient(false);
                     Date today1 = new Date();
                     String save_date = dateFormatter1.format(today1);
-                    dbManager.insert_into_save_qr_table(Qrsting, save_date);
+                    dbManager.insert_into_save_qr_table(Qrsting, save_date,user_id);
                     Toast.makeText(Qr_Activity.this, "You saved the qr code", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Qr_Activity.this, Dashboard.class);
                     finish();

@@ -212,9 +212,9 @@ public class SaveQrScreen extends AppCompatActivity {
                 }).build();
 
 
-        savedQrString=dbManager.fetch_saved_qr();
-        savedQrDate=dbManager.fetch_saved_qr_date();
-        savedQrId=dbManager.fetch_saved_qr_id();
+        savedQrString=dbManager.fetch_saved_qr(customer_id);
+        savedQrDate=dbManager.fetch_saved_qr_date(customer_id);
+        savedQrId=dbManager.fetch_saved_qr_id(customer_id);
         if (savedQrString.size() > 0) {
             for (int i = 0; i < savedQrString.size(); i++) {
                 SavedQrPojo qrData = new SavedQrPojo();

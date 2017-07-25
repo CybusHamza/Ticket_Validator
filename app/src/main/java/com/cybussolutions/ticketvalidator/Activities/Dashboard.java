@@ -474,6 +474,7 @@ public class Dashboard extends AppCompatActivity {
 
                 loading.dismiss();
                 Toast.makeText(getApplicationContext(), "Balance Updated Succesfully", Toast.LENGTH_LONG).show();
+                dbManager.update_customer_balance(customer_id,response.trim());
                 tvMWBalance.setText("₦ " + response.trim());
 
             }
