@@ -161,6 +161,7 @@ public class Feedback extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
+
                         if(drawerItem== logout){
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Feedback.this);
