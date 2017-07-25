@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,6 +40,9 @@ import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Login_Activity extends AppCompatActivity {
+
+    private static final int MY_SOCKET_TIMEOUT_MS = 10000;
+
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     TextInputLayout inputEmail, inputPassword;
@@ -236,7 +240,10 @@ public class Login_Activity extends AppCompatActivity {
             return map;
         }
     };
-
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue requestQueue = Volley.newRequestQueue(Login_Activity.this);
         requestQueue.add(request);
 
