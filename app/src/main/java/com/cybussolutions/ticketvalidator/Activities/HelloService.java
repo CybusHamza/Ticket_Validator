@@ -1,14 +1,11 @@
 package com.cybussolutions.ticketvalidator.Activities;
 
-import android.app.ProgressDialog;
 import android.app.Service;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.content.Intent;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -121,14 +118,30 @@ public class HelloService extends Service {
                         dbManager.insert_into_fare(fare_id,fare_route,fare_price,fare_type,added_by,update_by,date_added,date_updated);
 
                     }
+
                     JSONArray balance = main_object.getJSONArray("balance");
                     for (int i = 0; i < balance.length(); i++) {
                         JSONObject object = balance.getJSONObject(i);
                         c_id = object.getString("id");
                         c_customer_id = object.getString("customer_id");
                         c_customer_balance = object.getString("customer_balance");
-                        dbManager.insert_into_customer_accounts(c_id, c_customer_id, c_customer_balance);
-                    }
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(HelloService.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        String check = preferences.getString("isFirst","");
+                        if(check.equals("true"))
+                        {
+                            dbManager.update_balance(c_id, c_customer_id, c_customer_balance);
+                            dbManager.update_balance_hidden(c_id, c_customer_id, c_customer_balance);
+
+                        }
+                        else{
+                            dbManager.insert_into_customer_accounts(c_id, c_customer_id, c_customer_balance);
+                            dbManager.insert_into_customer_accounts_hidden(c_id, c_customer_id, c_customer_balance);
+                            editor.putString("isFirst","true");
+                            editor.apply();
+                        }
+
+                          }
 
                     dbManager.delete_history_tables();
                     JSONArray history = main_object.getJSONArray("history");

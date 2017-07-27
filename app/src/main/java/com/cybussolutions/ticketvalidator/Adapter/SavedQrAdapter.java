@@ -1,7 +1,6 @@
 package com.cybussolutions.ticketvalidator.Adapter;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import com.cybussolutions.ticketvalidator.Activities.Qr_Activity;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
-import com.cybussolutions.ticketvalidator.pojo.HistoryData;
 import com.cybussolutions.ticketvalidator.pojo.SavedQrPojo;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -47,6 +45,8 @@ public class SavedQrAdapter extends BaseAdapter {
     List<SavedQrPojo> SavedQrDataList;
     Activity activity;
     Context mContext;
+    private DBManager dbManager;
+
     private LayoutInflater inflater;
     public SavedQrAdapter(Activity activity, List<SavedQrPojo> historyDataListItems) {
         this.activity = activity;
@@ -81,7 +81,7 @@ public class SavedQrAdapter extends BaseAdapter {
         TextView tvDate = (TextView) convertView.findViewById(R.id.date);
      //   ImageView imageView = (ImageView)convertView.findViewById(R.id.grid_image);
         final SavedQrPojo savedQr = SavedQrDataList.get(position);
-        final String QRstring=savedQr.getQrString();
+        final String QRstring=savedQr.getQrString()+","+"Not_Scanable";
         ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
         String split[]=QRstring.split(",");
         tvFrom.setText("From :"+split[6]);
@@ -149,12 +149,26 @@ public class SavedQrAdapter extends BaseAdapter {
                     activity.startActivityForResult(new Intent(
                             BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
                 }
+
+
+                dbManager = new DBManager(activity);
+                dbManager.open();
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+                String customer_id = preferences.getString("id", null);
+                String balance = dbManager.fetch_customer_balance(customer_id);
+
+                String[] ary = savedQr.getQrString().split(",");
+
+                int bal = Integer.parseInt(balance) - Integer.parseInt(ary[1]);
+
                 //Toast.makeText(getApplicationContext(),"Please enable bluetooth and gps information to generate QR code",Toast.LENGTH_LONG).show();
                 if (bluetooth.isEnabled() && enabled) {
                     Intent intent = new Intent(activity, Qr_Activity.class);
                     intent.putExtra("activityName", "SaveQrScreen");
                     intent.putExtra("savedQrString", savedQr.getQrString());
                     intent.putExtra("qrId", savedQr.getQrId());
+                    intent.putExtra("remaining_balance", bal+"");
                     activity.finish();
                     activity.startActivity(intent);
                 }

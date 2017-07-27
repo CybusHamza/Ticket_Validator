@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.location.GpsStatus;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -65,7 +64,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class Qr_Activity extends AppCompatActivity implements OnClickListener, BeaconConsumer {
 
     private String LOG_TAG = "GenerateQRCode";
-    String Qrsting;
+    String Qrsting,Qrsting1;
     boolean isTrue = false;
     Toolbar toolbar;
     private DBManager dbManager;
@@ -148,7 +147,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
 
 
         if(checkActivity.equals("SaveQrScreen")){
-            String savedQrString=i.getStringExtra("savedQrString");
+            String savedQrString=i.getStringExtra("savedQrString")+","+"Scanable";
             qrId=i.getStringExtra("qrId");
             generateQrButton.setVisibility(View.INVISIBLE);
             saveQrBtn.setVisibility(View.VISIBLE);
@@ -349,8 +348,9 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                         String number=preferences.getString("number","");
                         ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
                         Qrsting=Qrsting+","+route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number;
+                        Qrsting1=Qrsting+","+route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number+","+"Scanable";
                         //Encode with a QR Code image
-                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(Qrsting,
+                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(Qrsting1,
                                 null,
                                 Contents.Type.TEXT,
                                 BarcodeFormat.QR_CODE.toString(),

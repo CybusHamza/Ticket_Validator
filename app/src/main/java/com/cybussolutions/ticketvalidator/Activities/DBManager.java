@@ -86,6 +86,32 @@ public class DBManager {
         contentValue.put(DatabaseHelper.C_CUSTOMER_BALANCE, c_customer_balance);
         long result = database.insert(DatabaseHelper.CUSTOMER_ACCOUNTS, null, contentValue);
     }
+
+    public void update_balance(String c_id,String c_customer_id,String c_customer_balance) {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.C_CUSTOMER_BALANCE, c_customer_balance);
+        int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS, contentValue, DatabaseHelper.C_ID + " = " + c_id, null);
+
+    }
+
+
+    public void insert_into_customer_accounts_hidden(String c_id,String c_customer_id,String c_customer_balance) {
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(DatabaseHelper.CUS_CUSTOMER_ID, c_id);
+        contentValue.put(DatabaseHelper.CUS_CUSTOMER_ID, c_customer_id);
+        contentValue.put(DatabaseHelper.CUS_CUSTOMER_BALANCE, c_customer_balance);
+        long result = database.insert(DatabaseHelper.CUSTOMER_ACCOUNTS_HIDDEN, null, contentValue);
+    }
+
+    public void update_balance_hidden(String c_id,String c_customer_id,String c_customer_balance) {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.CUS_CUSTOMER_BALANCE, c_customer_balance);
+        int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS_HIDDEN, contentValue, DatabaseHelper.CUS_ID + " = " + c_id, null);
+
+    }
+
+
     public void insert_into_history_travel(String h_route_id,String h_trans_data,String h_user_id,String h_person_traveling,String h_date_added,String h_date_modified) {
         ContentValues contentValue = new ContentValues();
 

@@ -439,7 +439,7 @@ public class Route_Detailed extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(Route_Detailed.this, "Please Enter Number of Persons Travling", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Route_Detailed.this, "Please enter number of persons traveling", Toast.LENGTH_SHORT).show();
                 }
 
 

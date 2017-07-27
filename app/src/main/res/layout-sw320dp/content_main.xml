@@ -18,21 +18,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="20dp"
         android:gravity="center"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/app_bar">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/accent"
-            android:layout_gravity="center_horizontal"
-            android:text="Press Button to Genrate QR"
-            android:layout_margin="10dp"
-            android:textSize="15sp"
-            />
         <LinearLayout
             android:layout_width="260dp"
             android:layout_height="260dp"
@@ -80,7 +69,7 @@
             android:layout_height="wrap_content"
             android:text="or"
             android:textColor="@color/accent"
-            android:textSize="15dp"
+            android:textSize="25dp"
             android:layout_marginTop="2dp"
             android:visibility="invisible"/>
 
@@ -98,6 +87,20 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Press Button to Genrate QR"
+        android:textColor="@color/accent"
+        android:textSize="15sp" />
 
 
 </RelativeLayout>

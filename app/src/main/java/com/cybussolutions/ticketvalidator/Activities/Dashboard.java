@@ -145,6 +145,30 @@ public class Dashboard extends AppCompatActivity {
 
             }
         });
+        customer_total_balance = dbManager.fetch_customer_balance(customer_id);
+
+        if (customer_total_balance != null) {
+            tvMWBalance.setText("₦" + customer_total_balance);
+        } else {
+            tvMWBalance.setText("₦");
+        }
+
+        new CountDownTimer(5000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                //  customer_total_balance = dbManager.fetch_customer_balance(customer_id);
+                if (customer_total_balance != null) {
+                    tvMWBalance.setText("₦" + customer_total_balance);
+                } else {
+                    tvMWBalance.setText("₦");
+                }
+            }
+        }.start();
+
+
         btnRecharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,27 +325,10 @@ public class Dashboard extends AppCompatActivity {
 
                 }).build();
 
-        customer_total_balance = dbManager.fetch_customer_balance(customer_id);
-        if (customer_total_balance != null) {
-            tvMWBalance.setText("₦" + customer_total_balance);
-        } else {
-            tvMWBalance.setText("₦");
-        }
 
-        new CountDownTimer(5000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-            }
 
-            public void onFinish() {
-                customer_total_balance = dbManager.fetch_customer_balance(customer_id);
-                if (customer_total_balance != null) {
-                    tvMWBalance.setText("₦" + customer_total_balance);
-                } else {
-                    tvMWBalance.setText("₦");
-                }
-            }
-        }.start();
+
     }
 
     private boolean isNetworkAvailable() {

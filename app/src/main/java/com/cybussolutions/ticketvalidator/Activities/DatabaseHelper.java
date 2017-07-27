@@ -14,6 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ROUTES = "ROUTES";
     public static final String FARE = "FARE";
     public static final String CUSTOMER_ACCOUNTS = "CUSTOMER_ACCOUNTS";
+    public static final String CUSTOMER_ACCOUNTS_HIDDEN = "CUSTOMER_ACCOUNTS_HIDDEN";
     public static final String HISTORY_TRAVEL = "HISTORY_TRAVEL";
     public static final String HISTORY_TRAVEL_LIVE="HISTORY_TRAVEL_LIVE";
     public static final String QR_CODE_TABLE="SAVE_QR_CODE";
@@ -50,10 +51,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATE_ADDED = "date_added";
     public static final String DATE_UPDATED = "date_updated";
 
-    // TABLE COLUMNS //
+    // TABLE BALANCE //
     public static final String C_ID = "id";
     public static final String C_CUSTOMER_ID = "customer_id";
     public static final String C_CUSTOMER_BALANCE = "customer_balance";
+
+    // TABLE BALANCE HIDEN//
+    public static final String CUS_ID = "id";
+    public static final String CUS_CUSTOMER_ID = "customer_id";
+    public static final String CUS_CUSTOMER_BALANCE = "customer_balance";
 
     public static final String H_ID = "id";
     public static final String H_ROUTE_ID = "route_id";
@@ -99,6 +105,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_CUSTOMER_ACCOUNTS = "create table " + CUSTOMER_ACCOUNTS + "(" + C_ID
             + " INTEGER PRIMARY KEY, " + C_CUSTOMER_ID + " TEXT, " + C_CUSTOMER_BALANCE + " TEXT);";
 
+    private static final String CREATE_TABLE_CUSTOMER_ACCOUNTS_HIDDEN = "create table " + CUSTOMER_ACCOUNTS_HIDDEN + "(" + CUS_ID
+            + " INTEGER PRIMARY KEY, " + CUS_CUSTOMER_ID + " TEXT, " + CUS_CUSTOMER_BALANCE + " TEXT);";
+
 
     private static final String CREATE_TABLE_HISTORY_TRAVEL = "create table " + HISTORY_TRAVEL + "(" + H_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + H_ROUTE_ID + " TEXT, "  + H_TRANS_ID + " TEXT, "+ H_USER_ID + " TEXT," + H_PERSON_TRAVELING + " TEXT," + H_DATE_ADDED + " TEXT,"+ H_DATE_MODIFIED + " TEXT);";
@@ -120,6 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ROUTES);
         db.execSQL(CREATE_TABLE_FARE);
         db.execSQL(CREATE_TABLE_CUSTOMER_ACCOUNTS);
+        db.execSQL(CREATE_TABLE_CUSTOMER_ACCOUNTS_HIDDEN);
         db.execSQL(CREATE_TABLE_HISTORY_TRAVEL);
         db.execSQL(CREATE_TABLE_HISTORY_TRAVEL_LIVE);
         db.execSQL(CREATE_TABLE_SAVE_QR);
@@ -131,6 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + ROUTES);
         db.execSQL("DROP TABLE IF EXISTS " + FARE);
         db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_ACCOUNTS);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_ACCOUNTS_HIDDEN);
         db.execSQL("DROP TABLE IF EXISTS " + HISTORY_TRAVEL);
         db.execSQL("DROP TABLE IF EXISTS" + HISTORY_TRAVEL_LIVE);
         db.execSQL("DROP TABLE IF EXISTS" + QR_CODE_TABLE);
