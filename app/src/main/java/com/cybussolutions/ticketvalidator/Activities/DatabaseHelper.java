@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PHONE_NUMBER = "phone_number";
     public static final String GENDER = "gender";
     public static final String CARDTYPE = "cardtype";
+    public static final String ADDRESS = "address";
 
     // TABLE COLUMNS ROUTES//
     public static final String ID = "id";
@@ -93,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Creating table query
     private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
-            + " INTEGER PRIMARY KEY, " + FIRST_NAME + " TEXT, " + LAST_NAME + " TEXT," + PASSWORD + " TEXT," + PHONE_NUMBER + " TEXT," +GENDER + " TEXT,"+ EMAIL + " TEXT,"+ CARDTYPE + " TEXT);";
+            + " INTEGER PRIMARY KEY, " + FIRST_NAME + " TEXT, " + LAST_NAME + " TEXT," + PASSWORD + " TEXT," + PHONE_NUMBER + " TEXT," +GENDER + " TEXT,"+ EMAIL + " TEXT,"+ CARDTYPE + " TEXT,"+ ADDRESS + " TEXT);";
 
     private static final String CREATE_TABLE_ROUTES = "create table " + ROUTES + "(" + ID
             + " INTEGER PRIMARY KEY, " + ROUTE_CODE + " TEXT, " + ROUTE_NAME + " TEXT," + ROUTE_START + " TEXT," + ROUTE_DESTINATION + " TEXT,"+ ROUTE_ADDED_DATE + " TEXT," + TIME + " TEXT," + ROUTE_ADDED_BY + " TEXT," + ROUTE_UPDATED_DATE + " TEXT," + ROUTE_UPDATED_BY + " TEXT);";

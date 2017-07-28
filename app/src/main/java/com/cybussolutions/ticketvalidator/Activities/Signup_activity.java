@@ -37,7 +37,7 @@ import java.util.Map;
 public class Signup_activity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
-    private EditText inputFirstName, inputLastName, inputEmail, inputPassword, inputReenterPassword, inputPhoneNumber;
+    private EditText inputFirstName, inputLastName, inputEmail, inputPassword, inputReenterPassword, inputPhoneNumber,inputAddress;
     private TextInputLayout inputLayoutFirstName, inputLayoutLastName, inputLayoutEmail, inputLayoutPassword, inputLayoutReenterPassword, inputLayoutPhoneNumber;
     private Button btnSignUp;
 
@@ -79,6 +79,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         inputPassword = (EditText) findViewById(R.id.input_password);
         inputReenterPassword = (EditText) findViewById(R.id.input_re_enter_password);
         inputPhoneNumber = (EditText) findViewById(R.id.input_phone_number);
+        inputAddress = (EditText) findViewById(R.id.input_address);
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         phoneNumberUtil = PhoneNumberUtil.getInstance();
         phonenumberProto = new Phonenumber.PhoneNumber();
@@ -107,6 +108,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         final String password = inputPassword.getText().toString().trim();
         String re_enter_password = inputReenterPassword.getText().toString().trim();
         final String phone_number = inputPhoneNumber.getText().toString().trim();
+        final String address = inputAddress.getText().toString();
 
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -120,7 +122,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
             gender="0";
         }
         //String password = editTextPass.getText().toString().trim();
-        if (inputFirstName.getText().toString().trim().equals("") || inputLastName.getText().toString().trim().equals("") || inputEmail.getText().toString().trim().equals("") || inputPassword.getText().toString().trim().equals("") || inputReenterPassword.getText().toString().trim().equals("") || inputPhoneNumber.getText().toString().trim().equals("")) {
+        if (inputFirstName.getText().toString().trim().equals("") || inputLastName.getText().toString().trim().equals("") || inputEmail.getText().toString().trim().equals("") || inputPassword.getText().toString().trim().equals("") || inputReenterPassword.getText().toString().trim().equals("") || inputPhoneNumber.getText().toString().trim().equals("") || inputAddress.getText().toString().equals("")) {
             Toast.makeText(this, "Please Fill all the fields", Toast.LENGTH_LONG).show();
             return;
         } else {
@@ -205,7 +207,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
 
 
                                 //Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
-                                dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
+                                dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1",address);
 
                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
                                 SharedPreferences.Editor editor = preferences.edit();
@@ -252,6 +254,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
                 params.put("email", inputEmail.getText().toString().trim());
                 params.put("password", inputPassword.getText().toString().trim());
                 params.put("phone_number", inputPhoneNumber.getText().toString().trim());
+                params.put("address", inputAddress.getText().toString());
                 params.put("gender",gender);
                 params.put("cardtype","1");
                 return params;

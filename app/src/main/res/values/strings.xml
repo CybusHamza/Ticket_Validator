@@ -8,6 +8,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_re_enter_password">Re-enter Password</string>
     <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_address">Address</string>
     <string name="radio_male">Male</string>
     <string name="radio_female">Female</string>
 

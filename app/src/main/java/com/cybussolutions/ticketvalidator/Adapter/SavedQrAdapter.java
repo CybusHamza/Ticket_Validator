@@ -106,7 +106,7 @@ public class SavedQrAdapter extends BaseAdapter {
         }*/
 
 
-        ImageView delete = (ImageView)convertView.findViewById(R.id.delete);
+        ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

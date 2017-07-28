@@ -34,7 +34,7 @@ public class DBManager {
         dbHelper.close();
     }
 
-        public void insert(String id,String first_name, String last_name,String password,String phone_number,String gender,String email,String cardType) {
+        public void insert(String id,String first_name, String last_name,String password,String phone_number,String gender,String email,String cardType,String address) {
             ContentValues contentValue = new ContentValues();
             contentValue.put(DatabaseHelper._ID,id);
             contentValue.put(DatabaseHelper.FIRST_NAME, first_name);
@@ -44,6 +44,7 @@ public class DBManager {
             contentValue.put(DatabaseHelper.GENDER,gender);
             contentValue.put(DatabaseHelper.EMAIL, email);
             contentValue.put(DatabaseHelper.CARDTYPE,cardType);
+            contentValue.put(DatabaseHelper.ADDRESS,address);
             long result = database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
 
         }
