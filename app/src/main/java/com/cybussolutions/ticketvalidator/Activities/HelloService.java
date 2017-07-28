@@ -130,8 +130,8 @@ public class HelloService extends Service {
                         String check = preferences.getString("isFirst","");
                         if(check.equals("true"))
                         {
-                            dbManager.update_balance(c_id, c_customer_id, c_customer_balance);
-                            dbManager.update_balance_hidden(c_id, c_customer_id, c_customer_balance);
+                           // dbManager.update_balance(c_id, c_customer_id, c_customer_balance);
+                           // dbManager.update_balance_hidden(c_id, c_customer_id, c_customer_balance);
 
                         }
                         else{

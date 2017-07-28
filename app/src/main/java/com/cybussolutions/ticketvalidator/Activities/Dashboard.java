@@ -153,7 +153,7 @@ public class Dashboard extends AppCompatActivity {
             tvMWBalance.setText("₦");
         }
 
-        new CountDownTimer(5000, 1000) {
+        new CountDownTimer(1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -482,7 +482,15 @@ public class Dashboard extends AppCompatActivity {
                 loading.dismiss();
                 Toast.makeText(getApplicationContext(), "Balance Updated Succesfully", Toast.LENGTH_LONG).show();
                 dbManager.update_customer_balance(customer_id,response.trim());
-                tvMWBalance.setText("₦ " + response.trim());
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+                String userid = preferences.getString("id", "");
+
+                String localBalance = dbManager.fetch_customer_balance_hidden(customer_id);
+                String localBalance1 = dbManager.fetch_customer_balance(customer_id);
+                float balace = Float.parseFloat(localBalance)+Float.parseFloat(amount);
+                float balace1 = Float.parseFloat(localBalance1)+Float.parseFloat(amount);
+                dbManager.update_balance_hidden_customerID(customer_id,balace+"");
+                tvMWBalance.setText("₦ " + balace1);
 
             }
         },

@@ -75,7 +75,7 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
     String confirmNum;
     ImageView myImage;
     Button generateQrButton;
-    String qrId="";
+    String qrId="",userid;
 
     TextView showLabel,textViewTop,OrLabel;
     private int REQUEST_PERMISSIONS=1,REQUEST_BLUETOOTH=2;
@@ -117,7 +117,21 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
         saveQrBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!qrId.equals("")){
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
+                userid  = preferences.getString("id","");
+               String Qrsting1=  preferences.getString("qr_string","");
+
+                String localBalance = dbManager.fetch_customer_balance_hidden(userid);
+
+                String[] data =  Qrsting1.split(",");
+
+                float remaining = Float.parseFloat(localBalance)-Integer.parseInt(data[1]);
+
+                if(remaining>=0)
+                {
+                    dbManager.update_balance_hidden_customerID(userid,remaining+"");
+
+                 if(!qrId.equals("")){
                     Toast.makeText(Qr_Activity.this,"This qr code is already saved",Toast.LENGTH_LONG).show();
                     Intent intent= new Intent(Qr_Activity.this,SaveQrScreen.class);
                     finish();
@@ -128,11 +142,35 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                     Date today1 = new Date();
                     String save_date = dateFormatter1.format(today1);
                     dbManager.insert_into_save_qr_table(Qrsting, save_date,user_id);
-                    Toast.makeText(Qr_Activity.this, "You saved the qr code", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Qr_Activity.this, SaveQrScreen.class);
-                    finish();
-                    startActivity(intent);
+
+                     new SweetAlertDialog(Qr_Activity.this, SweetAlertDialog.SUCCESS_TYPE)
+                             .setTitleText("Done")
+                             .setConfirmText("OK").setContentText("You saved the qr code")
+                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                 @Override
+                                 public void onClick(SweetAlertDialog sDialog) {
+                                     sDialog.dismiss();
+
+
+                                     Intent intent = new Intent(Qr_Activity.this, Dashboard.class);
+                                     finish();
+                                     startActivity(intent);
+
+
+                                 }
+                             })
+                             .show();
+
+
+
+                 }
                 }
+
+                else
+                {
+                    Toast.makeText(Qr_Activity.this, "Your current balance is already allotted to saved QR codes. Please remove the QR codes to proceed.", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -317,61 +355,89 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        generateQrButton.setVisibility(View.INVISIBLE);
-                        saveQrBtn.setVisibility(View.VISIBLE);
-                        showLabel.setVisibility(View.VISIBLE);
-                        OrLabel.setVisibility(View.VISIBLE);
-                        textViewTop.setVisibility(View.INVISIBLE);
+                        SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(Qr_Activity.this);
+                        userid  = preferences1.getString("id","");
+                        String Qrsting1=  preferences1.getString("qr_string","");
 
-                        beaconManager.bind(Qr_Activity.this);
+                        String localBalance = dbManager.fetch_customer_balance_hidden(userid);
 
-                        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-                        Display display = manager.getDefaultDisplay();
-                        Point point = new Point();
-                        display.getSize(point);
-                        int width = point.x;
-                        int height = point.y;
-                        int smallerDimension = width < height ? width : height;
-                        smallerDimension = smallerDimension * 3/4;
-                        Random num = new Random();
-                        int rnum = num.nextInt(999);
-                        if (rnum<0){
-                            rnum = rnum*-1;
+                        String[] data =  Qrsting1.split(",");
+
+                        float remaining = Float.parseFloat(localBalance)-Integer.parseInt(data[1]);
+
+                        if(remaining>=0) {
+                            generateQrButton.setVisibility(View.INVISIBLE);
+                            saveQrBtn.setVisibility(View.VISIBLE);
+                            showLabel.setVisibility(View.VISIBLE);
+                            OrLabel.setVisibility(View.VISIBLE);
+                            textViewTop.setVisibility(View.INVISIBLE);
+
+                            beaconManager.bind(Qr_Activity.this);
+
+                            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+                            Display display = manager.getDefaultDisplay();
+                            Point point = new Point();
+                            display.getSize(point);
+                            int width = point.x;
+                            int height = point.y;
+                            int smallerDimension = width < height ? width : height;
+                            smallerDimension = smallerDimension * 3 / 4;
+                            Random num = new Random();
+                            int rnum = num.nextInt(999);
+                            if (rnum < 0) {
+                                rnum = rnum * -1;
+                            }
+                            Calendar cal = Calendar.getInstance();
+                            String tym = String.valueOf(cal.getTimeInMillis());
+                            confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            String from = preferences.getString("FROM", "");
+                            String to = preferences.getString("TO", "");
+                            String name = preferences.getString("name", "");
+                            String number = preferences.getString("number", "");
+                            ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
+                            Qrsting = Qrsting + "," + route_id + "," + confirmNum + "," + "2" + "," + from + "," + to + "," + number_of_persons + "," + name + "," + number;
+                            Qrsting1 = Qrsting + "," + route_id + "," + confirmNum + "," + "2" + "," + from + "," + to + "," + number_of_persons + "," + name + "," + number + "," + "Scanable";
+                            //Encode with a QR Code image
+                            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(Qrsting1,
+                                    null,
+                                    Contents.Type.TEXT,
+                                    BarcodeFormat.QR_CODE.toString(),
+                                    smallerDimension);
+                            try {
+                                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+                                myImage = (ImageView) findViewById(R.id.imageView1);
+                                myImage.setImageBitmap(bitmap);
+
+                            } catch (WriterException e) {
+                                e.printStackTrace();
+                            }
+                            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            dateFormatter.setLenient(false);
+                            Date today = new Date();
+                            date = dateFormatter.format(today);
+
+                            if (number_of_persons == null || number_of_persons.equals("") || number_of_persons == "") {
+                                number_of_persons = "1";
+                            }
                         }
-                        Calendar cal = Calendar.getInstance();
-                        String tym =String.valueOf( cal.getTimeInMillis());
-                        confirmNum = user_id + "00" + String.valueOf(rnum) + tym;
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        String from= preferences.getString("FROM","");
-                        String to =preferences.getString("TO","");
-                        String name=preferences.getString("name","");
-                        String number=preferences.getString("number","");
-                        ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
-                        Qrsting=Qrsting+","+route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number;
-                        Qrsting1=Qrsting+","+route_id+","+confirmNum+","+"2"+","+from+","+to+","+number_of_persons+","+name+","+number+","+"Scanable";
-                        //Encode with a QR Code image
-                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(Qrsting1,
-                                null,
-                                Contents.Type.TEXT,
-                                BarcodeFormat.QR_CODE.toString(),
-                                smallerDimension);
-                        try {
-                            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-                            myImage = (ImageView) findViewById(R.id.imageView1);
-                            myImage.setImageBitmap(bitmap);
+                        else
+                        {
+                            new SweetAlertDialog(Qr_Activity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Error!")
+                                    .setConfirmText("Go To Qr Screen ! ").setContentText("Your current balance is already allotted to saved QR codes. Please remove the QR codes to proceed.")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
 
-                        } catch (WriterException e) {
-                            e.printStackTrace();
+                                            Intent intent = new Intent(Qr_Activity.this,SaveQrScreen.class);
+                                            startActivity(intent);
+                                            sDialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
                         }
-                        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        dateFormatter.setLenient(false);
-                        Date today = new Date();
-                        date = dateFormatter.format(today);
-
-                        if (number_of_persons==null || number_of_persons.equals("") || number_of_persons==""){
-                            number_of_persons="1";
-                        }
-
                        // Toast.makeText(getApplicationContext(),confirmNum,Toast.LENGTH_LONG).show();
 
                         /*dbManager = new DBManager(Qr_Activity.this);
@@ -389,6 +455,8 @@ public class Qr_Activity extends AppCompatActivity implements OnClickListener, B
                 });
         myAlertDialog.show();
     }
+
+
 
 
 
@@ -566,30 +634,6 @@ public void insertintoHistoryTravel(){
                             JSONObject jsonObject = new  JSONObject(Response);
 //                                                jsonObject.get("userId");
                             String id = jsonObject.get("userId").toString();
-                           // finish();
-////
-//                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                                SharedPreferences.Editor editor = preferences.edit();
-//                             //   editor.putString();
-//                                editor.putString("UserEmail", email);
-//                                // editor.putString("UserPassword",userPassword);
-//                                editor.putString("f_name", first_name);
-//                                editor.putString("l_nmae", last_name);
-//                                editor.putString("id", id);
-//                                editor.putString("sign_in_status","1");
-//                                editor.apply();
-
-
-
-                            //  Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
-                            //  dbManager.insert(id,first_name, last_name,password,phone_number,gender,email,"1");
-
-//                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Signup_activity.this);
-//                                                SharedPreferences.Editor editor = preferences.edit();
-//                                                // editor.putString("UserEmail", userEmail);
-//                                                editor.putString("id", id);
-//                                                editor.commit();
-//                                                startService(new Intent(Signup_activity.this, HelloService.class));
 
                         }catch (Exception e){
                             //Toast.makeText(getApplicationContext(),"Exception:"+e.toString(),Toast.LENGTH_LONG).show();
@@ -598,14 +642,9 @@ public void insertintoHistoryTravel(){
                         //Cursor cursor=dbManager.fetch();
                     }
                     else {
-//                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                                            SharedPreferences.Editor editor = preferences.edit();
-//                                            editor.putString("sign_in_status","0");
-//                                            editor.apply();
+
                         Toast.makeText(Qr_Activity.this, "There was an error", Toast.LENGTH_SHORT).show();
                     }
-                    // showJSON(Response);
-                    // get response
                 }
             }, new Response.ErrorListener() {
         @Override

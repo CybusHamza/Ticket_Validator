@@ -107,7 +107,13 @@ public class DBManager {
     public void update_balance_hidden(String c_id,String c_customer_id,String c_customer_balance) {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.CUS_CUSTOMER_BALANCE, c_customer_balance);
-        int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS_HIDDEN, contentValue, DatabaseHelper.CUS_ID + " = " + c_id, null);
+        int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS_HIDDEN, contentValue, DatabaseHelper.CUS_CUSTOMER_ID + " = " + c_customer_id, null);
+
+    }
+    public void update_balance_hidden_customerID(String c_customer_id,String c_customer_balance) {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.CUS_CUSTOMER_BALANCE, c_customer_balance);
+        int i = database.update(DatabaseHelper.CUSTOMER_ACCOUNTS_HIDDEN, contentValue, DatabaseHelper.CUS_CUSTOMER_ID + " = " + c_customer_id, null);
 
     }
 
@@ -368,6 +374,18 @@ public class DBManager {
         }
         return balance;
     }
+    public String fetch_customer_balance_hidden(String customer_id) {
+        String[] args={customer_id};
+        Cursor cursor=database.rawQuery("SELECT customer_balance FROM CUSTOMER_ACCOUNTS_HIDDEN WHERE customer_id = "+customer_id,null);
+        String balance = null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                balance=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return balance;
+    }
 
     public String fetch_fare(String fare_id) {
         String[] args={fare_id};
@@ -592,6 +610,10 @@ public class DBManager {
 
     public void delete(long _id) {
         database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper._ID + "=" + _id, null);
+    }
+
+    public void deleteQR(String _id) {
+        database.delete(DatabaseHelper.QR_CODE_TABLE, DatabaseHelper.Q_ID + "=" + _id, null);
     }
     public void delete_route_balance_fare_table() {
         database.delete(DatabaseHelper.ROUTES,null, null);

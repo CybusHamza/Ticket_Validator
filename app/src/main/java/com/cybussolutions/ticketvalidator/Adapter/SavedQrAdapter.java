@@ -1,3 +1,4 @@
+
 package com.cybussolutions.ticketvalidator.Adapter;
 
 import android.app.Activity;
@@ -6,17 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,17 +21,12 @@ import android.widget.Toast;
 
 import com.cybussolutions.ticketvalidator.Activities.DBManager;
 import com.cybussolutions.ticketvalidator.Activities.Qr_Activity;
-import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
-import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
 import com.cybussolutions.ticketvalidator.pojo.SavedQrPojo;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static android.content.Context.WINDOW_SERVICE;
 
 /**
  * Created by Rizwan Butt on 24-Jul-17.
@@ -68,26 +60,31 @@ public class SavedQrAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final int pos=position;
         if (inflater == null)
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        dbManager = new DBManager(activity);
+        dbManager.open();
 
         if (convertView == null)
             convertView = inflater.inflate(R.layout.row_saved_qr_layout, null);
         TextView tvFrom = (TextView) convertView.findViewById(R.id.from);
         TextView tvTo = (TextView) convertView.findViewById(R.id.to);
         TextView tvDate = (TextView) convertView.findViewById(R.id.date);
+        final TextView amount = (TextView) convertView.findViewById(R.id.amount);
      //   ImageView imageView = (ImageView)convertView.findViewById(R.id.grid_image);
         final SavedQrPojo savedQr = SavedQrDataList.get(position);
         final String QRstring=savedQr.getQrString()+","+"Not_Scanable";
         ////final qr string customer_id,fare,fareType,routeId,transId,transStatusId,from,to,persontraveling,name,number////////
-        String split[]=QRstring.split(",");
+        final String split[]=QRstring.split(",");
         tvFrom.setText("From :"+split[6]);
+        amount.setText("amount : "+split[1]);
         tvTo.setText("To :"+split[7]);
         tvDate.setText(savedQr.getQrSaveDate());
-        WindowManager manager = (WindowManager) activity.getSystemService(WINDOW_SERVICE);
+    /*    WindowManager manager = (WindowManager) activity.getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
@@ -102,12 +99,50 @@ public class SavedQrAdapter extends BaseAdapter {
                 smallerDimension);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            ImageView imageView1 = (ImageView)convertView.findViewById(R.id.grid_image);
-            imageView1.setImageBitmap(bitmap);
+               imageView1.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
             e.printStackTrace();
-        }
+        }*/
+
+
+        ImageView delete = (ImageView)convertView.findViewById(R.id.delete);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                        activity);
+                myAlertDialog.setTitle("Delete QR code");
+                myAlertDialog.setMessage("You saved Qr will be deleted !! ");
+
+                myAlertDialog.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                                dbManager.deleteQR(savedQr.getQrId());
+                                SavedQrDataList.remove(position);
+                                notifyDataSetChanged();
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+                                String userid = preferences.getString("id", "");
+                                String localBalance = dbManager.fetch_customer_balance_hidden(userid);
+                                float balace = Float.parseFloat(localBalance)+Float.parseFloat(split[1]);
+                                dbManager.update_balance_hidden_customerID(userid,balace+"");
+
+                            }
+                        });
+
+                myAlertDialog.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                            /*Toast.makeText(getApplicationContext(),
+                                    "Please turn on your location to proceed", Toast.LENGTH_LONG);
+                            finish();*/
+                            }
+                        });
+                myAlertDialog.show();
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,8 +186,7 @@ public class SavedQrAdapter extends BaseAdapter {
                 }
 
 
-                dbManager = new DBManager(activity);
-                dbManager.open();
+
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
                 String customer_id = preferences.getString("id", null);
