@@ -85,7 +85,7 @@ public class Profile extends AppCompatActivity {
     String picturePath;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    EditText etEmail, etName, etNum;
+    EditText etEmail, etName, etNum,etAddress;
 
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -137,7 +137,7 @@ public class Profile extends AppCompatActivity {
     public static Phonenumber.PhoneNumber phonenumberProto;
     PhoneNumberUtil phoneNumberUtil;
     Boolean isValid;
-    String userEmail,userName;
+    String userEmail,userName,userAddress;
     String dateAndTime;
     AlertDialog myalertdialog;
     Calendar calender;
@@ -162,6 +162,7 @@ public class Profile extends AppCompatActivity {
         userEmail=pref1.getString("UserEmail",null);
         userName=pref1.getString("name",null);
         profile_pic=pref1.getString("pro_pic","");
+        userAddress=pref1.getString("address","");
 
       //  url =  "http://epay.cybussolutions.com/epay/"+profile_pic.trim();
         bitmap1 = new Bitmap[1];
@@ -274,6 +275,7 @@ public class Profile extends AppCompatActivity {
         etEmail = (EditText) findViewById(R.id.userEmail);
         etName = (EditText) findViewById(R.id.userName);
         etNum = (EditText) findViewById(R.id.userNumber);
+        etAddress = (EditText) findViewById(R.id.userAddress);
         btnUpdate = (Button)findViewById(R.id.update);
         ImageView iv=(ImageView)findViewById(R.id.imageBtn);
         iv.setImageDrawable(getResources().getDrawable(R.drawable.man));
@@ -289,6 +291,7 @@ public class Profile extends AppCompatActivity {
         name =  preferences.getString("name","");
         fname =  preferences.getString("first_name","");
         lname =  preferences.getString("last_name","");
+        userAddress =  preferences.getString("address","");
         id = preferences.getString("id","");
 
 
@@ -296,6 +299,8 @@ public class Profile extends AppCompatActivity {
         etEmail.setText(email);
         etNum.setText(number);
         etName.setText(name);
+        etAddress.setText(userAddress);
+
 
 
         phoneNumberUtil = PhoneNumberUtil.getInstance();
@@ -939,7 +944,7 @@ public void updateProfile(){
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("UserEmail", etEmail.getText().toString());
                 editor.putString("number",etNum.getText().toString());
-                //editor.putString("email",email);
+                editor.putString("address",etAddress.getText().toString());
                 editor.putString("name",etName.getText().toString());
                 editor.apply();
                 ringProgressDialog.dismiss();
@@ -1016,6 +1021,7 @@ public void updateProfile(){
             map.put("cust_phoneNum",etNum.getText().toString());
             map.put("cust_propic",img);
             map.put("cust_email",email);
+            map.put("cust_address",etAddress.getText().toString());
             return map;
         }
     };

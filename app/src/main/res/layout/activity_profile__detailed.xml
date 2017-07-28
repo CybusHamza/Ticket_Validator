@@ -117,6 +117,35 @@
 
 </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address:"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user Name"
+                android:id="@+id/tvuserAddresss"
+                android:layout_gravity="center"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
     <Button
         android:id="@+id/editPro"

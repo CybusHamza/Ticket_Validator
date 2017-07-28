@@ -139,6 +139,7 @@ public class Login_Activity extends AppCompatActivity {
                         String num = jsonObject.get("phone").toString();
                         String email = jsonObject.get("email").toString();
                         String pro_pic = jsonObject.get("profile_pic").toString();
+                        String address = jsonObject.get("address").toString();
 
 
                        // Toast.makeText(Login_Activity.this, response, Toast.LENGTH_LONG).show();
@@ -150,6 +151,7 @@ public class Login_Activity extends AppCompatActivity {
                         editor.putString("first_name",f_name);
                         editor.putString("last_name",l_name);
                         editor.putString("name",f_name + "  "+ l_name);
+                        editor.putString("address",address);
 
                         editor.putString("pro_pic",pro_pic);
 
@@ -199,6 +201,7 @@ public class Login_Activity extends AppCompatActivity {
                 String firstName=dbManager.login_first_name(id);
                 String lastName=dbManager.login_last_name(id);
                 String phone=dbManager.login_number(id);
+                String address=dbManager.login_address(id);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Login_Activity.this);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("UserEmail", userEmail);
@@ -206,6 +209,7 @@ public class Login_Activity extends AppCompatActivity {
                 editor.putString("last_name",lastName);
                 editor.putString("number",phone);
                 editor.putString("name",firstName + "  "+ lastName);
+                editor.putString("address",address);
                 editor.putString("id", id);
                 editor.apply();
                 if (rememberMeCheckBox.isChecked()) {

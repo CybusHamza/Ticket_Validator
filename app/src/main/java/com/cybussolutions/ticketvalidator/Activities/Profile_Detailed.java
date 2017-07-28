@@ -32,11 +32,11 @@ import com.squareup.picasso.Target;
 public class Profile_Detailed extends AppCompatActivity {
 
     Button editProfile;
-    TextView tvName,tvEmail,tvNum;
+    TextView tvName,tvEmail,tvNum,tvAddress;
 
 
 
-    String email,number,name;
+    String email,number,name,address;
     ImageView userImg;
     Drawer result;
 
@@ -196,6 +196,7 @@ public class Profile_Detailed extends AppCompatActivity {
         tvEmail = (TextView)findViewById(R.id.tvUserEmail);
         tvName = (TextView)findViewById(R.id.tvUserName);
         tvNum = (TextView)findViewById(R.id.tvuserNumber);
+        tvAddress = (TextView)findViewById(R.id.tvuserAddresss);
         userImg.setImageDrawable(getResources().getDrawable(R.drawable.man));
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -203,6 +204,7 @@ public class Profile_Detailed extends AppCompatActivity {
         String pro_pic = preferences.getString("pro_pic","");
         number = preferences.getString("number","");
         name =  preferences.getString("name","");
+        address =  preferences.getString("address","");
 
         if(!pro_pic.equals(""))
         Picasso.with(getApplicationContext()).load("http://epay.cybussolutions.com/epay/" + pro_pic.trim()).placeholder(getResources().getDrawable(R.drawable.man)).into(userImg);
@@ -211,6 +213,7 @@ public class Profile_Detailed extends AppCompatActivity {
         tvEmail.setText(email);
         tvName.setText(name);
         tvNum.setText(number);
+        tvAddress.setText(address);
 
 
 

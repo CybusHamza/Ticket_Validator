@@ -252,6 +252,22 @@ public class DBManager {
         else
             return id;*/
     }
+    public String login_address(String id) {
+
+        String[] args={id};
+        // Cursor cursor=database.rawQuery("SELECT customer_id FROM SIGNUP WHERE email = "+userEmail+" and password ="+userPassword,null);
+        Cursor cursor=database.rawQuery("SELECT address FROM SIGNUP WHERE customer_id = ?", args);
+        // String[] daata = new String[cursor.getCount()];
+        ArrayList<String> stringArrayList=new ArrayList<String>();
+        String address=null;
+        if(cursor.moveToFirst()){
+            do
+            {
+                address=cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return address;
+    }
 
     public ArrayList<String> fetch_route_table(String route_start) {
         String[] args={route_start};
