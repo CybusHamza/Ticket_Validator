@@ -9,13 +9,14 @@
     <ImageView
         android:id="@+id/delete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_height="wrap_content"
         android:background="@android:drawable/ic_delete" />
 
     <ImageView
         android:id="@+id/grid_image"
         android:layout_width="150dp"
+        android:layout_gravity="center"
         android:layout_height="150dp"
         android:background="@drawable/qr_code"
         />

@@ -194,7 +194,7 @@ public class SavedQrAdapter extends BaseAdapter {
 
                 String[] ary = savedQr.getQrString().split(",");
 
-                int bal = Integer.parseInt(balance) - Integer.parseInt(ary[1]);
+                float bal = Float.parseFloat(balance) - Float.parseFloat(ary[1]);
 
                 //Toast.makeText(getApplicationContext(),"Please enable bluetooth and gps information to generate QR code",Toast.LENGTH_LONG).show();
                 if (bluetooth.isEnabled() && enabled) {

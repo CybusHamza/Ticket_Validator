@@ -481,8 +481,7 @@ public class Dashboard extends AppCompatActivity {
 
                 loading.dismiss();
                 Toast.makeText(getApplicationContext(), "Balance Updated Succesfully", Toast.LENGTH_LONG).show();
-                dbManager.update_customer_balance(customer_id,response.trim());
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
                 String userid = preferences.getString("id", "");
 
                 String localBalance = dbManager.fetch_customer_balance_hidden(customer_id);
@@ -490,6 +489,8 @@ public class Dashboard extends AppCompatActivity {
                 float balace = Float.parseFloat(localBalance)+Float.parseFloat(amount);
                 float balace1 = Float.parseFloat(localBalance1)+Float.parseFloat(amount);
                 dbManager.update_balance_hidden_customerID(customer_id,balace+"");
+                dbManager.update_customer_balance(customer_id,balace1+"");
+
                 tvMWBalance.setText("₦ " + balace1);
 
             }

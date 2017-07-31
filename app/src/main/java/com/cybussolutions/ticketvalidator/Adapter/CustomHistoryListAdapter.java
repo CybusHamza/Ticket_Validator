@@ -15,10 +15,8 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cybussolutions.ticketvalidator.Activities.DBManager;
-import com.cybussolutions.ticketvalidator.Activities.History;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.Contents;
 import com.cybussolutions.ticketvalidator.Qr_Genrator.QRCodeEncoder;
 import com.cybussolutions.ticketvalidator.R;
@@ -27,7 +25,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
 import java.util.List;
-import java.util.Random;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -89,7 +86,7 @@ public class CustomHistoryListAdapter extends BaseAdapter {
         TextView tvTransId = (TextView) view.findViewById(R.id.tvTransId);
 
         final HistoryData historyData = historyDataList.get(i);
-        int totalFare = Integer.valueOf(historyData.getFare_Price()) * Integer.valueOf(historyData.getPersonTravelling());
+            float totalFare = Float.parseFloat(historyData.getFare_Price()) * Float.parseFloat(historyData.getPersonTravelling());
 
         tvCharge.setText("₦" + String.valueOf(totalFare));
         tvCpp.setText("₦" + historyData.getFare_Price());

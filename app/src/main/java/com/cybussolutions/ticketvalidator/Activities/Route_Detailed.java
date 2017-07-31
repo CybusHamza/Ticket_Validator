@@ -379,8 +379,8 @@ public class Route_Detailed extends AppCompatActivity {
                             {
                                 int fare = Integer.valueOf(test);
                                 //String balancecheck=customer_total_balance;
-                                int balancecheck = Integer.valueOf(customer_total_balance);
-                                int remainingbalance = balancecheck - fare;
+                                float balancecheck = Float.valueOf(customer_total_balance);
+                                float remainingbalance = balancecheck - fare;
                                 if (fare <= balancecheck) {
 
 
