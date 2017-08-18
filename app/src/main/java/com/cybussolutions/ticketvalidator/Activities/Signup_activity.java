@@ -119,7 +119,7 @@ public class Signup_activity extends AppCompatActivity implements View.OnClickLi
         if(radioSexButton.getText().toString().equals("Male")){
             gender="1";
         }else {
-            gender="0";
+            gender="2";
         }
         //String password = editTextPass.getText().toString().trim();
         if (inputFirstName.getText().toString().trim().equals("") || inputLastName.getText().toString().trim().equals("") || inputEmail.getText().toString().trim().equals("") || inputPassword.getText().toString().trim().equals("") || inputReenterPassword.getText().toString().trim().equals("") || inputPhoneNumber.getText().toString().trim().equals("") || inputAddress.getText().toString().equals("")) {
