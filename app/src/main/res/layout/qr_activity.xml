@@ -8,9 +8,7 @@
     tools:context="com.cybussolutions.ticketvalidator.Activities.Qr_Activity">
 
 
-
     <include layout="@layout/content_main" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.cybussolutions.ticketvalidator.Activities.Qr_Activity"
+    tools:showIn="@layout/qr_activity">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+    </include>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/app_bar">
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rounded_qrimage"
+            android:orientation="vertical"
+
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/qr_img" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate QR Code"
+            android:padding="20dp"
+            android:background="@drawable/bg_btn_route_detailed"
+            android:textSize= "15sp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp" />
+        <TextView
+            android:id="@+id/labelForUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scan Qr Code"
+            android:textColor="@color/accent"
+            android:textSize="15dp"
+            android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/labelOr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:textColor="@color/accent"
+            android:textSize="25dp"
+            android:layout_marginTop="2dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/saveQrButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Qr"
+            android:padding="5dp"
+            android:background="@drawable/bg_btn_route_detailed"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_marginTop="5dp"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Press Button to Genrate QR"
+        android:textColor="@color/accent"
+        android:textSize="15sp" />
+
+
+</RelativeLayout>

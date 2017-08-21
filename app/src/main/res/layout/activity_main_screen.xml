@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MainScreen"
-    android:background="#ffffff">
+    android:background="@drawable/background">
 
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar">
+        layout="@layout/app_bar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
     </include>
 
@@ -21,7 +23,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:alpha="0"/>
 
 
 
@@ -29,72 +32,101 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select Route"
+
         android:id="@+id/textView3"
         android:textColor="#000"
         android:layout_marginLeft="10dp"
-        android:textSize="25sp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:textSize="0sp"
+
         android:layout_below="@+id/app_bar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+
+        android:layout_marginBottom="0dp"
         android:textStyle="bold" />
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/from_spinner"
+        android:background="@drawable/dropdown_mainscreen"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_above="@+id/textView8"
-        android:layout_marginBottom="44dp" />
+        android:layout_below="@+id/textView7"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/to_spinner"
+
+        android:background="@drawable/dropdown_mainscreen"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_below="@+id/textView8"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
 
+
+
+
+
+
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Proceed to Payment"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Cancel"
+        android:id="@+id/back"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:background="@drawable/bg_btn_route_detailed"
+        android:layout_above="@+id/textView"
+        android:layout_alignStart="@+id/proceed"
+        android:layout_marginBottom="34dp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Proceed"
+
         android:id="@+id/proceed"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textColor="#fff"
         android:textStyle="bold"
-        android:background="@drawable/round_corner_button"
-        android:layout_above="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
+        android:background="@drawable/bg_btn_route_detailed"
+        android:layout_above="@+id/back"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_marginBottom="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+       android:textColor="#fff"
+        android:textSize="18sp"
         android:text="Select Start Point"
         android:id="@+id/textView7"
-        android:layout_above="@+id/from_spinner"
+        android:textStyle="bold"
+        android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:textStyle="bold" />
+        android:layout_marginTop="11dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+
         android:text="Select End Point"
+        android:textColor="#fff"
+        android:textSize="18sp"
         android:id="@+id/textView8"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/textView3"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="89dp"
+        android:layout_alignTop="@+id/from_spinner"
+        android:layout_alignEnd="@+id/proceed"
+        android:layout_alignStart="@+id/textView7" />
 
 
 </RelativeLayout>
