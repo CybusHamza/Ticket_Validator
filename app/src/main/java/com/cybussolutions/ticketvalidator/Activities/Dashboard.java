@@ -57,9 +57,14 @@ import com.squareup.picasso.Target;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -473,6 +478,21 @@ public class Dashboard extends AppCompatActivity {
 
     private void sendTrans() {
         final ProgressDialog loading = ProgressDialog.show(Dashboard.this, "", "Please wait...", false, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+        String userid = preferences.getString("id", "");
+        Random num = new Random();
+        int rnum = num.nextInt(999);
+        if (rnum < 0) {
+            rnum = rnum * -1;
+        }
+        Calendar cal = Calendar.getInstance();
+        String tym = String.valueOf(cal.getTimeInMillis());
+        final String confirmNum = userid + "00" + String.valueOf(rnum) + tym;
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        dateFormatter.setLenient(false);
+        Date today = new Date();
+        final String date = dateFormatter.format(today);
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.TRANS_LOGS, new Response.Listener<String>() {
 
@@ -545,6 +565,8 @@ public class Dashboard extends AppCompatActivity {
                 map.put("trans_identifier", trans_identifier);
                 map.put("trans_ref_num", trans_ref);
                 map.put("message", message);
+                map.put("trans_status_id", confirmNum);
+                map.put("trans_date", date);
                 return map;
             }
         };
